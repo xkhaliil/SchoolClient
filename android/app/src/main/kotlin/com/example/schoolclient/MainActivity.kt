@@ -1,4 +1,4 @@
-package com.example.schoolclient
+package com.schoolclient
 
 import io.flutter.embedding.android.FlutterActivity
 
