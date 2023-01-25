@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
-class HomeScreen extends StatelessWidget {
-  static String routeName='HomeScreen';
+class StudentScreen extends StatelessWidget {
+  static String routeName=(StudentScreen).toString();
 
   @override
   Widget build(BuildContext context) {

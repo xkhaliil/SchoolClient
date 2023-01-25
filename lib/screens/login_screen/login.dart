@@ -1,19 +1,76 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import 'package:schoolclient/screens/home_screen/choosekid.dart';
-import 'package:schoolclient/screens/login_screen/info-after.dart';
+import 'package:schoolclient/screens/student_list_screen/student-list.dart';
+import 'package:schoolclient/screens/login_screen/onBoarding.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
-class LoginScreen2 extends StatefulWidget {
-  static String routeName = 'LoginScreen2';
+class Login extends StatefulWidget {
+  static String routeName = 'Login';
 
   @override
-  State<LoginScreen2> createState() => _LoginScreen2State();
+  State<Login> createState() => _LoginState();
 }
 
-class _LoginScreen2State extends State<LoginScreen2> {
+class _LoginState extends State<Login> {
   bool _isPasswordVisible = false;
 
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final eliteEmail="@elite.tn";
+
+  void signUserIn() async {
+    // show loading circle
+    showDialog(
+      context: context,
+      builder: (context) {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      },
+    );
+
+    // try sign in
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: "${emailController.text}$eliteEmail",
+        password: passwordController.text,
+      );
+
+      // pop the loading circle
+
+      Navigator.pop(context);
+
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => StudentList())
+      );
+    } on FirebaseAuthException catch (e) {
+      // pop the loading circle
+      Navigator.pop(context);
+      // show error message
+      showErrorMessage("Impossible de se connecter");
+    }
+  }
+
+  // error message to user
+  void showErrorMessage(String message) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          backgroundColor: Color(0xFFA0C3D2),
+          title: Center(
+            child: Text(
+              message,
+              style: const TextStyle(color: Colors.white),
+            ),
+          ),
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,16 +90,13 @@ class _LoginScreen2State extends State<LoginScreen2> {
                     mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Lottie.asset("video/rasyethareklogin.json",height: 120),
-                      
+                      Lottie.asset("video/rasyethareklogin.json", height: 120),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 16.0),
                         child: Center(
                           child: Text(
                             "Bienvenue",
                             style: Theme.of(context).textTheme.headline5,
-                            
-                           
                           ),
                         ),
                       ),
@@ -56,25 +110,19 @@ class _LoginScreen2State extends State<LoginScreen2> {
                       ),
                       _gap(),
                       TextFormField(
+                        controller: emailController,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Entrez le numéro';
-                          }
-
-                          bool numeroValid =
-                              RegExp(r'^[0-9]+$').hasMatch(value);
-                          if (!numeroValid) {
-                            return 'Valider votre numéro de téléphone';
-                          }
-                          if (value.length < 8) {
-                            return 'Le numéro de téléphone est court';
                           }
 
                           return null;
                         },
                         decoration: const InputDecoration(
                           labelText: 'Téléphone',
-                          labelStyle: TextStyle(color: Color(0xFFA0C3D2),fontWeight:FontWeight.w900),
+                          labelStyle: TextStyle(
+                              color: Color(0xFFA0C3D2),
+                              fontWeight: FontWeight.w900),
                           filled: true, //<-- SEE HERE
                           fillColor: Color(0xFFF7F5EB),
                           hintText: 'Entrez votre numéro de téléphone',
@@ -91,28 +139,32 @@ class _LoginScreen2State extends State<LoginScreen2> {
                       ),
                       _gap(),
                       TextFormField(
+                        controller: passwordController,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Entrez votre mot de passe ';
                           }
 
-                      
                           return null;
                         },
                         obscureText: !_isPasswordVisible,
                         decoration: InputDecoration(
-                            labelStyle: TextStyle(color: Color(0xFFA0C3D2),fontWeight:FontWeight.w900),
+                            labelStyle: TextStyle(
+                                color: Color(0xFFA0C3D2),
+                                fontWeight: FontWeight.w900),
                             filled: true, //<-- SEE HERE
                             fillColor: Color(0xFFF7F5EB),
                             labelText: 'Mot de passe',
                             hintText: 'Entrez votre mot de passe',
-                            prefixIcon: const Icon(Icons.lock_outline_rounded,color: Color(0xFFA0C3D2),),
-
+                            prefixIcon: const Icon(
+                              Icons.lock_outline_rounded,
+                              color: Color(0xFFA0C3D2),
+                            ),
                             border: const OutlineInputBorder(),
                             focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                                color: Color(0xFFA0C3D2), width: 2.0),
-                          ),
+                              borderSide: BorderSide(
+                                  color: Color(0xFFA0C3D2), width: 2.0),
+                            ),
                             suffixIcon: IconButton(
                               icon: Icon(_isPasswordVisible
                                   ? Icons.visibility_off
@@ -143,14 +195,7 @@ class _LoginScreen2State extends State<LoginScreen2> {
                                   color: Colors.black),
                             ),
                           ),
-                          onPressed: () {
-                            if (_formKey.currentState?.validate() ?? false) {
-                              Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => ChooseKid()));
-                            }
-                          },
+                          onPressed: signUserIn,
                         ),
                       ),
                     ],

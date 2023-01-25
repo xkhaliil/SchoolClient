@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:schoolclient/screens/home_screen/choosekid.dart';
-import 'package:schoolclient/screens/login_screen/login-screen2.dart';
+import 'package:schoolclient/screens/student_list_screen/student-list.dart';
+import 'package:schoolclient/screens/login_screen/login.dart';
 
-class InfoAfter extends StatelessWidget {
-  static String routeName='InfoAfter';
+class OnBoarding extends StatelessWidget {
+  static String routeName='OnBoarding';
 
   @override
   Widget build(BuildContext context) {
@@ -162,7 +162,7 @@ class _OnboardingPageState extends State<OnboardingPagePresenter> {
                         onPressed: () {
                           Navigator.pushReplacement(context,
                                   MaterialPageRoute(
-                                      builder: (context) => LoginScreen2()));
+                                      builder: (context) => Login()));
                         },
                         child: const Text("S'authentifier")),
                     TextButton(
@@ -175,7 +175,7 @@ class _OnboardingPageState extends State<OnboardingPagePresenter> {
                         if (_currentPage == widget.pages.length - 1) {
                           Navigator.pushReplacement(context,
                                   MaterialPageRoute(
-                                      builder: (context) => LoginScreen2()));
+                                      builder: (context) => Login()));
                         } else {
                           _pageController.animateToPage(_currentPage + 1,
                               curve: Curves.easeInOutCubic,

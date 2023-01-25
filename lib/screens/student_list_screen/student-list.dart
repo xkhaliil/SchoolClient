@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import 'package:schoolclient/screens/home_screen/home-screen.dart';
+import 'package:schoolclient/data/student-list.dart';
+import 'package:schoolclient/screens/student_screen/student-screen.dart';
 
-class ChooseKid extends StatelessWidget {
-  static String routeName = 'ChooseKid';
+class StudentList extends StatelessWidget {
+  static String routeName = (StudentList).toString();
 
   @override
   Widget build(BuildContext context) {
+    var data = StudentSource().getStudentList();
     return SafeArea(
       child: Scaffold(
         backgroundColor: Color(0xFFEAE0DA),
@@ -47,7 +49,7 @@ class ChooseKid extends StatelessWidget {
                   tileColor: Color(0xFFA0C3D2),
                   onTap: () {
                     Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => HomeScreen()));
+                        MaterialPageRoute(builder: (context) => StudentScreen()));
                   },
                   title: Text(
                   'Khalil Ltaief',
@@ -66,7 +68,7 @@ class ChooseKid extends StatelessWidget {
                   tileColor: Color(0xFFA0C3D2),
                   onTap: () {
                     Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => HomeScreen()));
+                        MaterialPageRoute(builder: (context) => StudentScreen()));
                   },
                   title: Text(
                   'khalil ekher',
@@ -85,7 +87,7 @@ class ChooseKid extends StatelessWidget {
                   tileColor: Color(0xFFA0C3D2),
                   onTap: () {
                     Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => HomeScreen()));
+                        MaterialPageRoute(builder: (context) => StudentScreen()));
                   },
                   title: Text(
                   'khalil mch kima lokhrin',
