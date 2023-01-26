@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:schoolclient/data/student-list.dart';
 import 'package:schoolclient/model/student.dart';
+import 'package:schoolclient/screens/student_list_screen/tile.dart';
 import 'package:schoolclient/screens/student_screen/student-screen.dart';
 
 class StudentList extends StatefulWidget {
@@ -14,7 +15,6 @@ class StudentList extends StatefulWidget {
 }
 
 class _StudentListState extends State<StudentList> {
-
   List<Student> studentList = List.empty();
 
   @override
@@ -22,8 +22,8 @@ class _StudentListState extends State<StudentList> {
   void initState() {
     super.initState();
     StudentSource().getStudentList().then((studentList) {
-      for (var element in studentList) {
-        print(element.toString());
+      for (var student in studentList) {
+        print(student.toString());
       }
       setState(() {
         this.studentList = studentList;
@@ -64,84 +64,22 @@ class _StudentListState extends State<StudentList> {
               ];
             },
             body: Column(
-              children: [
-                ListTile(
-                  leading: const Icon(
-                    Icons.child_care_rounded,
-                    size: 55,
-                  ),
-                  subtitle: const Text("9eme B 7"),
-                  iconColor: const Color(0xFFEAC7C7),
-                  tileColor: const Color(0xFFA0C3D2),
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => StudentScreen()));
-                  },
-                  title: const Text(
-                    'Khalil Ltaief',
-                    textScaleFactor: 1.5,
-                  ),
-                  shape: RoundedRectangleBorder(
-                    side: const BorderSide(
-                        color: Color.fromARGB(255, 255, 255, 255)),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                ),
-                ListTile(
-                  leading: const Icon(
-                    Icons.child_care_rounded,
-                    size: 55,
-                  ),
-                  subtitle: const Text("9eme B 7"),
-                  iconColor: const Color(0xFFEAC7C7),
-                  tileColor: const Color(0xFFA0C3D2),
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => StudentScreen()));
-                  },
-                  title: const Text(
-                    'khalil ekher',
-                    textScaleFactor: 1.5,
-                  ),
-                  shape: RoundedRectangleBorder(
-                    side: const BorderSide(
-                        color: Color.fromARGB(255, 255, 255, 255)),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                ),
-                ListTile(
-                  leading: const Icon(
-                    Icons.child_care_rounded,
-                    size: 55,
-                  ),
-                  subtitle: const Text("9eme B 7"),
-                  iconColor: const Color(0xFFEAC7C7),
-                  tileColor: const Color(0xFFA0C3D2),
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => StudentScreen()));
-                  },
-                  title: const Text(
-                    'khalil mch kima lokhrin',
-                    textScaleFactor: 1.5,
-                  ),
-                  shape: RoundedRectangleBorder(
-                    side: const BorderSide(
-                        color: Color.fromARGB(255, 255, 255, 255)),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                ),
-              ],
+              children: studentList
+                  .map((student) => StudentTile(
+                      student: student,
+                      onclick: onStudentClicked(context, student)))
+                  .toList(),
             )),
       ),
     );
   }
+}
+
+onStudentClicked(BuildContext context, Student student) {
+  Navigator.pushReplacementNamed(context, StudentScreen.routeName,
+      arguments: {
+        'id': student.id,
+      });
 }
 
 Widget _gap() => const SizedBox(height: 16);
