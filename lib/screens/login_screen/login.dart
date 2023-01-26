@@ -1,13 +1,12 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:schoolclient/screens/student_list_screen/student-list.dart';
-import 'package:schoolclient/screens/login_screen/onBoarding.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class Login extends StatefulWidget {
-  static String routeName = 'Login';
+  static String routeName = (Login).toString();
+
+  const Login({super.key});
 
   @override
   State<Login> createState() => _LoginState();
@@ -38,9 +37,7 @@ class _LoginState extends State<Login> {
         email: "${emailController.text}$eliteEmail",
         password: passwordController.text,
       );
-
       // pop the loading circle
-
       Navigator.pop(context);
 
       Navigator.pushReplacement(
@@ -149,7 +146,7 @@ class _LoginState extends State<Login> {
                         },
                         obscureText: !_isPasswordVisible,
                         decoration: InputDecoration(
-                            labelStyle: TextStyle(
+                            labelStyle: const TextStyle(
                                 color: Color(0xFFA0C3D2),
                                 fontWeight: FontWeight.w900),
                             filled: true, //<-- SEE HERE
@@ -185,6 +182,7 @@ class _LoginState extends State<Login> {
                                 borderRadius: BorderRadius.circular(7)),
                             backgroundColor: Color(0xFFA0C3D2),
                           ),
+                          onPressed: signUserIn,
                           child: const Padding(
                             padding: EdgeInsets.all(10.0),
                             child: Text(
@@ -195,7 +193,6 @@ class _LoginState extends State<Login> {
                                   color: Colors.black),
                             ),
                           ),
-                          onPressed: signUserIn,
                         ),
                       ),
                     ],
