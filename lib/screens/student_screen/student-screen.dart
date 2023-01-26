@@ -4,6 +4,8 @@ import 'package:lottie/lottie.dart';
 class StudentScreen extends StatelessWidget {
   static String routeName=(StudentScreen).toString();
 
+  const StudentScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(

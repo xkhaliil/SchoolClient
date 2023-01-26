@@ -5,6 +5,8 @@ import 'package:schoolclient/screens/login_screen/login.dart';
 class OnBoarding extends StatelessWidget {
   static String routeName='OnBoarding';
 
+  const OnBoarding({super.key});
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
