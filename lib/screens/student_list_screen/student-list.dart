@@ -3,7 +3,6 @@ import 'package:lottie/lottie.dart';
 import 'package:schoolclient/data/student-list.dart';
 import 'package:schoolclient/model/student.dart';
 import 'package:schoolclient/screens/student_list_screen/tile.dart';
-import 'package:schoolclient/screens/student_screen/student-screen.dart';
 
 class StudentList extends StatefulWidget {
   static String routeName = (StudentList).toString();
@@ -65,21 +64,10 @@ class _StudentListState extends State<StudentList> {
             },
             body: Column(
               children: studentList
-                  .map((student) => StudentTile(
-                      student: student,
-                      onclick: onStudentClicked(context, student)))
+                  .map((student) => StudentTile(student: student))
                   .toList(),
             )),
       ),
     );
   }
 }
-
-onStudentClicked(BuildContext context, Student student) {
-  Navigator.pushReplacementNamed(context, StudentScreen.routeName,
-      arguments: {
-        'id': student.id,
-      });
-}
-
-Widget _gap() => const SizedBox(height: 16);
