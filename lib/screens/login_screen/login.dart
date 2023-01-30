@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:schoolclient/screens/login_screen/login_admin.dart';
 import 'package:schoolclient/screens/student_list_screen/student-list.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -73,6 +74,13 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.pushNamed(context, LoginAdmin.routeName);
+        },
+        child: Icon(Icons.admin_panel_settings,color: Color.fromARGB(255, 137, 83, 79),),
+        backgroundColor: Color(0xFFA0C3D2),
+      ),
         body: Form(
           key: _formKey,
           child: Center(
@@ -193,15 +201,23 @@ class _LoginState extends State<Login> {
                                   color: Colors.black),
                             ),
                           ),
+                          
                         ),
+                        
                       ),
+                      _gap(),
+                      
+
                     ],
                   ),
                 ),
               ),
             ),
+            
           ),
+          
         ),
+        
       ),
     );
   }
