@@ -3,7 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:schoolclient/screens/administration-screen/admin_screen.dart';
-import 'package:schoolclient/screens/student_list_screen/student-list.dart';
+import 'package:schoolclient/screens/student_list_screen/student_list.dart';
 import 'package:schoolclient/screens/login_screen/onBoarding.dart';
 
 class SplashScreen extends StatelessWidget {
@@ -15,7 +15,7 @@ class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //this is the delay then the next route
-    Future.delayed(const Duration(seconds: 5), () {
+    Future.delayed(const Duration(seconds: 3), () {
       // user is logged in
       var currentUser = FirebaseAuth.instance.currentUser;
 

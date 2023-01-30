@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:schoolclient/screens/student_list_screen/student-list.dart';
+import 'package:schoolclient/screens/student_list_screen/student_list.dart';
 import 'package:schoolclient/screens/login_screen/login.dart';
 
 class OnBoarding extends StatelessWidget {

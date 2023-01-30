@@ -1,17 +1,14 @@
+
 import 'package:flutter/material.dart';
 import 'package:schoolclient/model/student.dart';
-
-import '../student_screen/student-screen.dart';
+import '../student_screen/student_screen.dart';
 
 class StudentTile extends StatelessWidget {
   final Student student;
-  
-
   const StudentTile({super.key, required this.student});
 
   @override
   Widget build(BuildContext context) {
-    final Student choosenStudent = Student(student.id, student.nom, student.prenom, student.userUID);
     return ListTile(
       leading: const Icon(
         Icons.child_care_rounded,
@@ -25,10 +22,11 @@ class StudentTile extends StatelessWidget {
         textScaleFactor: 1.5,
       ),
       onTap: () =>
-       Navigator.pushNamed(context, StudentScreen.routeName,
-          arguments: choosenStudent),
+       Navigator.restorablePushNamed(context, StudentScreen.routeName,
+          arguments: student.toJson(),
+       )
     );
   }
-  
+
 }
 

@@ -1,7 +1,5 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:schoolclient/routes.dart';
-import 'package:schoolclient/screens/login_screen/onBoarding.dart';
 import 'package:schoolclient/screens/splash-screen/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';

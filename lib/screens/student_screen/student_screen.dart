@@ -3,8 +3,8 @@ import 'package:lottie/lottie.dart';
 import 'package:schoolclient/data/annonce-list.dart';
 import 'package:schoolclient/model/annonce.dart';
 import 'package:schoolclient/model/student.dart';
-import 'package:schoolclient/screens/student_screen/CoursEtTravaux.dart';
-import 'package:schoolclient/screens/student_screen/Profile.dart';
+import 'package:schoolclient/screens/student_screen/cours_et_travaux.dart';
+import 'package:schoolclient/screens/student_screen/profile.dart';
 import 'package:schoolclient/screens/student_screen/annonces.dart';
 
 class StudentScreen extends StatefulWidget {
@@ -18,7 +18,6 @@ class StudentScreen extends StatefulWidget {
 
 class _StudentScreenState extends State<StudentScreen> {
   List<Annonce> annonceList = List.empty();
-
 
   @override
   @mustCallSuper
@@ -34,10 +33,10 @@ class _StudentScreenState extends State<StudentScreen> {
     });
   }
 
-
-  
   @override
   Widget build(BuildContext context) {
+    final Student student = Student.fromJson(ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>);
+
     return SafeArea(
       child: DefaultTabController(
         length: 3,
@@ -61,7 +60,7 @@ class _StudentScreenState extends State<StudentScreen> {
                         children: <Widget>[
                           Image.asset('images/logo-eliteee.png',height: 200,),
                           SizedBox(width: 50),
-                          
+
                         ],
                       ),
                       background: Lottie.asset(
@@ -85,15 +84,15 @@ class _StudentScreenState extends State<StudentScreen> {
             // ignore: prefer_const_constructors
             body: TabBarView(
               children:  [
-                ProfilePage(),
-                CoursePage(),
+                ProfilePage(student : student),
+                CoursePage(student : student),
                 Column(
                   children:  annonceList
                   .map((annonce) => NewsFeedPage(annonce: annonce))
                   .toList(),
-                  
+
                 )
-                
+
               ],
             ),
           ),
