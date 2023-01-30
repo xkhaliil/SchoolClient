@@ -57,10 +57,9 @@ class _StudentScreenState extends State<StudentScreen> {
                       collapseMode: CollapseMode.parallax,
                       title: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
-                          Image.asset('images/logo-eliteee.png',height: 200,),
-                          SizedBox(width: 50),
-
+                          Image.asset('images/logo-eliteee.png',height: 200)
                         ],
                       ),
                       background: Lottie.asset(
