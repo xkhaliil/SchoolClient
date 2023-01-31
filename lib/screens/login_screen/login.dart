@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:schoolclient/screens/login_screen/login_admin.dart';
-import 'package:schoolclient/screens/student_list_screen/student-list.dart';
+import 'package:schoolclient/screens/student_list_screen/student_list.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class Login extends StatefulWidget {
@@ -201,23 +201,23 @@ class _LoginState extends State<Login> {
                                   color: Colors.black),
                             ),
                           ),
-                          
+
                         ),
-                        
+
                       ),
                       _gap(),
-                      
+
 
                     ],
                   ),
                 ),
               ),
             ),
-            
+
           ),
-          
+
         ),
-        
+
       ),
     );
   }

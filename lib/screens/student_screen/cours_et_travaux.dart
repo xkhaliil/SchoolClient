@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import '../../model/student.dart';
 
 class CoursePage extends StatelessWidget {
-  const CoursePage({Key? key}) : super(key: key);
+  final Student student;
+  const CoursePage({super.key, required this.student});
 
   @override
   Widget build(BuildContext context) {

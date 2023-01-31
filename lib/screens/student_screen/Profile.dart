@@ -2,12 +2,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:schoolclient/model/student.dart';
 import 'package:schoolclient/screens/login_screen/login.dart';
-import 'package:schoolclient/screens/student_list_screen/student-list.dart';
+import 'package:schoolclient/screens/student_list_screen/student_list.dart';
 
 class ProfilePage extends StatelessWidget {
-  const ProfilePage({super.key});
-
- 
+  final Student student;
+  const ProfilePage({super.key, required this.student});
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +22,7 @@ class ProfilePage extends StatelessWidget {
                 child: Column(
                   children: [
                     Text(
-                      "student name",
+                      "${student.nom} ${student.prenom}",
                       style: Theme.of(context)
                           .textTheme
                           .headline6
@@ -36,7 +35,7 @@ class ProfilePage extends StatelessWidget {
                         FloatingActionButton.extended(
                           backgroundColor: Color(0xFFA0C3D2),
                           onPressed: () {
-                            Navigator.pushNamed(context, StudentList.routeName);
+                            Navigator.pop(context, StudentList.routeName);
                           },
                           heroTag: 'change student',
                           elevation: 0,
