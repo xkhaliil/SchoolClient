@@ -8,6 +8,7 @@ import 'package:schoolclient/screens/login_screen/onBoarding.dart';
 
 class SplashScreen extends StatelessWidget {
   static String routeName = '/';
+  // ignore: non_constant_identifier_names
   final String AdminUID = "GH3IlKXyYWZcDVB4qETtRB4L3Df2";
 
   const SplashScreen({super.key});

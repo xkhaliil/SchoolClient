@@ -11,7 +11,7 @@ class StudentTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       leading: const Icon(
-        Icons.child_care_rounded,
+        Icons.person,
         size: 55,
       ),
       subtitle: const Text("student class"),

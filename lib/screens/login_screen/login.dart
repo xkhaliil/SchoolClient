@@ -39,11 +39,14 @@ class _LoginState extends State<Login> {
         password: passwordController.text,
       );
       // pop the loading circle
+      // ignore: use_build_context_synchronously
       Navigator.pop(context);
 
+      // ignore: use_build_context_synchronously
       Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => StudentList())
+          context, MaterialPageRoute(builder: (context) => const StudentList())
       );
+    // ignore: unused_catch_clause
     } on FirebaseAuthException catch (e) {
       // pop the loading circle
       Navigator.pop(context);
@@ -58,7 +61,7 @@ class _LoginState extends State<Login> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          backgroundColor: Color(0xFFA0C3D2),
+          backgroundColor: const Color(0xFFA0C3D2),
           title: Center(
             child: Text(
               message,
@@ -78,14 +81,15 @@ class _LoginState extends State<Login> {
         onPressed: () {
           Navigator.pushNamed(context, LoginAdmin.routeName);
         },
-        child: Icon(Icons.admin_panel_settings,color: Color.fromARGB(255, 137, 83, 79),),
-        backgroundColor: Color(0xFFA0C3D2),
+        // ignore: sort_child_properties_last
+        child: const Icon(Icons.admin_panel_settings,color: Color.fromARGB(255, 137, 83, 79),),
+        backgroundColor: const Color(0xFFA0C3D2),
       ),
         body: Form(
           key: _formKey,
           child: Center(
             child: Card(
-              color: Color(0xFFEAE0DA),
+              color: const Color(0xFFEAE0DA),
               elevation: 8,
               child: Container(
                 padding: const EdgeInsets.all(32.0),
@@ -158,7 +162,7 @@ class _LoginState extends State<Login> {
                                 color: Color(0xFFA0C3D2),
                                 fontWeight: FontWeight.w900),
                             filled: true, //<-- SEE HERE
-                            fillColor: Color(0xFFF7F5EB),
+                            fillColor: const Color(0xFFF7F5EB),
                             labelText: 'Mot de passe',
                             hintText: 'Entrez votre mot de passe',
                             prefixIcon: const Icon(
@@ -166,7 +170,7 @@ class _LoginState extends State<Login> {
                               color: Color(0xFFA0C3D2),
                             ),
                             border: const OutlineInputBorder(),
-                            focusedBorder: OutlineInputBorder(
+                            focusedBorder: const OutlineInputBorder(
                               borderSide: BorderSide(
                                   color: Color(0xFFA0C3D2), width: 2.0),
                             ),

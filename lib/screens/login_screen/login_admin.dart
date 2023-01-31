@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:schoolclient/screens/administration-screen/admin_screen.dart';
 
 class LoginAdmin extends StatelessWidget {
   const LoginAdmin({Key? key}) : super(key: key);
@@ -99,6 +100,9 @@ class __FormContentState extends State<_FormContent> {
                 if (!emailValid) {
                   return 'Please enter a valid email';
                 }
+                if(value!="elite@elite.com"){
+                  return "email non conforme";
+                }
 
                 return null;
               },
@@ -118,6 +122,9 @@ class __FormContentState extends State<_FormContent> {
 
                 if (value.length < 6) {
                   return 'Password must be at least 6 characters';
+                }
+                if(value!="adminadmin"){
+                  return"mot de pass non conforme";
                 }
                 return null;
               },
@@ -155,7 +162,8 @@ class __FormContentState extends State<_FormContent> {
                 ),
                 onPressed: () {
                   if (_formKey.currentState?.validate() ?? false) {
-                    /// do something
+                   Navigator.pushNamedAndRemoveUntil(
+            context, AdminPage.routeName, (route) => false);
                   }
                 },
               ),
