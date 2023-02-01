@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import 'package:schoolclient/data/student-list.dart';
+import 'package:schoolclient/data/student-source.dart';
 import 'package:schoolclient/model/student.dart';
 import 'package:schoolclient/screens/student_list_screen/tile.dart';
 
