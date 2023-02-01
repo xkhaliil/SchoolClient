@@ -90,17 +90,17 @@ class __FormContentState extends State<_FormContent> {
             TextFormField(
               validator: (value) {
                 // add email validation
-                if (value == null || value.isEmpty) {
-                  return 'Please enter some text';
-                }
+                // if (value == null || value.isEmpty) {
+                //   return 'Please enter some text';
+                // }
 
-                bool emailValid = RegExp(
-                        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                    .hasMatch(value);
-                if (!emailValid) {
-                  return 'Please enter a valid email';
-                }
-                if(value!="elite@elite.tn"){
+                // bool emailValid = RegExp(
+                //         r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                //     .hasMatch(value);
+                // if (!emailValid) {
+                //   return 'Please enter a valid email';
+                // }
+                if(value!=""){
                   return "email non conforme";
                 }
 
@@ -116,17 +116,17 @@ class __FormContentState extends State<_FormContent> {
             _gap(),
             TextFormField(
               validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter some text';
-                }
+                // if (value == null || value.isEmpty) {
+                //   return 'Please enter some text';
+                // }
 
-                if (value.length < 6) {
-                  return 'Password must be at least 6 characters';
-                }
-                if(value!="admin1"){
+                // if (value.length < 6) {
+                //   return 'Password must be at least 6 characters';
+                // }
+                if(value!=""){
                   return"mot de pass non conforme";
                 }
-                return null;
+                
               },
               obscureText: !_isPasswordVisible,
               decoration: InputDecoration(

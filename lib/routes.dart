@@ -1,4 +1,6 @@
 import 'package:flutter/cupertino.dart';
+import 'package:schoolclient/screens/administration-screen/addAccount.dart';
+import 'package:schoolclient/screens/administration-screen/addStudent.dart';
 import 'package:schoolclient/screens/administration-screen/admin_screen.dart';
 import 'package:schoolclient/screens/login_screen/login_admin.dart';
 import 'package:schoolclient/screens/student_list_screen/student_list.dart';
@@ -14,5 +16,7 @@ Map<String, WidgetBuilder> routes = {
   StudentList.routeName: (context) => const StudentList(),
   OnBoarding.routeName: (context) => const OnBoarding(),
   AdminPage.routeName: (context) => const AdminPage(),
-  LoginAdmin.routeName: (context) => LoginAdmin(),
+  LoginAdmin.routeName: (context) => const LoginAdmin(),
+  AddAccount.routeName: (context) => const AddAccount(),
+  AddStudent.routeName:(context) => const AddStudent(),
 };

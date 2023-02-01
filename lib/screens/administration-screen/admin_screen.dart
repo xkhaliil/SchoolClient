@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:schoolclient/screens/administration-screen/addAccount.dart';
+import 'package:schoolclient/screens/administration-screen/addStudent.dart';
 import 'package:schoolclient/screens/login_screen/login.dart';
 
 class AdminPage extends StatelessWidget {
@@ -15,6 +17,7 @@ class AdminPage extends StatelessWidget {
         ),
         body: Column(
           children: [
+            // ignore: prefer_const_constructors
             ListTile(
               leading: const Icon(
                 Icons.supervisor_account,
@@ -25,7 +28,9 @@ class AdminPage extends StatelessWidget {
                 "add account",
                 textScaleFactor: 1.5,
               ),
-              onTap: () {},
+              onTap: () {
+                Navigator.pushNamed(context, AddAccount.routeName);
+              },
             ),
             ListTile(
               leading: const Icon(
@@ -37,7 +42,7 @@ class AdminPage extends StatelessWidget {
                 "add student to account",
                 textScaleFactor: 1.5,
               ),
-              onTap: () {},
+              onTap: () {Navigator.pushNamed(context, AddStudent.routeName);},
             ),
             ListTile(
               leading: const Icon(
