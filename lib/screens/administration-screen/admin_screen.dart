@@ -1,51 +1,104 @@
 import 'package:flutter/material.dart';
+import 'package:schoolclient/screens/login_screen/login.dart';
 
 class AdminPage extends StatelessWidget {
   const AdminPage({Key? key}) : super(key: key);
-  static String routeName=(AdminPage).toString();
+  static String routeName = (AdminPage).toString();
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        children: [
-          ListTile(
-            leading: const Icon(
-              Icons.supervisor_account,
-              size: 55,
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Center(child: Text("espace administration")),
+          backgroundColor: const Color(0xFF86C8BC),
+        ),
+        body: Column(
+          children: [
+            ListTile(
+              leading: const Icon(
+                Icons.supervisor_account,
+                size: 55,
+              ),
+              subtitle: const Text("ss"),
+              title: const Text(
+                "add account",
+                textScaleFactor: 1.5,
+              ),
+              onTap: () {},
             ),
-            subtitle: const Text("ss"),
-            iconColor: const Color(0xFFEAC7C7),
-            tileColor: const Color(0xFFA0C3D2),
-            title: Text(
-              "add account",
-              textScaleFactor: 1.5,
+            ListTile(
+              leading: const Icon(
+                Icons.supervisor_account,
+                size: 55,
+              ),
+              subtitle: const Text("ss"),
+              title: const Text(
+                "add student to account",
+                textScaleFactor: 1.5,
+              ),
+              onTap: () {},
             ),
-            onTap:() {
-              
-            },
-          ),
-          ListTile(
-            leading: const Icon(
-              Icons.manage_accounts,
-              size: 55,
+            ListTile(
+              leading: const Icon(
+                Icons.supervisor_account,
+                size: 55,
+              ),
+              subtitle: const Text("ss"),
+              title: const Text(
+                "add class",
+                textScaleFactor: 1.5,
+              ),
+              onTap: () {},
             ),
-            subtitle: const Text("ss"),
-            iconColor: const Color(0xFFEAC7C7),
-            tileColor: const Color(0xFFA0C3D2),
-            title: Text(
-              "add account",
-              textScaleFactor: 1.5,
+            ListTile(
+              leading: const Icon(
+                Icons.supervisor_account,
+                size: 55,
+              ),
+              subtitle: const Text("ss"),
+              title: const Text(
+                "add subjects to a class",
+                textScaleFactor: 1.5,
+              ),
+              onTap: () {},
             ),
-            onTap:() {
-              
-            },
-          ),
-        ],
+            ListTile(
+              leading: const Icon(
+                Icons.manage_accounts,
+                size: 55,
+              ),
+              subtitle: const Text("ss"),
+              title: const Text(
+                "add cours",
+                textScaleFactor: 1.5,
+              ),
+              onTap: () {},
+            ),
+            ListTile(
+              leading: const Icon(
+                Icons.manage_accounts,
+                size: 55,
+              ),
+              subtitle: const Text("ss"),
+              title: const Text(
+                "add annonces",
+                textScaleFactor: 1.5,
+              ),
+              onTap: () {},
+            ),
+            MaterialButton(
+              height: 50,
+              color: const Color(0xFF86C8BC),
+              onPressed: () {
+                Navigator.pushNamedAndRemoveUntil(context,Login.routeName, (route) => false);
+                
+              },
+              child: const Text("Deconnexion"),
+            )
+          ],
+        ),
       ),
-      
-
-      
     );
   }
 }
