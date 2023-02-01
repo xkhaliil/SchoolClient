@@ -7,6 +7,7 @@ class StudentSource {
   FirebaseFirestore db = FirebaseFirestore.instance;
   static const studentCollection = "student";
   static const userUID = "userUID";
+  static const classeID = "classeID";
   static const nom = "nom";
   static const prenom = "prenom";
 

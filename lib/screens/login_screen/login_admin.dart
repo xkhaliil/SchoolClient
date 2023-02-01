@@ -100,7 +100,7 @@ class __FormContentState extends State<_FormContent> {
                 if (!emailValid) {
                   return 'Please enter a valid email';
                 }
-                if(value!="elite@elite.com"){
+                if(value!="elite@elite.tn"){
                   return "email non conforme";
                 }
 
@@ -123,7 +123,7 @@ class __FormContentState extends State<_FormContent> {
                 if (value.length < 6) {
                   return 'Password must be at least 6 characters';
                 }
-                if(value!="adminadmin"){
+                if(value!="admin1"){
                   return"mot de pass non conforme";
                 }
                 return null;
