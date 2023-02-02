@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class AddStudent extends StatelessWidget {
   const AddStudent({Key? key}) : super(key: key);
@@ -9,6 +10,7 @@ class AddStudent extends StatelessWidget {
     final bool isSmallScreen = MediaQuery.of(context).size.width < 600;
 
     return Scaffold(
+       appBar: AppBar(backgroundColor: const Color.fromARGB(59, 0, 0, 0),shadowColor: const Color.fromARGB(0, 255, 193, 7),),
         body: Center(
             child: isSmallScreen
                 ? Column(
@@ -73,8 +75,19 @@ class __FormContentState extends State<_FormContent> {
   bool _rememberMe = false;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  String? _selectedFruit;
-  final List<String> _fruits = [
+  String? _selectedFruit1;
+  final List<String> _fruits1 = [
+    '🍎 Apple',
+    '🍋 Mango',
+    '🍌 Banana',
+    '🍉 Watermelon',
+    '🍇 Grapes',
+    '🍓 Strawberry',
+    '🍒 Cherries',
+    '🍑 Peach',
+  ];
+  String? _selectedFruit2;
+  final List<String> _fruits2 = [
     '🍎 Apple',
     '🍋 Mango',
     '🍌 Banana',
@@ -112,33 +125,25 @@ class __FormContentState extends State<_FormContent> {
               ),
             ),
             _gap(),
-            TextFormField(
-              decoration: const InputDecoration(
-                labelText: 'nom',
-                hintText: 'nom',
-                prefixIcon: Icon(Icons.perm_identity),
-                border: OutlineInputBorder(),
-              ),
-            ),
-            _gap(),
+            
             Container(
-              width: 500,
-              height: 50,
+                width: 500,
+                height: 50,
                 padding: const EdgeInsets.all(8.0),
                 decoration: BoxDecoration(
                     border: Border.all(color: Colors.grey),
                     borderRadius: BorderRadius.circular(8.0)),
                 child: _dropDown1(underline: Container())),
-                _gap(),
-                Container(
-              width: 500,
-              height: 50,
+            _gap(),
+            Container(
+                width: 500,
+                height: 50,
                 padding: const EdgeInsets.all(8.0),
                 decoration: BoxDecoration(
                     border: Border.all(color: Colors.grey),
                     borderRadius: BorderRadius.circular(8.0)),
                 child: _dropDown2(underline: Container())),
-                _gap(),
+            _gap(),
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
@@ -149,13 +154,20 @@ class __FormContentState extends State<_FormContent> {
                 child: const Padding(
                   padding: EdgeInsets.all(10.0),
                   child: Text(
-                    'Enregister',
+                    'Ajouter',
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                 ),
                 onPressed: () {
                   if (_formKey.currentState?.validate() ?? false) {
-                    /// do something
+                   Fluttertoast.showToast(
+                      msg: "l'etudiant a été créé avec succès!",
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.BOTTOM,
+                      timeInSecForIosWeb: 1,
+                      backgroundColor: Colors.grey,
+                      textColor: Colors.white,
+                      fontSize: 16.0);
                   }
                 },
               ),
@@ -177,7 +189,7 @@ class __FormContentState extends State<_FormContent> {
     Color? iconEnabledColor,
   }) =>
       DropdownButton<String>(
-          value: _selectedFruit,
+          value: _selectedFruit1,
           underline: underline,
           icon: icon,
           dropdownColor: dropdownColor,
@@ -185,11 +197,11 @@ class __FormContentState extends State<_FormContent> {
           iconEnabledColor: iconEnabledColor,
           onChanged: (String? newValue) {
             setState(() {
-              _selectedFruit = newValue;
+              _selectedFruit1 = newValue;
             });
           },
           hint: Text("Select a class", style: hintStyle),
-          items: _fruits
+          items: _fruits1
               .map((fruit) =>
                   DropdownMenuItem<String>(value: fruit, child: Text(fruit)))
               .toList());
@@ -199,7 +211,7 @@ class __FormContentState extends State<_FormContent> {
 
 
 
-               Widget _dropDown2({
+  Widget _dropDown2({
     Widget? underline,
     Widget? icon,
     TextStyle? style,
@@ -208,7 +220,7 @@ class __FormContentState extends State<_FormContent> {
     Color? iconEnabledColor,
   }) =>
       DropdownButton<String>(
-          value: _selectedFruit,
+          value: _selectedFruit2,
           underline: underline,
           icon: icon,
           dropdownColor: dropdownColor,
@@ -216,14 +228,12 @@ class __FormContentState extends State<_FormContent> {
           iconEnabledColor: iconEnabledColor,
           onChanged: (String? newValue) {
             setState(() {
-              _selectedFruit = newValue;
+              _selectedFruit2 = newValue;
             });
           },
           hint: Text("Select an account", style: hintStyle),
-          items: _fruits
+          items: _fruits2
               .map((fruit) =>
                   DropdownMenuItem<String>(value: fruit, child: Text(fruit)))
               .toList());
-  
-  }
-
+}

@@ -7,6 +7,24 @@ class AnnonceSource {
   static const titre = "titre";
   static const contenu = "contenu";
 
+  Future<void> createAnnonce(String titre, String contenu) async {
+    
+     
+      if ((titre != null)&&(contenu!=null)) {
+        db.collection(annonceCollection).doc().set({
+          "titre": titre,
+          "contenu": contenu,
+          
+        }).then((value) {
+          return value;
+        }, onError: (e) {
+          return Future.error(Exception("Impossible to create a News"));
+        });
+      } else {
+        Future.error(Exception("Impossible  to create a News"));
+      }
+  }
+
   Future<List<Annonce>> getAnnonceList() async =>
       await db.collection(annonceCollection)
       .get()

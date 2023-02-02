@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
-import 'package:schoolclient/screens/administration-screen/adminPage.dart';
-import 'package:schoolclient/screens/administration-screen/CreateScreen.dart';
+import 'package:schoolclient/data/user-source.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
-class LoginAdmin extends StatelessWidget {
-  const LoginAdmin({Key? key}) : super(key: key);
-  static String routeName = (LoginAdmin).toString();
+class AddClass extends StatelessWidget {
+  const AddClass({Key? key}) : super(key: key);
+  static String routeName = "AddClass";
 
   @override
   Widget build(BuildContext context) {
     final bool isSmallScreen = MediaQuery.of(context).size.width < 600;
 
     return Scaffold(
+      appBar: AppBar(backgroundColor: Color.fromARGB(59, 0, 0, 0),shadowColor: Color.fromARGB(0, 255, 193, 7),),
         body: Center(
             child: isSmallScreen
                 ? Column(
@@ -45,12 +45,13 @@ class _Logo extends StatelessWidget {
 
     return Column(
       mainAxisSize: MainAxisSize.min,
+      
       children: [
-        Lottie.asset("video/adminlogin.json",height: 150),
+        
         Padding(
           padding: const EdgeInsets.all(16.0),
           child: Text(
-            "Admin authentication",
+            "Creer une classe",
             textAlign: TextAlign.center,
             style: isSmallScreen
                 ? Theme.of(context).textTheme.headline5
@@ -75,6 +76,7 @@ class _FormContent extends StatefulWidget {
 class __FormContentState extends State<_FormContent> {
   bool _isPasswordVisible = false;
   bool _rememberMe = false;
+  
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -89,64 +91,27 @@ class __FormContentState extends State<_FormContent> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             TextFormField(
-              validator: (value) {
-                // add email validation
-                // if (value == null || value.isEmpty) {
-                //   return 'Please enter some text';
-                // }
-
-                // bool emailValid = RegExp(
-                //         r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                //     .hasMatch(value);
-                // if (!emailValid) {
-                //   return 'Please enter a valid email';
-                // }
-                if(value!=""){
-                  return "email non conforme";
-                }
-
-                return null;
-              },
+              
               decoration: const InputDecoration(
-                labelText: 'Email',
-                hintText: 'Enter your email',
-                prefixIcon: Icon(Icons.email_outlined),
+                labelText: 'Classe',
+                hintText: 'entrer le nom de classe',
+                prefixIcon: Icon(Icons.class_),
                 border: OutlineInputBorder(),
               ),
             ),
             _gap(),
             TextFormField(
-              validator: (value) {
-                // if (value == null || value.isEmpty) {
-                //   return 'Please enter some text';
-                // }
-
-                // if (value.length < 6) {
-                //   return 'Password must be at least 6 characters';
-                // }
-                if(value!=""){
-                  return"mot de pass non conforme";
-                }
-                
-              },
-              obscureText: !_isPasswordVisible,
-              decoration: InputDecoration(
-                  labelText: 'Password',
-                  hintText: 'Enter your password',
-                  prefixIcon: const Icon(Icons.lock_outline_rounded),
-                  border: const OutlineInputBorder(),
-                  suffixIcon: IconButton(
-                    icon: Icon(_isPasswordVisible
-                        ? Icons.visibility_off
-                        : Icons.visibility),
-                    onPressed: () {
-                      setState(() {
-                        _isPasswordVisible = !_isPasswordVisible;
-                      });
-                    },
-                  )),
+              
+              decoration: const InputDecoration(
+                labelText: 'Niveau',
+                hintText: 'entrer le niveau de la classe',
+                prefixIcon: Icon(Icons.numbers),
+                border: OutlineInputBorder(),
+              ),
             ),
+            
             _gap(),
+            
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
@@ -157,14 +122,21 @@ class __FormContentState extends State<_FormContent> {
                 child: const Padding(
                   padding: EdgeInsets.all(10.0),
                   child: Text(
-                    'Sign in',
+                    'Créer',
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                 ),
                 onPressed: () {
                   if (_formKey.currentState?.validate() ?? false) {
-                   Navigator.pushNamedAndRemoveUntil(
-            context, AdminPage.routeName, (route) => false);
+                     
+                  Fluttertoast.showToast(
+                      msg: "la classe a été créé avec succès!",
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.BOTTOM,
+                      timeInSecForIosWeb: 1,
+                      backgroundColor: Colors.grey,
+                      textColor: Colors.white,
+                      fontSize: 16.0);
                   }
                 },
               ),

@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
-import 'package:schoolclient/screens/administration-screen/adminPage.dart';
-import 'package:schoolclient/screens/administration-screen/CreateScreen.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
-class LoginAdmin extends StatelessWidget {
-  const LoginAdmin({Key? key}) : super(key: key);
-  static String routeName = (LoginAdmin).toString();
+class AddSubject extends StatelessWidget {
+  const AddSubject({Key? key}) : super(key: key);
+  static String routeName = "AddSubject";
 
   @override
   Widget build(BuildContext context) {
     final bool isSmallScreen = MediaQuery.of(context).size.width < 600;
 
     return Scaffold(
+       appBar: AppBar(backgroundColor: Color.fromARGB(59, 0, 0, 0),shadowColor: Color.fromARGB(0, 255, 193, 7),),
         body: Center(
             child: isSmallScreen
                 ? Column(
@@ -46,11 +45,10 @@ class _Logo extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Lottie.asset("video/adminlogin.json",height: 150),
         Padding(
           padding: const EdgeInsets.all(16.0),
           child: Text(
-            "Admin authentication",
+            "Ajouter une matiere!",
             textAlign: TextAlign.center,
             style: isSmallScreen
                 ? Theme.of(context).textTheme.headline5
@@ -77,7 +75,18 @@ class __FormContentState extends State<_FormContent> {
   bool _rememberMe = false;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
+  String? _selectedFruit1;
+  final List<String> _fruits1 = [
+    '🍎 Apple',
+    '🍋 Mango',
+    '🍌 Banana',
+    '🍉 Watermelon',
+    '🍇 Grapes',
+    '🍓 Strawberry',
+    '🍒 Cherries',
+    '🍑 Peach',
+  ];
+  
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -89,64 +98,26 @@ class __FormContentState extends State<_FormContent> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             TextFormField(
-              validator: (value) {
-                // add email validation
-                // if (value == null || value.isEmpty) {
-                //   return 'Please enter some text';
-                // }
-
-                // bool emailValid = RegExp(
-                //         r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                //     .hasMatch(value);
-                // if (!emailValid) {
-                //   return 'Please enter a valid email';
-                // }
-                if(value!=""){
-                  return "email non conforme";
-                }
-
-                return null;
-              },
               decoration: const InputDecoration(
-                labelText: 'Email',
-                hintText: 'Enter your email',
-                prefixIcon: Icon(Icons.email_outlined),
+                labelText: 'Matiere',
+                hintText: 'Matiere',
+                prefixIcon: Icon(Icons.subject),
                 border: OutlineInputBorder(),
               ),
             ),
             _gap(),
-            TextFormField(
-              validator: (value) {
-                // if (value == null || value.isEmpty) {
-                //   return 'Please enter some text';
-                // }
-
-                // if (value.length < 6) {
-                //   return 'Password must be at least 6 characters';
-                // }
-                if(value!=""){
-                  return"mot de pass non conforme";
-                }
-                
-              },
-              obscureText: !_isPasswordVisible,
-              decoration: InputDecoration(
-                  labelText: 'Password',
-                  hintText: 'Enter your password',
-                  prefixIcon: const Icon(Icons.lock_outline_rounded),
-                  border: const OutlineInputBorder(),
-                  suffixIcon: IconButton(
-                    icon: Icon(_isPasswordVisible
-                        ? Icons.visibility_off
-                        : Icons.visibility),
-                    onPressed: () {
-                      setState(() {
-                        _isPasswordVisible = !_isPasswordVisible;
-                      });
-                    },
-                  )),
-            ),
+            
+            
+            Container(
+                width: 500,
+                height: 50,
+                padding: const EdgeInsets.all(8.0),
+                decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey),
+                    borderRadius: BorderRadius.circular(8.0)),
+                child: _dropDown1(underline: Container())),
             _gap(),
+            
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
@@ -157,14 +128,20 @@ class __FormContentState extends State<_FormContent> {
                 child: const Padding(
                   padding: EdgeInsets.all(10.0),
                   child: Text(
-                    'Sign in',
+                    'Ajouter',
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                 ),
                 onPressed: () {
                   if (_formKey.currentState?.validate() ?? false) {
-                   Navigator.pushNamedAndRemoveUntil(
-            context, AdminPage.routeName, (route) => false);
+                   Fluttertoast.showToast(
+                      msg: "la matiere a été ajouté avec succès!",
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.BOTTOM,
+                      timeInSecForIosWeb: 1,
+                      backgroundColor: Colors.grey,
+                      textColor: Colors.white,
+                      fontSize: 16.0);
                   }
                 },
               ),
@@ -176,4 +153,31 @@ class __FormContentState extends State<_FormContent> {
   }
 
   Widget _gap() => const SizedBox(height: 16);
+
+  Widget _dropDown1({
+    Widget? underline,
+    Widget? icon,
+    TextStyle? style,
+    TextStyle? hintStyle,
+    Color? dropdownColor,
+    Color? iconEnabledColor,
+  }) =>
+      DropdownButton<String>(
+          value: _selectedFruit1,
+          underline: underline,
+          icon: icon,
+          dropdownColor: dropdownColor,
+          style: style,
+          iconEnabledColor: iconEnabledColor,
+          onChanged: (String? newValue) {
+            setState(() {
+              _selectedFruit1 = newValue;
+            });
+          },
+          hint: Text("Select a class", style: hintStyle),
+          items: _fruits1
+              .map((fruit) =>
+                  DropdownMenuItem<String>(value: fruit, child: Text(fruit)))
+              .toList());
+
 }

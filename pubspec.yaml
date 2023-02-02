@@ -77,6 +77,11 @@ flutter:
     - video/homebg.json
     - images/logostudent.png
     - video/adminlogin.json
+    - video/create.json
+    - video/delete.json
+    - video/update.json
+    - video/bgadmin.json
+    - video/logoutadmin.json
     
    
 

@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import 'package:schoolclient/screens/administration-screen/admin_screen.dart';
+import 'package:schoolclient/screens/administration-screen/CreateScreen.dart';
 import 'package:schoolclient/screens/student_list_screen/student_list.dart';
 import 'package:schoolclient/screens/login_screen/onBoarding.dart';
 
