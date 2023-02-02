@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:schoolclient/data/classe-source.dart';
+import 'package:schoolclient/data/student-source.dart';
+import 'package:schoolclient/data/parent-source.dart';
+import 'package:schoolclient/model/Classe.dart';
+import 'package:schoolclient/model/parent.dart';
 
 class AddStudent extends StatelessWidget {
   const AddStudent({Key? key}) : super(key: key);
@@ -10,7 +15,10 @@ class AddStudent extends StatelessWidget {
     final bool isSmallScreen = MediaQuery.of(context).size.width < 600;
 
     return Scaffold(
-       appBar: AppBar(backgroundColor: const Color.fromARGB(59, 0, 0, 0),shadowColor: const Color.fromARGB(0, 255, 193, 7),),
+        appBar: AppBar(
+          backgroundColor: const Color.fromARGB(59, 0, 0, 0),
+          shadowColor: const Color.fromARGB(0, 255, 193, 7),
+        ),
         body: Center(
             child: isSmallScreen
                 ? Column(
@@ -71,32 +79,31 @@ class _FormContent extends StatefulWidget {
 }
 
 class __FormContentState extends State<_FormContent> {
-  bool _isPasswordVisible = false;
-  bool _rememberMe = false;
-
+  List<Classe> classes = List.empty();
+  List<Parent> userdetailsList = List.empty();
+  final prenomController = TextEditingController();
+  final nomController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  String? _selectedFruit1;
-  final List<String> _fruits1 = [
-    '🍎 Apple',
-    '🍋 Mango',
-    '🍌 Banana',
-    '🍉 Watermelon',
-    '🍇 Grapes',
-    '🍓 Strawberry',
-    '🍒 Cherries',
-    '🍑 Peach',
-  ];
-  String? _selectedFruit2;
-  final List<String> _fruits2 = [
-    '🍎 Apple',
-    '🍋 Mango',
-    '🍌 Banana',
-    '🍉 Watermelon',
-    '🍇 Grapes',
-    '🍓 Strawberry',
-    '🍒 Cherries',
-    '🍑 Peach',
-  ];
+
+  Classe? _selectedClasse;
+
+  Parent? _selectedUserDetails;
+
+  @override
+  void initState() {
+    super.initState();
+    ParentSource().getParents().then((result) {
+      setState(() {
+        userdetailsList = result;
+      });
+    });
+    ClasseSource().getClasseList().then((result) {
+      setState(() {
+        classes = result;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -108,6 +115,7 @@ class __FormContentState extends State<_FormContent> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             TextFormField(
+              controller: nomController,
               decoration: const InputDecoration(
                 labelText: 'nom',
                 hintText: 'nom',
@@ -117,6 +125,7 @@ class __FormContentState extends State<_FormContent> {
             ),
             _gap(),
             TextFormField(
+              controller: prenomController,
               decoration: const InputDecoration(
                 labelText: 'prenom',
                 hintText: 'prenom',
@@ -125,7 +134,6 @@ class __FormContentState extends State<_FormContent> {
               ),
             ),
             _gap(),
-            
             Container(
                 width: 500,
                 height: 50,
@@ -133,7 +141,7 @@ class __FormContentState extends State<_FormContent> {
                 decoration: BoxDecoration(
                     border: Border.all(color: Colors.grey),
                     borderRadius: BorderRadius.circular(8.0)),
-                child: _dropDown1(underline: Container())),
+                child: _dropDownClasse(underline: Container())),
             _gap(),
             Container(
                 width: 500,
@@ -142,7 +150,7 @@ class __FormContentState extends State<_FormContent> {
                 decoration: BoxDecoration(
                     border: Border.all(color: Colors.grey),
                     borderRadius: BorderRadius.circular(8.0)),
-                child: _dropDown2(underline: Container())),
+                child: _dropDownAccount(underline: Container())),
             _gap(),
             SizedBox(
               width: double.infinity,
@@ -159,15 +167,31 @@ class __FormContentState extends State<_FormContent> {
                   ),
                 ),
                 onPressed: () {
-                  if (_formKey.currentState?.validate() ?? false) {
-                   Fluttertoast.showToast(
-                      msg: "l'etudiant a été créé avec succès!",
-                      toastLength: Toast.LENGTH_SHORT,
-                      gravity: ToastGravity.BOTTOM,
-                      timeInSecForIosWeb: 1,
-                      backgroundColor: Colors.grey,
-                      textColor: Colors.white,
-                      fontSize: 16.0);
+                  if ((_selectedUserDetails?.id != null) &&
+                      (_selectedClasse?.id != null)) {
+                    StudentSource().createStudent(
+                        nomController.text,
+                        prenomController.text,
+                        _selectedUserDetails!.id,
+                        _selectedClasse!.id);
+                    Fluttertoast.showToast(
+                        msg: "l'etudiant a été créé avec succès!",
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.BOTTOM,
+                        timeInSecForIosWeb: 1,
+                        backgroundColor: Colors.grey,
+                        textColor: Colors.white,
+                        fontSize: 16.0);
+                    cleartext();
+                  } else {
+                    Fluttertoast.showToast(
+                        msg: "erreur!",
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.BOTTOM,
+                        timeInSecForIosWeb: 1,
+                        backgroundColor: Colors.grey,
+                        textColor: Colors.white,
+                        fontSize: 16.0);
                   }
                 },
               ),
@@ -180,7 +204,7 @@ class __FormContentState extends State<_FormContent> {
 
   Widget _gap() => const SizedBox(height: 16);
 
-  Widget _dropDown1({
+  Widget _dropDownClasse({
     Widget? underline,
     Widget? icon,
     TextStyle? style,
@@ -188,30 +212,26 @@ class __FormContentState extends State<_FormContent> {
     Color? dropdownColor,
     Color? iconEnabledColor,
   }) =>
-      DropdownButton<String>(
-          value: _selectedFruit1,
+      DropdownButton<Classe>(
+          value: _selectedClasse,
           underline: underline,
           icon: icon,
           dropdownColor: dropdownColor,
           style: style,
           iconEnabledColor: iconEnabledColor,
-          onChanged: (String? newValue) {
+          onChanged: (Classe? newValue) {
             setState(() {
-              _selectedFruit1 = newValue;
+              _selectedClasse = newValue;
             });
           },
           hint: Text("Select a class", style: hintStyle),
-          items: _fruits1
-              .map((fruit) =>
-                  DropdownMenuItem<String>(value: fruit, child: Text(fruit)))
+          items: classes
+              .map((classe) => DropdownMenuItem<Classe>(
+                  value: classe,
+                  child: Text("${classe.niveau} - ${classe.nom}")))
               .toList());
 
-
-
-
-
-
-  Widget _dropDown2({
+  Widget _dropDownAccount({
     Widget? underline,
     Widget? icon,
     TextStyle? style,
@@ -219,21 +239,27 @@ class __FormContentState extends State<_FormContent> {
     Color? dropdownColor,
     Color? iconEnabledColor,
   }) =>
-      DropdownButton<String>(
-          value: _selectedFruit2,
+      DropdownButton<Parent>(
+          value: _selectedUserDetails,
           underline: underline,
           icon: icon,
           dropdownColor: dropdownColor,
           style: style,
           iconEnabledColor: iconEnabledColor,
-          onChanged: (String? newValue) {
+          onChanged: (Parent? newValue) {
             setState(() {
-              _selectedFruit2 = newValue;
+              _selectedUserDetails = newValue;
             });
           },
           hint: Text("Select an account", style: hintStyle),
-          items: _fruits2
-              .map((fruit) =>
-                  DropdownMenuItem<String>(value: fruit, child: Text(fruit)))
+          items: userdetailsList
+              .map((userdetails) => DropdownMenuItem<Parent>(
+                  value: userdetails,
+                  child: Text("${userdetails.phone} - ${userdetails.nom}")))
               .toList());
+
+  void cleartext() {
+    nomController.clear();
+    prenomController.clear();
+  }
 }

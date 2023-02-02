@@ -4,22 +4,22 @@ import 'dart:convert';
 class Classe {
   final String id;
   final String nom;
-  final String niveauID;
+  final String niveau;
   Classe({
     required this.id,
     required this.nom,
-    required this.niveauID,
+    required this.niveau,
   });
 
   Classe copyWith({
     String? id,
     String? nom,
-    String? niveauID,
+    String? niveau,
   }) {
     return Classe(
       id: id ?? this.id,
       nom: nom ?? this.nom,
-      niveauID: niveauID ?? this.niveauID,
+      niveau: niveau ?? this.niveau,
     );
   }
 
@@ -27,7 +27,7 @@ class Classe {
     return <String, dynamic>{
       'id': id,
       'nom': nom,
-      'niveauID': niveauID,
+      'niveau': niveau,
     };
   }
 
@@ -35,7 +35,7 @@ class Classe {
     return Classe(
       id: map['id'] as String,
       nom: map['nom'] as String,
-      niveauID: map['niveauID'] as String,
+      niveau: map['niveau'] as String,
     );
   }
 
@@ -44,7 +44,7 @@ class Classe {
   factory Classe.fromJson(String source) => Classe.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
-  String toString() => 'Classe(id: $id, nom: $nom, niveauID: $niveauID)';
+  String toString() => 'Classe(id: $id, nom: $nom, niveau: $niveau)';
 
   @override
   bool operator ==(covariant Classe other) {
@@ -53,9 +53,9 @@ class Classe {
     return 
       other.id == id &&
       other.nom == nom &&
-      other.niveauID == niveauID;
+      other.niveau == niveau;
   }
 
   @override
-  int get hashCode => id.hashCode ^ nom.hashCode ^ niveauID.hashCode;
+  int get hashCode => id.hashCode ^ nom.hashCode ^ niveau.hashCode;
 }

@@ -1,14 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:schoolclient/model/user.dart';
+import 'package:schoolclient/model/parent.dart';
 
-class UserSource {
+class ParentSource {
   FirebaseFirestore db = FirebaseFirestore.instance;
-  static const collection = "user";
+  static const collection = "parent";
   static const userUID = "userUID";
   static const classeID = "classeID";
 
-  Future<void> createUser(String phone, String password, String nom) async {
+  Future<void> createParent(String phone, String password, String nom) async {
     return FirebaseAuth.instance
         .createUserWithEmailAndPassword(
             email: "$phone@elite.tn", password: password)
@@ -22,23 +22,23 @@ class UserSource {
         }).then((value) {
           return value;
         }, onError: (e) {
-          return Future.error(Exception("Impossible to create a user"));
+          return Future.error(Exception("Impossible to create a parent"));
         });
       } else {
-        Future.error(Exception("Impossible to create a user"));
+        Future.error(Exception("Impossible to create a parent"));
       }
     });
   }
 
-  Future<List<UserDetails>> getUsers() async =>
+  Future<List<Parent>> getParents() async =>
       await db.collection(collection).get().then(
             (response) => response.docs
                 .map((element) {
-                  return UserDetails(
+                  return Parent(
                     id: element.id,
                     phone: element.data()["phone"],
-                    nom: element["nom"],
-                    password: element["password"]);
+                    nom: element.data()["nom"],
+                    password: element.data()["password"]);
                 })
                 .toList(),
             onError: (e) => print("Error completing: $e"),

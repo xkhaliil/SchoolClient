@@ -1,5 +1,7 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
-import 'package:schoolclient/data/user-source.dart';
+import 'package:schoolclient/data/parent-source.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class AddAccount extends StatelessWidget {
@@ -11,7 +13,10 @@ class AddAccount extends StatelessWidget {
     final bool isSmallScreen = MediaQuery.of(context).size.width < 600;
 
     return Scaffold(
-      appBar: AppBar(backgroundColor: Color.fromARGB(59, 0, 0, 0),shadowColor: Color.fromARGB(0, 255, 193, 7),),
+        appBar: AppBar(
+          backgroundColor: Color.fromARGB(59, 0, 0, 0),
+          shadowColor: Color.fromARGB(0, 255, 193, 7),
+        ),
         body: Center(
             child: isSmallScreen
                 ? Column(
@@ -45,9 +50,7 @@ class _Logo extends StatelessWidget {
 
     return Column(
       mainAxisSize: MainAxisSize.min,
-      
       children: [
-        
         Padding(
           padding: const EdgeInsets.all(16.0),
           child: Text(
@@ -132,7 +135,6 @@ class __FormContentState extends State<_FormContent> {
                   )),
             ),
             _gap(),
-            
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
@@ -147,21 +149,37 @@ class __FormContentState extends State<_FormContent> {
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                 ),
-                onPressed: () {
+                onPressed: () async {
                   if (_formKey.currentState?.validate() ?? false) {
-                     UserSource()
-                      .createUser(phoneController.text, passwordController.text,
-                          nameController.text)
-                      .then((value) => print("user created"));
-                  
-                  Fluttertoast.showToast(
-                      msg: "le compte a été créé avec succès!",
-                      toastLength: Toast.LENGTH_SHORT,
-                      gravity: ToastGravity.BOTTOM,
-                      timeInSecForIosWeb: 1,
-                      backgroundColor: Colors.grey,
-                      textColor: Colors.white,
-                      fontSize: 16.0);
+                   
+
+                    await ParentSource()
+                        .createParent(phoneController.text,
+                            passwordController.text, nameController.text)
+                        .then((value) {
+                      Fluttertoast.showToast(
+                          msg: "le compte a été créé avec succès!",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.BOTTOM,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Colors.grey,
+                          textColor: Colors.white,
+                          fontSize: 16.0);
+                          cleartext();
+                          
+                    }, onError: (e) {
+                      Fluttertoast.showToast(
+                          msg: "erreur!",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.BOTTOM,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Colors.grey,
+                          textColor: Colors.white,
+                          fontSize: 16.0);
+                          
+                    });
+
+                    
                   }
                 },
               ),
@@ -173,4 +191,9 @@ class __FormContentState extends State<_FormContent> {
   }
 
   Widget _gap() => const SizedBox(height: 16);
+  
+  void cleartext() {
+    nameController.clear();
+    phoneController.clear();
+    passwordController.clear();  }
 }
