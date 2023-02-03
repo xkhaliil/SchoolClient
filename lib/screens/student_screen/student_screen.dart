@@ -3,6 +3,8 @@ import 'package:lottie/lottie.dart';
 import 'package:schoolclient/data/annonce-source.dart';
 import 'package:schoolclient/model/annonce.dart';
 import 'package:schoolclient/model/student.dart';
+import 'package:schoolclient/screens/splash-screen/splash_screen.dart';
+import 'package:schoolclient/screens/student_list_screen/student_list.dart';
 import 'package:schoolclient/screens/student_screen/cours_et_travaux.dart';
 import 'package:schoolclient/screens/student_screen/profile.dart';
 import 'package:schoolclient/screens/student_screen/annonces.dart';
@@ -35,69 +37,73 @@ class _StudentScreenState extends State<StudentScreen> {
 
   @override
   Widget build(BuildContext context) {
-     Student student = Student.fromJson(ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>);
-
-    return SafeArea(
-      child: DefaultTabController(
-        length: 3,
-        child: Scaffold(
-          body: NestedScrollView(
-            headerSliverBuilder:
-                (BuildContext context, bool innerBoxIsScrolled) {
-              return <Widget>[
-                SliverAppBar(
-                  backgroundColor: Color(0xFFEAC7C7),
-                  expandedHeight: 300.0,
-                  centerTitle: true,
-                  floating: false,
-                  pinned: true,
-                  automaticallyImplyLeading: false,
-                  stretch: true,
-                  flexibleSpace: FlexibleSpaceBar(
-                      collapseMode: CollapseMode.parallax,
-                      title: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          Image.asset('images/logo-eliteee.png',height: 200)
-                        ],
-                      ),
-                      background: Lottie.asset(
-                        "video/homebg.json",
-                        fit: BoxFit.cover,
-                      )),
-                ),
-                SliverPersistentHeader(
-                  delegate: _SliverAppBarDelegate(
-                    const TabBar(
-                      indicatorSize: TabBarIndicatorSize.label,
-                      labelColor: Color(0xFFA0C3D2),
-                      unselectedLabelColor: Color.fromARGB(255, 0, 0, 0),
-                      tabs: _tabs,
-                    ),
+    if (ModalRoute.of(context)!.settings.arguments != null) {
+      Student student = Student.fromJson(ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>);
+      return SafeArea(
+        child: DefaultTabController(
+          length: 3,
+          child: Scaffold(
+            body: NestedScrollView(
+              headerSliverBuilder:
+                  (BuildContext context, bool innerBoxIsScrolled) {
+                return <Widget>[
+                  SliverAppBar(
+                    backgroundColor: Color(0xFFEAC7C7),
+                    expandedHeight: 300.0,
+                    centerTitle: true,
+                    floating: false,
+                    pinned: true,
+                    automaticallyImplyLeading: false,
+                    stretch: true,
+                    flexibleSpace: FlexibleSpaceBar(
+                        collapseMode: CollapseMode.parallax,
+                        title: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            Image.asset('images/logo-eliteee.png', height: 200)
+                          ],
+                        ),
+                        background: Lottie.asset(
+                          "video/homebg.json",
+                          fit: BoxFit.cover,
+                        )),
                   ),
-                  pinned: true,
-                ),
-              ];
-            },
-            // ignore: prefer_const_constructors
-            body: TabBarView(
-              children:  [
-                ProfilePage(student : student),
-                CoursePage(student : student),
-                Column(
-                  children:  annonceList
-                  .map((annonce) => NewsFeedPage(annonce: annonce))
-                  .toList(),
-
-                )
-
-              ],
+                  SliverPersistentHeader(
+                    delegate: _SliverAppBarDelegate(
+                      const TabBar(
+                        indicatorSize: TabBarIndicatorSize.label,
+                        labelColor: Color(0xFFA0C3D2),
+                        unselectedLabelColor: Color.fromARGB(255, 0, 0, 0),
+                        tabs: _tabs,
+                      ),
+                    ),
+                    pinned: true,
+                  ),
+                ];
+              },
+              // ignore: prefer_const_constructors
+              body: TabBarView(
+                children: [
+                  ProfilePage(student: student),
+                  CoursePage(student: student),
+                  Column(
+                    children: annonceList
+                        .map((annonce) => NewsFeedPage(annonce: annonce))
+                        .toList(),
+                  )
+                ],
+              ),
             ),
           ),
         ),
-      ),
-    );
+      );
+    } else {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Navigator.pushReplacementNamed(context, StudentList.routeName);
+      });
+      return Container();
+    }
   }
 }
 
@@ -114,6 +120,7 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
 
   @override
   double get minExtent => _tabBar.preferredSize.height;
+
   @override
   double get maxExtent => _tabBar.preferredSize.height;
 
