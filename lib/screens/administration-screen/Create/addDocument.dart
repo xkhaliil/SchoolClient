@@ -85,19 +85,15 @@ class _FormContent extends StatefulWidget {
 class __FormContentState extends State<_FormContent> {
   List<Classe> classes = List.empty();
   List<Matiere> matieres = List.empty();
-  File? _selectedFile;
+  PlatformFile? _selectedFile;
   String? _selectedFileName;
 
   Future<void> _pickPDF() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles();
-    var bytes = result?.files.first.bytes;
-
-    if (bytes != null) {
-      _selectedFile = File.fromRawPath(bytes);
-    }
-    if (result?.files.first.name != null) {
+    if (result != null) {
+      _selectedFile = result.files.single;
       setState(() {
-        _selectedFileName = result?.files.first.name.toString();
+        _selectedFileName = _selectedFile?.name;
       });
     }
   }
@@ -169,7 +165,7 @@ class __FormContentState extends State<_FormContent> {
                     width: 1.0,
                   ),
                 ),
-                child: _selectedFile == null
+                child: _selectedFileName == null
                     ? Center(child: Text("Selectioner un fichier PDF"))
                     : Center(
                         child:
@@ -195,14 +191,13 @@ class __FormContentState extends State<_FormContent> {
                   if (descriptionController.text.isNotEmpty &&
                       _selectedClasse != null &&
                       _selectedMatiere != null &&
-                      _selectedFileName != null &&
                       _selectedFile != null) {
+                    print("ajouter pressed");
                     DocumentSource()
                         .createDocument(
                             descriptionController.text,
                             _selectedClasse!.id,
                             _selectedMatiere!.id,
-                            _selectedFileName!,
                             _selectedFile!)
                         .then((value) {
                       Fluttertoast.showToast(
@@ -214,7 +209,7 @@ class __FormContentState extends State<_FormContent> {
                           textColor: Colors.white,
                           fontSize: 16.0);
                       cleartext();
-                    },onError: (e){
+                    }, onError: (e) {
                       print("error=$e");
                     });
                   }

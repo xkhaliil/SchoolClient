@@ -1,6 +1,5 @@
-import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:schoolclient/model/document.dart';
 
@@ -9,13 +8,15 @@ class DocumentSource {
   static const documentCollection = "document";
 
   Future<void> createDocument(String description, String classeID,
-      String matiereID, String documentName, File selectedFile) async {
-    final storageRef = FirebaseStorage.instanceFor(bucket: "gs://schoolclient.appspot.com").ref();
-    var documentPath = "/documents/$documentName";
+      String matiereID, PlatformFile selectedFile) async {
+    final storageRef = FirebaseStorage.instance.ref();
+    var documentPath = "documents/${selectedFile.name}";
     final documentRef = storageRef.child(documentPath);
 
     try {
-      await documentRef.putFile(selectedFile);
+      print("uploading file = ${selectedFile.name}");
+      await documentRef.putData(selectedFile.bytes!);
+      print("uploading file done");
       db.collection(documentCollection).doc().set({
         "description": description,
         "uri": documentPath,
@@ -66,4 +67,11 @@ class DocumentSource {
                 .toList(),
             onError: (e) => print("Error completing: $e"),
           );
+
+  Future<String> getDocumentDownloadPublicURL(String uri) async {
+    final storageRef = FirebaseStorage.instance.ref();
+    final documentRef = storageRef.child("documents/$uri");
+    return documentRef.getDownloadURL();
+  }
+
 }
