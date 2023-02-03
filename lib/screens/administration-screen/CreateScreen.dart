@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:schoolclient/screens/administration-screen/Create/addCourse.dart';
+import 'package:schoolclient/screens/administration-screen/Create/addDocument.dart';
 import 'package:schoolclient/screens/administration-screen/Create/addSubject.dart';
 import 'package:schoolclient/screens/administration-screen/Create/addAccount.dart';
 import 'package:schoolclient/screens/administration-screen/Create/addClass.dart';
@@ -118,7 +118,7 @@ class CreateScreen extends StatelessWidget {
                 textScaleFactor: 1.5,
               ),
               onTap: () {
-                Navigator.pushNamed(context, AddCourse.routeName);
+                Navigator.pushNamed(context, AddDocument.routeName);
               },
             ),
             const SizedBox(height: 10),

@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:schoolclient/screens/administration-screen/Create/addCourse.dart';
+import 'package:schoolclient/screens/administration-screen/Create/addDocument.dart';
 import 'package:schoolclient/screens/administration-screen/Create/addSubject.dart';
 import 'package:schoolclient/screens/administration-screen/Create/addAccount.dart';
 import 'package:schoolclient/screens/administration-screen/Create/addClass.dart';
@@ -27,7 +27,7 @@ Map<String, WidgetBuilder> routes = {
   AddStudent.routeName: (context) => const AddStudent(),
   AddClass.routeName: (context) => const AddClass(),
   AddSubject.routeName: (context) => const AddSubject(),
-  AddCourse.routeName: (context) => const AddCourse(),
+  AddDocument.routeName: (context) => const AddDocument(),
   AddHomeWork.routeName: (context) => const AddHomeWork(),
   AddNews.routeName: (context) => const AddNews(),
   AdminPage.routeName: (context) => const AdminPage(),

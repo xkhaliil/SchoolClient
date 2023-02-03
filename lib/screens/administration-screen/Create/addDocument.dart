@@ -1,16 +1,26 @@
+import 'dart:io';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:schoolclient/data/classe-source.dart';
+import 'package:schoolclient/data/matiere-source.dart';
+import 'package:schoolclient/model/Classe.dart';
+import 'package:schoolclient/model/matiere.dart';
 
-class AddCourse extends StatelessWidget {
-  const AddCourse({Key? key}) : super(key: key);
-  static String routeName = (AddCourse).toString();
+class AddDocument extends StatelessWidget {
+  const AddDocument({Key? key}) : super(key: key);
+  static String routeName = (AddDocument).toString();
 
   @override
   Widget build(BuildContext context) {
     final bool isSmallScreen = MediaQuery.of(context).size.width < 600;
 
     return Scaffold(
-       appBar: AppBar(backgroundColor: Color.fromARGB(59, 0, 0, 0),shadowColor: Color.fromARGB(0, 255, 193, 7),),
+        appBar: AppBar(
+          backgroundColor: Color.fromARGB(59, 0, 0, 0),
+          shadowColor: Color.fromARGB(0, 255, 193, 7),
+        ),
         body: Center(
             child: isSmallScreen
                 ? Column(
@@ -71,32 +81,40 @@ class _FormContent extends StatefulWidget {
 }
 
 class __FormContentState extends State<_FormContent> {
-  bool _isPasswordVisible = false;
-  bool _rememberMe = false;
+  List<Classe> classes = List.empty();
+  List<Matiere> matieres = List.empty();
+  File? _selectedFile;
+
+  Future<void> _pickPDF() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles();
+
+    if (result != null) {
+      var path = result.files.single.path;
+      if (path != null) {
+        _selectedFile = File(path);
+      }
+    } else {
+      // User canceled the picker
+    }
+  }
+
+  final descriptionController = TextEditingController();
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  String? _selectedFruit1;
-  final List<String> _fruits1 = [
-    '🍎 Apple',
-    '🍋 Mango',
-    '🍌 Banana',
-    '🍉 Watermelon',
-    '🍇 Grapes',
-    '🍓 Strawberry',
-    '🍒 Cherries',
-    '🍑 Peach',
-  ];
-  String? _selectedFruit2;
-  final List<String> _fruits2 = [
-    '🍎 Apple',
-    '🍋 Mango',
-    '🍌 Banana',
-    '🍉 Watermelon',
-    '🍇 Grapes',
-    '🍓 Strawberry',
-    '🍒 Cherries',
-    '🍑 Peach',
-  ];
+  Classe? _selectedClasse;
+
+  Matiere? _selectedMatiere;
+  @override
+  void initState() {
+    super.initState();
+
+    ClasseSource().getClasseList().then((result) {
+      setState(() {
+        classes = result;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -107,8 +125,6 @@ class __FormContentState extends State<_FormContent> {
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            
-            
             Container(
                 width: 500,
                 height: 50,
@@ -116,7 +132,7 @@ class __FormContentState extends State<_FormContent> {
                 decoration: BoxDecoration(
                     border: Border.all(color: Colors.grey),
                     borderRadius: BorderRadius.circular(8.0)),
-                child: _dropDown1(underline: Container())),
+                child: _dropDownClasse(underline: Container())),
             _gap(),
             Container(
                 width: 500,
@@ -125,18 +141,35 @@ class __FormContentState extends State<_FormContent> {
                 decoration: BoxDecoration(
                     border: Border.all(color: Colors.grey),
                     borderRadius: BorderRadius.circular(8.0)),
-                child: _dropDown2(underline: Container())),
+                child: _dropDownMatiere(underline: Container())),
             _gap(),
             TextFormField(
+              controller: descriptionController,
               decoration: const InputDecoration(
-                labelText: 'Upload here',
-                hintText: 'Upload',
-                prefixIcon: Icon(Icons.perm_identity),
+                labelText: 'Description',
+                hintText: 'Description',
+                prefixIcon: Icon(Icons.description),
                 border: OutlineInputBorder(),
               ),
             ),
             _gap(),
-           
+            InkWell(
+              onTap: _pickPDF,
+              child: Container(
+                height: 50,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: Colors.grey,
+                    width: 1.0,
+                  ),
+                ),
+                child: _selectedFile == null
+                    ? Center(child: Text("Selectioner un fichier PDF"))
+                    : Center(child: Text(_selectedFile!.path)),
+              ),
+            ),
+            _gap(),
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
@@ -153,14 +186,14 @@ class __FormContentState extends State<_FormContent> {
                 ),
                 onPressed: () {
                   if (_formKey.currentState?.validate() ?? false) {
-                   Fluttertoast.showToast(
-                      msg: "le cours a été ajouté avec succès!",
-                      toastLength: Toast.LENGTH_SHORT,
-                      gravity: ToastGravity.BOTTOM,
-                      timeInSecForIosWeb: 1,
-                      backgroundColor: Colors.grey,
-                      textColor: Colors.white,
-                      fontSize: 16.0);
+                    Fluttertoast.showToast(
+                        msg: "le cours a été ajouté avec succès!",
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.BOTTOM,
+                        timeInSecForIosWeb: 1,
+                        backgroundColor: Colors.grey,
+                        textColor: Colors.white,
+                        fontSize: 16.0);
                   }
                 },
               ),
@@ -173,7 +206,7 @@ class __FormContentState extends State<_FormContent> {
 
   Widget _gap() => const SizedBox(height: 16);
 
-  Widget _dropDown1({
+  Widget _dropDownClasse({
     Widget? underline,
     Widget? icon,
     TextStyle? style,
@@ -181,30 +214,27 @@ class __FormContentState extends State<_FormContent> {
     Color? dropdownColor,
     Color? iconEnabledColor,
   }) =>
-      DropdownButton<String>(
-          value: _selectedFruit1,
+      DropdownButton<Classe>(
+          value: _selectedClasse,
           underline: underline,
           icon: icon,
           dropdownColor: dropdownColor,
           style: style,
           iconEnabledColor: iconEnabledColor,
-          onChanged: (String? newValue) {
+          onChanged: (Classe? newValue) {
             setState(() {
-              _selectedFruit1 = newValue;
+              _selectedClasse = newValue;
             });
+            notifySelectedClassChanged();
           },
           hint: Text("Select a class", style: hintStyle),
-          items: _fruits1
-              .map((fruit) =>
-                  DropdownMenuItem<String>(value: fruit, child: Text(fruit)))
+          items: classes
+              .map((classe) => DropdownMenuItem<Classe>(
+                  value: classe,
+                  child: Text("${classe.niveau} - ${classe.nom}")))
               .toList());
 
-
-
-
-
-
-  Widget _dropDown2({
+  Widget _dropDownMatiere({
     Widget? underline,
     Widget? icon,
     TextStyle? style,
@@ -212,21 +242,29 @@ class __FormContentState extends State<_FormContent> {
     Color? dropdownColor,
     Color? iconEnabledColor,
   }) =>
-      DropdownButton<String>(
-          value: _selectedFruit2,
+      DropdownButton<Matiere>(
+          value: _selectedMatiere,
           underline: underline,
           icon: icon,
           dropdownColor: dropdownColor,
           style: style,
           iconEnabledColor: iconEnabledColor,
-          onChanged: (String? newValue) {
+          onChanged: (Matiere? newValue) {
             setState(() {
-              _selectedFruit2 = newValue;
+              _selectedMatiere = newValue;
             });
           },
-          hint: Text("Select a subject", style: hintStyle),
-          items: _fruits2
-              .map((fruit) =>
-                  DropdownMenuItem<String>(value: fruit, child: Text(fruit)))
+          hint: Text("Selectioner une matiere", style: hintStyle),
+          items: matieres
+              .map((matiere) => DropdownMenuItem<Matiere>(
+                  value: matiere, child: Text(" ${matiere.nom}")))
               .toList());
+
+  void notifySelectedClassChanged() {
+    MatiereSource().getMatiereListByClasse(_selectedClasse!.id).then((result) {
+      setState(() {
+        matieres = result;
+      });
+    });
+  }
 }
