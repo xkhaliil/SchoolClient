@@ -84,17 +84,20 @@ class __FormContentState extends State<_FormContent> {
   List<Classe> classes = List.empty();
   List<Matiere> matieres = List.empty();
   File? _selectedFile;
+  String? _selectedFileName;
 
   Future<void> _pickPDF() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles();
+    var bytes = result?.files.first.bytes;
 
-    if (result != null) {
-      var path = result.files.single.path;
-      if (path != null) {
-        _selectedFile = File(path);
-      }
-    } else {
-      // User canceled the picker
+    if (bytes != null) {
+      _selectedFile = File.fromRawPath(bytes);
+    }
+    if (result?.files.first.name != null) {
+      print(result?.files.first.name.toString());
+      setState(() {
+        _selectedFileName = result?.files.first.name.toString();
+      });
     }
   }
 
@@ -104,6 +107,7 @@ class __FormContentState extends State<_FormContent> {
   Classe? _selectedClasse;
 
   Matiere? _selectedMatiere;
+
   @override
   void initState() {
     super.initState();
@@ -166,7 +170,7 @@ class __FormContentState extends State<_FormContent> {
                 ),
                 child: _selectedFile == null
                     ? Center(child: Text("Selectioner un fichier PDF"))
-                    : Center(child: Text(_selectedFile!.path)),
+                    : Center(child: Text(_selectedFileName ?? "Fichier sélectionné")),
               ),
             ),
             _gap(),
