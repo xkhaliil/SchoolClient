@@ -6,6 +6,7 @@ class AnnonceSource {
   static const annonceCollection = "annonce";
   static const titre = "titre";
   static const contenu = "contenu";
+  
 
   Future<void> createAnnonce(String titre, String contenu) async {
     
@@ -14,6 +15,7 @@ class AnnonceSource {
         db.collection(annonceCollection).doc().set({
           "titre": titre,
           "contenu": contenu,
+          "date": DateTime.now(),
           
         }).then((value) {
           return value;
@@ -31,7 +33,7 @@ class AnnonceSource {
       .then(
             (annonces) => annonces.docs
                 .map((element) => Annonce(element.id, element.data()[titre],
-                    element[contenu]))
+                    element[contenu],element["date"]))
                 .toList(),
             onError: (e) => print("Error completing: $e"),
           );

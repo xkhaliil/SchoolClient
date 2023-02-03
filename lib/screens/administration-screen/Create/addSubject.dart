@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:schoolclient/data/classe-source.dart';
+import 'package:schoolclient/data/matiere-source.dart';
+import 'package:schoolclient/model/Classe.dart';
 
 class AddSubject extends StatelessWidget {
   const AddSubject({Key? key}) : super(key: key);
@@ -10,7 +13,10 @@ class AddSubject extends StatelessWidget {
     final bool isSmallScreen = MediaQuery.of(context).size.width < 600;
 
     return Scaffold(
-       appBar: AppBar(backgroundColor: Color.fromARGB(59, 0, 0, 0),shadowColor: Color.fromARGB(0, 255, 193, 7),),
+        appBar: AppBar(
+          backgroundColor: Color.fromARGB(59, 0, 0, 0),
+          shadowColor: Color.fromARGB(0, 255, 193, 7),
+        ),
         body: Center(
             child: isSmallScreen
                 ? Column(
@@ -71,22 +77,22 @@ class _FormContent extends StatefulWidget {
 }
 
 class __FormContentState extends State<_FormContent> {
-  bool _isPasswordVisible = false;
-  bool _rememberMe = false;
+  List<Classe> classes = List.empty();
+  final matiereController = TextEditingController();
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  String? _selectedFruit1;
-  final List<String> _fruits1 = [
-    '🍎 Apple',
-    '🍋 Mango',
-    '🍌 Banana',
-    '🍉 Watermelon',
-    '🍇 Grapes',
-    '🍓 Strawberry',
-    '🍒 Cherries',
-    '🍑 Peach',
-  ];
-  
+
+  Classe? _selectedClasse;
+  @override
+  void initState() {
+    super.initState();
+    ClasseSource().getClasseList().then((result) {
+      setState(() {
+        classes = result;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -98,6 +104,7 @@ class __FormContentState extends State<_FormContent> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             TextFormField(
+              controller: matiereController,
               decoration: const InputDecoration(
                 labelText: 'Matiere',
                 hintText: 'Matiere',
@@ -106,8 +113,6 @@ class __FormContentState extends State<_FormContent> {
               ),
             ),
             _gap(),
-            
-            
             Container(
                 width: 500,
                 height: 50,
@@ -115,9 +120,8 @@ class __FormContentState extends State<_FormContent> {
                 decoration: BoxDecoration(
                     border: Border.all(color: Colors.grey),
                     borderRadius: BorderRadius.circular(8.0)),
-                child: _dropDown1(underline: Container())),
+                child: _dropDownClasse(underline: Container())),
             _gap(),
-            
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
@@ -133,15 +137,28 @@ class __FormContentState extends State<_FormContent> {
                   ),
                 ),
                 onPressed: () {
-                  if (_formKey.currentState?.validate() ?? false) {
-                   Fluttertoast.showToast(
-                      msg: "la matiere a été ajouté avec succès!",
-                      toastLength: Toast.LENGTH_SHORT,
-                      gravity: ToastGravity.BOTTOM,
-                      timeInSecForIosWeb: 1,
-                      backgroundColor: Colors.grey,
-                      textColor: Colors.white,
-                      fontSize: 16.0);
+                  if ((matiereController.text != null) &&
+                      (_selectedClasse?.id != null)) {
+                    MatiereSource().createMatiere(
+                        matiereController.text, _selectedClasse!.id);
+                    Fluttertoast.showToast(
+                        msg: "la matiere a été ajouté avec succès!",
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.BOTTOM,
+                        timeInSecForIosWeb: 1,
+                        backgroundColor: Colors.grey,
+                        textColor: Colors.white,
+                        fontSize: 16.0);
+                    cleartext();
+                  } else {
+                    Fluttertoast.showToast(
+                        msg: "erruer!",
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.BOTTOM,
+                        timeInSecForIosWeb: 1,
+                        backgroundColor: Colors.grey,
+                        textColor: Colors.white,
+                        fontSize: 16.0);
                   }
                 },
               ),
@@ -154,7 +171,7 @@ class __FormContentState extends State<_FormContent> {
 
   Widget _gap() => const SizedBox(height: 16);
 
-  Widget _dropDown1({
+  Widget _dropDownClasse({
     Widget? underline,
     Widget? icon,
     TextStyle? style,
@@ -162,22 +179,26 @@ class __FormContentState extends State<_FormContent> {
     Color? dropdownColor,
     Color? iconEnabledColor,
   }) =>
-      DropdownButton<String>(
-          value: _selectedFruit1,
+      DropdownButton<Classe>(
+          value: _selectedClasse,
           underline: underline,
           icon: icon,
           dropdownColor: dropdownColor,
           style: style,
           iconEnabledColor: iconEnabledColor,
-          onChanged: (String? newValue) {
+          onChanged: (Classe? newValue) {
             setState(() {
-              _selectedFruit1 = newValue;
+              _selectedClasse = newValue;
             });
           },
           hint: Text("Select a class", style: hintStyle),
-          items: _fruits1
-              .map((fruit) =>
-                  DropdownMenuItem<String>(value: fruit, child: Text(fruit)))
+          items: classes
+              .map((classe) => DropdownMenuItem<Classe>(
+                  value: classe,
+                  child: Text("${classe.niveau} - ${classe.nom}")))
               .toList());
 
+  void cleartext() {
+    matiereController.clear();
+  }
 }

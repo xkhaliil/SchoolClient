@@ -12,7 +12,10 @@ class AddNews extends StatelessWidget {
     final bool isSmallScreen = MediaQuery.of(context).size.width < 600;
 
     return Scaffold(
-      appBar: AppBar(backgroundColor: Color.fromARGB(59, 0, 0, 0),shadowColor: Color.fromARGB(0, 255, 193, 7),),
+        appBar: AppBar(
+          backgroundColor: Color.fromARGB(59, 0, 0, 0),
+          shadowColor: Color.fromARGB(0, 255, 193, 7),
+        ),
         body: Center(
             child: isSmallScreen
                 ? Column(
@@ -46,9 +49,7 @@ class _Logo extends StatelessWidget {
 
     return Column(
       mainAxisSize: MainAxisSize.min,
-      
       children: [
-        
         Padding(
           padding: const EdgeInsets.all(16.0),
           child: Text(
@@ -78,9 +79,7 @@ class __FormContentState extends State<_FormContent> {
   bool _isPasswordVisible = false;
   bool _rememberMe = false;
   final titleController = TextEditingController();
-  final DescriptionController = TextEditingController();
-  
-  
+  final descriptionController = TextEditingController();
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -105,7 +104,7 @@ class __FormContentState extends State<_FormContent> {
             ),
             _gap(),
             TextFormField(
-              controller: DescriptionController,
+              controller: descriptionController,
               decoration: const InputDecoration(
                 labelText: 'Desscription',
                 hintText: 'Desscription',
@@ -113,9 +112,7 @@ class __FormContentState extends State<_FormContent> {
                 border: OutlineInputBorder(),
               ),
             ),
-            
             _gap(),
-            
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
@@ -131,18 +128,31 @@ class __FormContentState extends State<_FormContent> {
                   ),
                 ),
                 onPressed: () {
-                  if (_formKey.currentState?.validate() ?? false) {
-                     AnnonceSource()
-                      .createAnnonce(titleController.text, DescriptionController.text)
-                      .then((value) => print("user created"));
-                  Fluttertoast.showToast(
-                      msg: "l'annonce a été créé avec succès!",
-                      toastLength: Toast.LENGTH_SHORT,
-                      gravity: ToastGravity.BOTTOM,
-                      timeInSecForIosWeb: 1,
-                      backgroundColor: Colors.grey,
-                      textColor: Colors.white,
-                      fontSize: 16.0);
+                  if ((titleController.text.isNotEmpty) &&
+                      (descriptionController.text.isNotEmpty)) {
+                    AnnonceSource()
+                        .createAnnonce(
+                            titleController.text, descriptionController.text)
+                        .then((value) {
+                      Fluttertoast.showToast(
+                          msg: "l'annonce a été créé avec succès!",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.BOTTOM,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Colors.grey,
+                          textColor: Colors.white,
+                          fontSize: 16.0);
+                      cleartext();
+                    }, onError: (e) {
+                      Fluttertoast.showToast(
+                          msg: "erreur!",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.BOTTOM,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Colors.grey,
+                          textColor: Colors.white,
+                          fontSize: 16.0);
+                    });
                   }
                 },
               ),
@@ -154,4 +164,9 @@ class __FormContentState extends State<_FormContent> {
   }
 
   Widget _gap() => const SizedBox(height: 16);
+
+  void cleartext() {
+    titleController.clear();
+    descriptionController.clear();
+  }
 }
