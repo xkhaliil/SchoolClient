@@ -35,7 +35,7 @@ class _StudentScreenState extends State<StudentScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final Student student = Student.fromJson(ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>);
+     Student student = Student.fromJson(ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>);
 
     return SafeArea(
       child: DefaultTabController(
