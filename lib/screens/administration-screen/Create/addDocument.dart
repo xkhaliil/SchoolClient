@@ -4,8 +4,10 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:schoolclient/data/classe-source.dart';
+import 'package:schoolclient/data/document-source.dart';
 import 'package:schoolclient/data/matiere-source.dart';
 import 'package:schoolclient/model/Classe.dart';
+import 'package:schoolclient/model/document.dart';
 import 'package:schoolclient/model/matiere.dart';
 
 class AddDocument extends StatelessWidget {
@@ -94,7 +96,6 @@ class __FormContentState extends State<_FormContent> {
       _selectedFile = File.fromRawPath(bytes);
     }
     if (result?.files.first.name != null) {
-      print(result?.files.first.name.toString());
       setState(() {
         _selectedFileName = result?.files.first.name.toString();
       });
@@ -170,7 +171,9 @@ class __FormContentState extends State<_FormContent> {
                 ),
                 child: _selectedFile == null
                     ? Center(child: Text("Selectioner un fichier PDF"))
-                    : Center(child: Text(_selectedFileName ?? "Fichier sélectionné")),
+                    : Center(
+                        child:
+                            Text(_selectedFileName ?? "Fichier sélectionné")),
               ),
             ),
             _gap(),
@@ -189,15 +192,31 @@ class __FormContentState extends State<_FormContent> {
                   ),
                 ),
                 onPressed: () {
-                  if (_formKey.currentState?.validate() ?? false) {
-                    Fluttertoast.showToast(
-                        msg: "le cours a été ajouté avec succès!",
-                        toastLength: Toast.LENGTH_SHORT,
-                        gravity: ToastGravity.BOTTOM,
-                        timeInSecForIosWeb: 1,
-                        backgroundColor: Colors.grey,
-                        textColor: Colors.white,
-                        fontSize: 16.0);
+                  if (descriptionController.text.isNotEmpty &&
+                      _selectedClasse != null &&
+                      _selectedMatiere != null &&
+                      _selectedFileName != null &&
+                      _selectedFile != null) {
+                    DocumentSource()
+                        .createDocument(
+                            descriptionController.text,
+                            _selectedClasse!.id,
+                            _selectedMatiere!.id,
+                            _selectedFileName!,
+                            _selectedFile!)
+                        .then((value) {
+                      Fluttertoast.showToast(
+                          msg: "le cours a été ajouté avec succès!",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.BOTTOM,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Colors.grey,
+                          textColor: Colors.white,
+                          fontSize: 16.0);
+                      cleartext();
+                    },onError: (e){
+                      print("error=$e");
+                    });
                   }
                 },
               ),
@@ -270,5 +289,9 @@ class __FormContentState extends State<_FormContent> {
         matieres = result;
       });
     });
+  }
+
+  void cleartext() {
+    descriptionController.clear();
   }
 }
