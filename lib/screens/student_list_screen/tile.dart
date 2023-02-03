@@ -14,7 +14,7 @@ class StudentTile extends StatelessWidget {
         Icons.person,
         size: 55,
       ),
-      subtitle: const Text("student class"),
+      
       iconColor: const Color(0xFFEAC7C7),
       tileColor: const Color(0xFFA0C3D2),
       title: Text(

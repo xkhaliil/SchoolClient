@@ -1,12 +1,17 @@
+import 'dart:html';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:schoolclient/model/Classe.dart';
 import 'package:schoolclient/model/student.dart';
 import 'package:schoolclient/screens/login_screen/login.dart';
 import 'package:schoolclient/screens/student_list_screen/student_list.dart';
 
 class ProfilePage extends StatelessWidget {
   final Student student;
-  const ProfilePage({super.key, required this.student});
+  final Classe? studentClasse;
+  const ProfilePage(
+      {super.key, required this.student, required this.studentClasse});
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +19,62 @@ class ProfilePage extends StatelessWidget {
       child: Scaffold(
         body: Column(
           children: [
-            const Expanded(flex: 2, child: _TopPortion()),
+            Expanded(
+              flex: 2,
+              child: Stack(
+                fit: StackFit.expand,
+                children: [
+                  Container(
+                    margin: const EdgeInsets.only(bottom: 50),
+                    decoration: const BoxDecoration(
+                        gradient: LinearGradient(
+                            begin: Alignment.bottomCenter,
+                            end: Alignment.topCenter,
+                            colors: [Color(0xffA0C3D2), Color(0xffF7F5EB)]),
+                        borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(50),
+                          bottomRight: Radius.circular(50),
+                        )),
+                  ),
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: SizedBox(
+                      width: 150,
+                      height: 150,
+                      child: Stack(
+                        fit: StackFit.expand,
+                        children: [
+                          Container(
+                            decoration: const BoxDecoration(
+                              color: Color.fromARGB(0, 160, 195, 210),
+                              shape: BoxShape.circle,
+                              image: DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: AssetImage("images/login2.png")),
+                            ),
+                          ),
+                          Positioned(
+                            bottom: 0,
+                            right: 0,
+                            child: CircleAvatar(
+                              radius: 20,
+                              backgroundColor:
+                                  Theme.of(context).scaffoldBackgroundColor,
+                              child: Container(
+                                margin: const EdgeInsets.all(8.0),
+                                decoration: const BoxDecoration(
+                                    color: Colors.green,
+                                    shape: BoxShape.circle),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
             Expanded(
               flex: 3,
               child: Padding(
@@ -22,7 +82,7 @@ class ProfilePage extends StatelessWidget {
                 child: Column(
                   children: [
                     Text(
-                      "${student.nom} ${student.prenom}",
+                      "${student.nom} ${student.prenom} ",
                       style: Theme.of(context)
                           .textTheme
                           .headline6
@@ -37,9 +97,9 @@ class ProfilePage extends StatelessWidget {
                           onPressed: () {
                             Navigator.pop(context, StudentList.routeName);
                           },
-                          heroTag: 'change student',
+                          heroTag: 'Changer eleve ',
                           elevation: 0,
-                          label: const Text("changer eleve"),
+                          label: const Text("Changer eleve"),
                           icon: const Icon(Icons.change_circle_rounded),
                         ),
                         const SizedBox(width: 16.0),
@@ -57,8 +117,10 @@ class ProfilePage extends StatelessWidget {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 16),
-                    const _ProfileInfoRow()
+                    SizedBox(height: 16),
+                    Text("the class name wont work"),
+                    // Text(studentClasse!.nom),
+                    
                   ],
                 ),
               ),
@@ -79,117 +141,4 @@ Future<void> signOut() async {
       print('User is signed in!');
     }
   });
-}
-
-class _ProfileInfoRow extends StatelessWidget {
-  const _ProfileInfoRow({Key? key}) : super(key: key);
-
-  final List<ProfileInfoItem> _items = const [
-    ProfileInfoItem("class", "6eme c 2"),
-  ];
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 80,
-      constraints: const BoxConstraints(maxWidth: 400),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: _items
-            .map((item) => Expanded(
-                    child: Row(
-                  children: [
-                    if (_items.indexOf(item) != 0) const VerticalDivider(),
-                    Expanded(child: _singleItem(context, item)),
-                  ],
-                )))
-            .toList(),
-      ),
-    );
-  }
-
-  Widget _singleItem(BuildContext context, ProfileInfoItem item) => Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Text(
-              item.title2.toString(),
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 25,
-              ),
-            ),
-          ),
-          Text(
-            item.title,
-            style: Theme.of(context).textTheme.caption,
-          )
-        ],
-      );
-}
-
-class ProfileInfoItem {
-  final String title;
-  final String title2;
-  const ProfileInfoItem(this.title, this.title2);
-}
-
-class _TopPortion extends StatelessWidget {
-  const _TopPortion({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      fit: StackFit.expand,
-      children: [
-        Container(
-          margin: const EdgeInsets.only(bottom: 50),
-          decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                  begin: Alignment.bottomCenter,
-                  end: Alignment.topCenter,
-                  colors: [Color(0xffA0C3D2), Color(0xffF7F5EB)]),
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(50),
-                bottomRight: Radius.circular(50),
-              )),
-        ),
-        Align(
-          alignment: Alignment.bottomCenter,
-          child: SizedBox(
-            width: 150,
-            height: 150,
-            child: Stack(
-              fit: StackFit.expand,
-              children: [
-                Container(
-                  decoration: const BoxDecoration(
-                    color: Color.fromARGB(0, 160, 195, 210),
-                    shape: BoxShape.circle,
-                    image: DecorationImage(
-                        fit: BoxFit.cover,
-                        image: AssetImage("images/login2.png")),
-                  ),
-                ),
-                Positioned(
-                  bottom: 0,
-                  right: 0,
-                  child: CircleAvatar(
-                    radius: 20,
-                    backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                    child: Container(
-                      margin: const EdgeInsets.all(8.0),
-                      decoration: const BoxDecoration(
-                          color: Colors.green, shape: BoxShape.circle),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        )
-      ],
-    );
-  }
 }

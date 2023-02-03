@@ -12,7 +12,7 @@ class CoursePage extends StatelessWidget {
         body: Container(
           constraints: const BoxConstraints(),
           child: ListView.builder(
-            itemCount: _images.length,
+            
             itemBuilder: (BuildContext context, int index) {
               return InkWell(
                 onTap: () {

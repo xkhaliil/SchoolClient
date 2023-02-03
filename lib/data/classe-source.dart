@@ -5,7 +5,7 @@ class ClasseSource {
   static FirebaseFirestore db = FirebaseFirestore.instance;
   static const classeCollection = "classe";
 
- static Future<void> createClasse(String nom, String niveau) async {
+  static Future<void> createClasse(String nom, String niveau) async {
     db.collection(classeCollection).doc().set({
       "nom": nom,
       "niveau": niveau,
@@ -26,4 +26,18 @@ class ClasseSource {
                 .toList(),
             onError: (e) => print("Error completing: $e"),
           );
+
+  Future<Classe> getClasseByStudent(String classeID) async => await db
+          .collection(classeCollection)
+          .where("id", isEqualTo: classeID)
+          .get()
+          .then((classes) {
+        var classe = classes.docs.first;
+        return Classe(
+            id: classe.id,
+            nom: classe.data()["nom"],
+            niveau: classe.data()["niveau"]);
+      },onError: (e){
+        print("getClasseByStudent error");
+      });
 }
