@@ -1,17 +1,36 @@
-import 'dart:html';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:schoolclient/data/classe-source.dart';
 import 'package:schoolclient/model/Classe.dart';
 import 'package:schoolclient/model/student.dart';
 import 'package:schoolclient/screens/login_screen/login.dart';
 import 'package:schoolclient/screens/student_list_screen/student_list.dart';
 
-class ProfilePage extends StatelessWidget {
+class ProfilePage extends StatefulWidget {
   final Student student;
-  final Classe? studentClasse;
-  const ProfilePage(
-      {super.key, required this.student, required this.studentClasse});
+
+  const ProfilePage({super.key, required this.student});
+
+  @override
+  State<ProfilePage> createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
+  Classe? studentClasse;
+
+  @override
+  void initState() {
+    super.initState();
+    ClasseSource()
+        .getClasseByStudent(widget.student.classeID)
+        .then((studentClasse) {
+          setState(() {
+            this.studentClasse = studentClasse;
+          });
+        }, onError: (e){
+          print("erreur = $e");
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -82,12 +101,16 @@ class ProfilePage extends StatelessWidget {
                 child: Column(
                   children: [
                     Text(
-                      "${student.nom} ${student.prenom} ",
+                      "${widget.student.nom} ${widget.student.prenom} ",
                       style: Theme.of(context)
                           .textTheme
                           .headline6
                           ?.copyWith(fontWeight: FontWeight.bold),
                     ),
+                    SizedBox(height: 16),
+                    Text(studentClasse == null ? "" : "Classe : ${studentClasse?.nom}"),
+                    Text(studentClasse == null ? "" : "Niveau : ${studentClasse?.niveau}"),
+                    SizedBox(height: 16),
                     const SizedBox(height: 16),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -118,7 +141,6 @@ class ProfilePage extends StatelessWidget {
                       ],
                     ),
                     SizedBox(height: 16),
-                    Text(studentClasse!.nom),
                     // Text(studentClasse!.nom),
                   ],
                 ),

@@ -3,7 +3,6 @@ import 'package:lottie/lottie.dart';
 import 'package:schoolclient/data/annonce-source.dart';
 import 'package:schoolclient/data/classe-source.dart';
 import 'package:schoolclient/data/matiere-source.dart';
-import 'package:schoolclient/data/travail-source.dart';
 import 'package:schoolclient/model/Classe.dart';
 import 'package:schoolclient/model/annonce.dart';
 import 'package:schoolclient/model/matiere.dart';
@@ -51,11 +50,6 @@ class _StudentScreenState extends State<StudentScreen> {
     if (ModalRoute.of(context)!.settings.arguments != null) {
       Student student = Student.fromJson(
           ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>);
-      ClasseSource().getClasseByStudent(student.classeID).then((studentClasse) {
-        setState(() {
-          this.studentClasse = studentClasse;
-        });
-      });
       MatiereSource()
           .getMatiereListByClasse(student.classeID)
           .then((matiereList) {
@@ -109,7 +103,7 @@ class _StudentScreenState extends State<StudentScreen> {
               // ignore: prefer_const_constructors
               body: TabBarView(
                 children: [
-                  ProfilePage(student: student, studentClasse: studentClasse),
+                  ProfilePage(student: student),
                   Column(
                     children: matiereList
                         .map((matiere) => CoursePage(matiere: matiere))

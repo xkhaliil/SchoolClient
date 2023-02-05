@@ -29,15 +29,12 @@ class ClasseSource {
 
   Future<Classe> getClasseByStudent(String classeID) async => await db
           .collection(classeCollection)
-          .where("id", isEqualTo: classeID)
+          .doc(classeID)
           .get()
-          .then((classes) {
-        var classe = classes.docs.first;
-        return Classe(
-            id: classe.id,
-            nom: classe.data()["nom"],
-            niveau: classe.data()["niveau"]);
-      },onError: (e){
+          .then((DocumentSnapshot doc) {
+        final data = doc.data() as Map<String, dynamic>;
+        return Classe(id: classeID, nom: data["nom"], niveau: data["niveau"]);
+      }, onError: (e) {
         print("getClasseByStudent error");
       });
 }
