@@ -16,7 +16,7 @@ class NewsFeedPage extends StatelessWidget {
             leading: Icon(Icons.label_important),
             title:  Text("${annonce.titre}"),
             subtitle: Text( 
-              'Administration',
+              '${annonce.date.day}/${annonce.date.month}/${annonce.date.year} ',
               style: TextStyle(color: Colors.black.withOpacity(0.6)),
             ),
           ),

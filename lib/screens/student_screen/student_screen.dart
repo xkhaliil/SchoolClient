@@ -2,13 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:schoolclient/data/annonce-source.dart';
 import 'package:schoolclient/data/classe-source.dart';
+import 'package:schoolclient/data/matiere-source.dart';
+import 'package:schoolclient/data/travail-source.dart';
 import 'package:schoolclient/model/Classe.dart';
 import 'package:schoolclient/model/annonce.dart';
+import 'package:schoolclient/model/matiere.dart';
 import 'package:schoolclient/model/student.dart';
+import 'package:schoolclient/model/travail.dart';
 
 import 'package:schoolclient/screens/student_list_screen/student_list.dart';
 
-import 'package:schoolclient/screens/student_screen/cours_et_travaux.dart';
+import 'package:schoolclient/screens/student_screen/cours_et_travaux/cours_et_travaux.dart';
 
 import 'package:schoolclient/screens/student_screen/annonces.dart';
 import 'package:schoolclient/screens/student_screen/profile.dart';
@@ -25,6 +29,8 @@ class StudentScreen extends StatefulWidget {
 class _StudentScreenState extends State<StudentScreen> {
   List<Annonce> annonceList = List.empty();
   Classe? studentClasse;
+  List<Travail> travailList = List.empty();
+  List<Matiere> matiereList = List.empty();
 
   @override
   @mustCallSuper
@@ -50,6 +56,13 @@ class _StudentScreenState extends State<StudentScreen> {
           this.studentClasse = studentClasse;
         });
       });
+      MatiereSource()
+          .getMatiereListByClasse(student.classeID)
+          .then((matiereList) {
+        setState(() {
+          this.matiereList = matiereList;
+        });
+      });
       return SafeArea(
         child: DefaultTabController(
           length: 3,
@@ -72,7 +85,7 @@ class _StudentScreenState extends State<StudentScreen> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: <Widget>[
-                            Image.asset('images/logo-eliteee.png', height: 200)
+                            Image.asset('images/logo-eliteee.png', height: 150)
                           ],
                         ),
                         background: Lottie.asset(
@@ -97,7 +110,11 @@ class _StudentScreenState extends State<StudentScreen> {
               body: TabBarView(
                 children: [
                   ProfilePage(student: student, studentClasse: studentClasse),
-                  CoursePage(student: student),
+                  Column(
+                    children: matiereList
+                        .map((matiere) => CoursePage(matiere: matiere))
+                        .toList(),
+                  ),
                   Column(
                     children: annonceList
                         .map((annonce) => NewsFeedPage(annonce: annonce))

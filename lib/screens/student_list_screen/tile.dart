@@ -21,6 +21,7 @@ class StudentTile extends StatelessWidget {
         "${student.nom} ${student.prenom}",
         textScaleFactor: 1.5,
       ),
+      subtitle: Text("   "),
       onTap: () =>
        Navigator.restorablePushNamed(context, StudentScreen.routeName,
           arguments: student.toJson(),

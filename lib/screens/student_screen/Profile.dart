@@ -118,9 +118,8 @@ class ProfilePage extends StatelessWidget {
                       ],
                     ),
                     SizedBox(height: 16),
-                    Text("the class name wont work"),
+                    Text(studentClasse!.nom),
                     // Text(studentClasse!.nom),
-                    
                   ],
                 ),
               ),

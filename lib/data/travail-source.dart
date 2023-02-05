@@ -1,0 +1,46 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:schoolclient/model/travail.dart';
+
+
+class TravailSource {
+  FirebaseFirestore db = FirebaseFirestore.instance;
+  static const travailCollection = "travail";
+
+  Future<void> createTravail(String description, String classeID) async {
+    db.collection(travailCollection).doc().set({
+      "description": description,
+      "classeID": classeID,
+    }).then((value) {
+      return value;
+    }, onError: (e) {
+      return Future.error(Exception("erreur"));
+    });
+  }
+
+  Future<List<Travail>> getTravailList() async =>
+      await db.collection(travailCollection).get().then(
+            (travails) => travails.docs
+                .map((element) => Travail(
+                    id: element.id,
+                    description: element.data()["description"],
+                    ClasseID: element.data()["classeID"]))
+                .toList(),
+            onError: (e) => print("Error completing: $e"),
+          );
+
+  Future<List<Travail>> getTravailListByClasse(String classeID) async =>
+      await db
+          .collection(travailCollection)
+          .where("classeID", isEqualTo: classeID)
+          .get()
+          .then(
+            (travails) => travails.docs
+                .map((element) => Travail(
+                    id: element.id,
+                    description: element.data()["description"],
+                    ClasseID: element.data()["classeID"]))
+                .toList(),
+            onError: (e) => print("Error completing: $e"),
+          );
+}
