@@ -1,22 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:schoolclient/model/Classe.dart';
 import 'package:schoolclient/model/matiere.dart';
 
-import 'cours_et_travauxSecondPage.dart';
+import 'matierePage.dart';
 
 
 
 class CoursePage extends StatelessWidget {
   final Matiere matiere;
-  const CoursePage({super.key,  required this.matiere});
+  
+  const CoursePage({super.key,  required this.matiere, });
 
   @override
   Widget build(BuildContext context) {
     return Center(
       child: InkWell(
                 onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => SecondPage()));
+                  Navigator.restorablePushNamed(context, MatierePage.routeName,arguments: matiere.toMap());
                 },
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
