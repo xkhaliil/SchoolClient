@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:schoolclient/data/shared_preferences.dart';
 import 'package:schoolclient/model/student.dart';
 import '../student_screen/student_screen.dart';
 
@@ -22,10 +23,10 @@ class StudentTile extends StatelessWidget {
         textScaleFactor: 1.5,
       ),
       subtitle: Text("   "),
-      onTap: () =>
-       Navigator.restorablePushNamed(context, StudentScreen.routeName,
-          arguments: student.toJson(),
-       )
+      onTap: () {
+        SharedPreferencesHelper.putSelectedStudentId(student.id);
+        Navigator.restorablePushNamed(context, StudentScreen.routeName);
+      }
     );
   }
 

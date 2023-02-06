@@ -14,7 +14,7 @@ class MatierePage extends StatefulWidget {
 }
 
 class _MatierePageState extends State<MatierePage> {
-  List<Document> documents=List.empty();
+  List<Document> documents = List.empty();
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +25,7 @@ class _MatierePageState extends State<MatierePage> {
           .getDocumentListByClasseAndMatiere(matiere.classeID, matiere.id)
           .then((value) {
         setState(() {
-          this.documents = value;
+          documents = value;
         });
       });
       return Scaffold(
@@ -54,11 +54,9 @@ class _MatierePageState extends State<MatierePage> {
                   ),
                   Column(
                     children: documents
-                  .map((student) => matiereTile(student: student))
-                  .toList(),
+                        .map((doc) => Card(child: Text(doc.description)))
+                        .toList(),
                   )
-                 
-                  
                 ],
               ),
             )

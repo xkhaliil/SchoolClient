@@ -1,15 +1,15 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:schoolclient/data/classe-source.dart';
+import 'package:schoolclient/data/shared_preferences.dart';
+import 'package:schoolclient/data/student-source.dart';
 import 'package:schoolclient/model/Classe.dart';
 import 'package:schoolclient/model/student.dart';
 import 'package:schoolclient/screens/login_screen/login.dart';
 import 'package:schoolclient/screens/student_list_screen/student_list.dart';
 
 class ProfilePage extends StatefulWidget {
-  final Student student;
-
-  const ProfilePage({super.key, required this.student});
+  const ProfilePage({super.key});
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
@@ -17,18 +17,22 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   Classe? studentClasse;
+  Student? student;
 
   @override
   void initState() {
     super.initState();
-    ClasseSource()
-        .getClasseByStudent(widget.student.classeID)
-        .then((studentClasse) {
-          setState(() {
-            this.studentClasse = studentClasse;
-          });
-        }, onError: (e){
-          print("erreur = $e");
+    SharedPreferencesHelper.getSelectedStudentId()
+        .then((studentId) => StudentSource().getStudentById(studentId))
+        .then((student) {
+      this.student = student;
+      return ClasseSource().getClasseByStudent(student.classeID);
+    }).then((studentClasse) {
+      setState(() {
+        this.studentClasse = studentClasse;
+      });
+    }, onError: (e) {
+      print("erreur = $e");
     });
   }
 
@@ -101,15 +105,19 @@ class _ProfilePageState extends State<ProfilePage> {
                 child: Column(
                   children: [
                     Text(
-                      "${widget.student.nom} ${widget.student.prenom} ",
+                      "${student?.nom} ${student?.prenom} ",
                       style: Theme.of(context)
                           .textTheme
                           .headline6
                           ?.copyWith(fontWeight: FontWeight.bold),
                     ),
                     SizedBox(height: 16),
-                    Text(studentClasse == null ? "" : "Classe : ${studentClasse?.nom}"),
-                    Text(studentClasse == null ? "" : "Niveau : ${studentClasse?.niveau}"),
+                    Text(studentClasse == null
+                        ? ""
+                        : "Classe : ${studentClasse?.nom}"),
+                    Text(studentClasse == null
+                        ? ""
+                        : "Niveau : ${studentClasse?.niveau}"),
                     SizedBox(height: 16),
                     const SizedBox(height: 16),
                     Row(

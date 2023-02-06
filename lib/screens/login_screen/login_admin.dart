@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:schoolclient/screens/administration-screen/adminPage.dart';
@@ -46,7 +47,7 @@ class _Logo extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Lottie.asset("video/adminlogin.json",height: 150),
+        Lottie.asset("video/adminlogin.json", height: 150),
         Padding(
           padding: const EdgeInsets.all(16.0),
           child: Text(
@@ -101,7 +102,7 @@ class __FormContentState extends State<_FormContent> {
                 // if (!emailValid) {
                 //   return 'Please enter a valid email';
                 // }
-                if(value!=""){
+                if (value != "") {
                   return "email non conforme";
                 }
 
@@ -124,10 +125,9 @@ class __FormContentState extends State<_FormContent> {
                 // if (value.length < 6) {
                 //   return 'Password must be at least 6 characters';
                 // }
-                if(value!=""){
-                  return"mot de pass non conforme";
+                if (value != "") {
+                  return "mot de pass non conforme";
                 }
-                
               },
               obscureText: !_isPasswordVisible,
               decoration: InputDecoration(
@@ -163,8 +163,8 @@ class __FormContentState extends State<_FormContent> {
                 ),
                 onPressed: () {
                   if (_formKey.currentState?.validate() ?? false) {
-                   Navigator.pushNamedAndRemoveUntil(
-            context, AdminPage.routeName, (route) => false);
+                    Navigator.pushNamedAndRemoveUntil(
+                        context, AdminPage.routeName, (route) => false);
                   }
                 },
               ),

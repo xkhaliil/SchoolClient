@@ -1,18 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:schoolclient/data/annonce-source.dart';
-import 'package:schoolclient/data/classe-source.dart';
 import 'package:schoolclient/data/matiere-source.dart';
+import 'package:schoolclient/data/shared_preferences.dart';
+import 'package:schoolclient/data/student-source.dart';
 import 'package:schoolclient/model/Classe.dart';
 import 'package:schoolclient/model/annonce.dart';
 import 'package:schoolclient/model/matiere.dart';
-import 'package:schoolclient/model/student.dart';
 import 'package:schoolclient/model/travail.dart';
-
-import 'package:schoolclient/screens/student_list_screen/student_list.dart';
-
 import 'package:schoolclient/screens/student_screen/cours_et_travaux/cours_et_travaux.dart';
-
 import 'package:schoolclient/screens/student_screen/annonces.dart';
 import 'package:schoolclient/screens/student_screen/profile.dart';
 
@@ -35,29 +31,32 @@ class _StudentScreenState extends State<StudentScreen> {
   @mustCallSuper
   void initState() {
     super.initState();
+    getAnnonces();
+    getMatieres();
+  }
+
+  void getAnnonces() {
     AnnonceSource().getAnnonceList().then((annonceList) {
-      for (var annonce in annonceList) {
-        print(annonce.toString());
-      }
       setState(() {
         this.annonceList = annonceList;
       });
     });
   }
 
-  @override
-  Widget build(BuildContext context) {
-    if (ModalRoute.of(context)!.settings.arguments != null) {
-      Student student = Student.fromJson(
-          ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>);
-      MatiereSource()
-          .getMatiereListByClasse(student.classeID)
-          .then((matiereList) {
-        setState(() {
-          this.matiereList = matiereList;
-        });
+  void getMatieres() {
+    SharedPreferencesHelper.getSelectedStudentId()
+        .then((studentId) => StudentSource().getStudentById(studentId))
+        .then((student) => MatiereSource().getMatiereListByClasse(student.classeID))
+        .then((matiereList) {
+      print("got matiere");
+      setState(() {
+        this.matiereList = matiereList;
       });
-      return SafeArea(
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) => SafeArea(
         child: DefaultTabController(
           length: 3,
           child: Scaffold(
@@ -103,7 +102,7 @@ class _StudentScreenState extends State<StudentScreen> {
               // ignore: prefer_const_constructors
               body: TabBarView(
                 children: [
-                  ProfilePage(student: student),
+                  ProfilePage(),
                   Column(
                     children: matiereList
                         .map((matiere) => CoursePage(matiere: matiere))
@@ -120,13 +119,6 @@ class _StudentScreenState extends State<StudentScreen> {
           ),
         ),
       );
-    } else {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        Navigator.pushReplacementNamed(context, StudentList.routeName);
-      });
-      return Container();
-    }
-  }
 }
 
 const _tabs = [

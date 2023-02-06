@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:schoolclient/screens/administration-screen/adminPage.dart';
 import 'package:schoolclient/screens/login_screen/login_admin.dart';
 import 'package:schoolclient/screens/student_list_screen/student_list.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -14,18 +15,16 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  bool _isPasswordVisible = false;
-
+  final bool _loginAsAdmin = false;
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final eliteEmail="@elite.tn";
+  final eliteEmail = "@elite.tn";
+  final String adminUserUID = "";
+
+  bool _isPasswordVisible = false;
 
   void signUserIn() async {
-
-    // todo : remove this line
-    //UserSource().createUser("3", "123456", "wassim").then((value) => print("user created"));
-
     // show loading circle
     showDialog(
       context: context,
@@ -38,19 +37,28 @@ class _LoginState extends State<Login> {
 
     // try sign in
     try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: "${emailController.text}$eliteEmail",
-        password: passwordController.text,
-      );
-      // pop the loading circle
-      // ignore: use_build_context_synchronously
-      Navigator.pop(context);
-
-      // ignore: use_build_context_synchronously
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => const StudentList())
-      );
-    // ignore: unused_catch_clause
+      if (_loginAsAdmin) {
+        await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: "admin@elite.tn",
+          password: "admin123",
+        );
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          Navigator.pop(context);
+          Navigator.pushNamedAndRemoveUntil(
+              context, AdminPage.routeName, (route) => false);
+        });
+      } else {
+        await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: "${emailController.text}$eliteEmail",
+          password: passwordController.text,
+        );
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          Navigator.pop(context);
+          Navigator.pushNamedAndRemoveUntil(
+              context, StudentList.routeName, (route) => false);
+        });
+      }
+      // ignore: unused_catch_clause
     } on FirebaseAuthException catch (e) {
       // pop the loading circle
       Navigator.pop(context);
@@ -82,13 +90,16 @@ class _LoginState extends State<Login> {
     return SafeArea(
       child: Scaffold(
         floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.pushNamed(context, LoginAdmin.routeName);
-        },
-        // ignore: sort_child_properties_last
-        child: const Icon(Icons.admin_panel_settings,color: Color.fromARGB(255, 137, 83, 79),),
-        backgroundColor: const Color(0xFFA0C3D2),
-      ),
+          onPressed: () {
+            Navigator.pushNamed(context, LoginAdmin.routeName);
+          },
+          // ignore: sort_child_properties_last
+          child: const Icon(
+            Icons.admin_panel_settings,
+            color: Color.fromARGB(255, 137, 83, 79),
+          ),
+          backgroundColor: const Color(0xFFA0C3D2),
+        ),
         body: Form(
           key: _formKey,
           child: Center(
@@ -136,7 +147,8 @@ class _LoginState extends State<Login> {
                           labelStyle: TextStyle(
                               color: Color(0xFFA0C3D2),
                               fontWeight: FontWeight.w900),
-                          filled: true, //<-- SEE HERE
+                          filled: true,
+                          //<-- SEE HERE
                           fillColor: Color(0xFFF7F5EB),
                           hintText: 'Entrez votre numéro de téléphone',
                           prefixIcon: Icon(
@@ -165,7 +177,8 @@ class _LoginState extends State<Login> {
                             labelStyle: const TextStyle(
                                 color: Color(0xFFA0C3D2),
                                 fontWeight: FontWeight.w900),
-                            filled: true, //<-- SEE HERE
+                            filled: true,
+                            //<-- SEE HERE
                             fillColor: const Color(0xFFF7F5EB),
                             labelText: 'Mot de passe',
                             hintText: 'Entrez votre mot de passe',
@@ -209,23 +222,16 @@ class _LoginState extends State<Login> {
                                   color: Colors.black),
                             ),
                           ),
-
                         ),
-
                       ),
                       _gap(),
-
-
                     ],
                   ),
                 ),
               ),
             ),
-
           ),
-
         ),
-
       ),
     );
   }

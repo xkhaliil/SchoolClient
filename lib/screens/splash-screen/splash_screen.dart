@@ -3,11 +3,13 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:schoolclient/screens/administration-screen/CreateScreen.dart';
+import 'package:schoolclient/screens/administration-screen/adminPage.dart';
 import 'package:schoolclient/screens/student_list_screen/student_list.dart';
 import 'package:schoolclient/screens/login_screen/onBoarding.dart';
 
 class SplashScreen extends StatelessWidget {
   static String routeName = '/';
+
   // ignore: non_constant_identifier_names
   final String AdminUID = "GH3IlKXyYWZcDVB4qETtRB4L3Df2";
 
@@ -20,14 +22,14 @@ class SplashScreen extends StatelessWidget {
       // user is logged in
       var currentUser = FirebaseAuth.instance.currentUser;
 
-      // if (currentUser.uid == AdminUID) {
-      //   Navigator.pushNamedAndRemoveUntil(
-      //       context, AdminPage.routeName, (route) => false);
-      // } else
-       if (currentUser != null) {
-       
-        Navigator.pushNamedAndRemoveUntil(
-            context, StudentList.routeName, (route) => false);
+      if (currentUser != null) {
+        if (currentUser.uid == "n75fo46KNFSXrOyM9hdtpgf6Lqf2") {
+          Navigator.pushNamedAndRemoveUntil(
+              context, AdminPage.routeName, (route) => false);
+        } else {
+          Navigator.pushNamedAndRemoveUntil(
+              context, StudentList.routeName, (route) => false);
+        }
       } else {
         Navigator.pushNamedAndRemoveUntil(
             context, OnBoarding.routeName, (route) => false);

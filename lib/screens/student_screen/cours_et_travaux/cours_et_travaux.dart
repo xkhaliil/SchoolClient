@@ -36,7 +36,7 @@ class CoursePage extends StatelessWidget {
                       Expanded(
                           child: Text(
                         matiere.nom,
-                        style: Theme.of(context).textTheme.headline6,
+                        style: Theme.of(context).textTheme.headlineLarge,
                       )),
                     ],
                   ),
