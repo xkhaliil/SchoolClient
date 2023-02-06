@@ -24,9 +24,13 @@ class _MatierePageState extends State<MatierePage> {
     super.initState();
     SharedPreferencesHelper.getSelectedMatiereId()
         .then((matiereId) => MatiereSource().getMatiereById(matiereId))
-        .then((matiere) => DocumentSource()
-            .getDocumentListByClasseAndMatiere(matiere.classeID, matiere.id))
-        .then((documents) {
+        .then((matiere) {
+          setState(() {
+            this.matiere=matiere;
+          });
+          return DocumentSource()
+            .getDocumentListByClasseAndMatiere(matiere.classeID, matiere.id);
+        }).then((documents) {
       setState(() {
         this.documents = documents;
       });
