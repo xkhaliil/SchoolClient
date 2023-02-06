@@ -76,7 +76,7 @@ class DocumentSource {
 
   Future<String> getDocumentDownloadPublicURL(String uri) async {
     final storageRef = FirebaseStorage.instance.ref();
-    final documentRef = storageRef.child("documents/$uri");
+    final documentRef = storageRef.child(uri);
     return documentRef.getDownloadURL();
   }
 

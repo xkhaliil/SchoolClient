@@ -5,6 +5,7 @@ import 'package:schoolclient/data/matiere-source.dart';
 import 'package:schoolclient/data/shared_preferences.dart';
 import 'package:schoolclient/model/document.dart';
 import 'package:schoolclient/model/matiere.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MatierePage extends StatefulWidget {
   const MatierePage({Key? key}) : super(key: key);
@@ -54,15 +55,26 @@ class _MatierePageState extends State<MatierePage> {
               child: Column(
                 children: [
                   Text(
-                    matiere?.nom ?? "",
+                    matiere?.nom ?? "NOM MATIERE",
                     style: Theme.of(context).textTheme.titleLarge,
                   ),
                   Column(
                     children: documents
                         .map((doc) => ListTile(
-                              title: Text(doc.description),
+                              leading: const Icon(Icons.file_download,
+                                  color: Colors.blue),
+                              title: Text(doc.description,
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold)),
+                              subtitle: const Text("Telecharger"),
+                              trailing: const Icon(Icons.file_present,
+                                  color: Colors.blue),
                               onTap: () {
-
+                                DocumentSource()
+                                    .getDocumentDownloadPublicURL(doc.uri)
+                                    .then((value) {
+                                  _launchUrl(value);
+                                });
                               },
                             ))
                         .toList(),
@@ -73,4 +85,12 @@ class _MatierePageState extends State<MatierePage> {
           ],
         ),
       );
+}
+
+Future<void> _launchUrl(String url) async {
+  if (await canLaunchUrl(Uri.parse(url))) {
+    await launchUrl(Uri.parse(url));
+  } else {
+    throw Exception('Could not launch $url');
+  }
 }
