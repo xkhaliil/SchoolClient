@@ -55,16 +55,22 @@ class DocumentSource {
           .where("matiereID", isEqualTo: matiereID)
           .get()
           .then(
-            (documents) => documents.docs
+            (documents) {
+              return documents.docs
                 .map(
-                  (element) => Document(
+                  (element) {
+                    print("document : ${element.data()}");
+                    print("document ID : ${element.id}");
+                    return Document(
                       id: element.id,
-                      description: element.data()["nom"],
+                      description: element.data()["description"],
                       uri: element.data()["uri"],
                       classeID: element.data()["classeID"],
-                      matiereID: element.data()['matiereID']),
+                      matiereID: element.data()["matiereID"]);
+                  },
                 )
-                .toList(),
+                .toList();
+            },
             onError: (e) => print("Error completing: $e"),
           );
 

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:schoolclient/data/document-source.dart';
+import 'package:schoolclient/data/matiere-source.dart';
+import 'package:schoolclient/data/shared_preferences.dart';
 import 'package:schoolclient/model/document.dart';
 import 'package:schoolclient/model/matiere.dart';
-import 'package:schoolclient/screens/student_list_screen/student_list.dart';
 
 class MatierePage extends StatefulWidget {
   const MatierePage({Key? key}) : super(key: key);
@@ -14,21 +15,25 @@ class MatierePage extends StatefulWidget {
 }
 
 class _MatierePageState extends State<MatierePage> {
+  Matiere? matiere;
   List<Document> documents = List.empty();
 
   @override
-  Widget build(BuildContext context) {
-    if (ModalRoute.of(context)!.settings.arguments != null) {
-      Matiere matiere = Matiere.fromMap(
-          ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>);
-      DocumentSource()
-          .getDocumentListByClasseAndMatiere(matiere.classeID, matiere.id)
-          .then((value) {
-        setState(() {
-          documents = value;
-        });
+  void initState() {
+    super.initState();
+    SharedPreferencesHelper.getSelectedMatiereId()
+        .then((matiereId) => MatiereSource().getMatiereById(matiereId))
+        .then((matiere) => DocumentSource()
+            .getDocumentListByClasseAndMatiere(matiere.classeID, matiere.id))
+        .then((documents) {
+      setState(() {
+        this.documents = documents;
       });
-      return Scaffold(
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
           backgroundColor: const Color(0xFFEAC7C7),
         ),
@@ -49,12 +54,17 @@ class _MatierePageState extends State<MatierePage> {
               child: Column(
                 children: [
                   Text(
-                    matiere.nom,
+                    matiere?.nom ?? "",
                     style: Theme.of(context).textTheme.titleLarge,
                   ),
                   Column(
                     children: documents
-                        .map((doc) => Card(child: Text(doc.description)))
+                        .map((doc) => ListTile(
+                              title: Text(doc.description),
+                              onTap: () {
+
+                              },
+                            ))
                         .toList(),
                   )
                 ],
@@ -63,11 +73,4 @@ class _MatierePageState extends State<MatierePage> {
           ],
         ),
       );
-    } else {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        Navigator.pushReplacementNamed(context, StudentList.routeName);
-      });
-      return Container();
-    }
-  }
 }

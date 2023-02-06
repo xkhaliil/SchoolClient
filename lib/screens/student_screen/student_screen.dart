@@ -48,7 +48,6 @@ class _StudentScreenState extends State<StudentScreen> {
         .then((studentId) => StudentSource().getStudentById(studentId))
         .then((student) => MatiereSource().getMatiereListByClasse(student.classeID))
         .then((matiereList) {
-      print("got matiere");
       setState(() {
         this.matiereList = matiereList;
       });
@@ -102,7 +101,7 @@ class _StudentScreenState extends State<StudentScreen> {
               // ignore: prefer_const_constructors
               body: TabBarView(
                 children: [
-                  ProfilePage(),
+                  const ProfilePage(),
                   Column(
                     children: matiereList
                         .map((matiere) => CoursePage(matiere: matiere))

@@ -42,4 +42,16 @@ class MatiereSource {
                 .toList(),
             onError: (e) => print("Error completing: $e"),
           );
+
+  Future<Matiere> getMatiereById(String matiereId) async => await db
+          .collection(matiereCollection)
+          .doc(matiereId)
+          .get()
+          .then((DocumentSnapshot doc) {
+        final data = doc.data() as Map<String, dynamic>;
+        return Matiere(
+            id: matiereId, nom: data["nom"], classeID: data["classeID"]);
+      }, onError: (e) {
+        print("getMatiereById error");
+      });
 }

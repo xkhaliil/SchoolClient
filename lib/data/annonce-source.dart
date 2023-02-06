@@ -20,7 +20,6 @@ class AnnonceSource {
   }
 
   Future<List<Annonce>> getAnnonceList() async {
-    print("getAnnonceList");
     return await db.collection(annonceCollection).get().then(
           (annonces) => annonces.docs
               .map((element) => Annonce(element.id, element.data()[titre],
