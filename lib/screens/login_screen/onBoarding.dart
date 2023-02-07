@@ -1,9 +1,10 @@
+// ignore: file_names
 import 'package:flutter/material.dart';
-import 'package:schoolclient/screens/student_list_screen/student_list.dart';
+
 import 'package:schoolclient/screens/login_screen/login.dart';
 
 class OnBoarding extends StatelessWidget {
-  static String routeName='OnBoarding';
+  static String routeName = 'OnBoarding';
 
   const OnBoarding({super.key});
 
@@ -14,30 +15,32 @@ class OnBoarding extends StatelessWidget {
         body: OnboardingPagePresenter(pages: [
           OnboardingPageModel(
             title: "École virtuelle de Elite",
-            description: "La nouvelle école virtuelle facilite l'éducation et la communication",
+            description:
+                "La nouvelle école virtuelle facilite l'éducation et la communication",
             imageUrl: 'https://i.ibb.co/LQPph1T/pngegg-1.png',
-            bgColor: Color(0xFFEAC7C7),
+            bgColor: const Color(0xFF404258),
           ),
           OnboardingPageModel(
             title: 'Cours ',
-            description: "Vérifier les cours depuis le téléphone, n'importe où et n'importe quand",
+            description:
+                "Vérifier les cours depuis le téléphone, n'importe où et n'importe quand",
             imageUrl: 'https://i.ibb.co/fHss4yn/pngegg.png',
-            bgColor:  Color(0xffA0C3D2),
+            bgColor: const Color(0xff474E68),
           ),
           OnboardingPageModel(
             title: 'Travail à domicile',
-            description: "Vérifiez le nouveau travail à domicile de vos enfants d'une simple pression sur votre téléphone",
+            description:
+                "Vérifiez le nouveau travail à domicile de vos enfants d'une simple pression sur votre téléphone",
             imageUrl: 'https://i.ibb.co/YPcBtbN/pngegg-2.png',
-            bgColor: Color(0xFFFFD4B2),
+            bgColor: const Color(0xFF50577A),
           ),
           OnboardingPageModel(
             title: 'Actualités',
-            description:
-                "Vérifiez chaque jour les nouvelles de l'école Elite",
-            imageUrl: 'https://i.ibb.co/DbS1Y3g/toppng-com-download-megaphone-flat-icon-448x448.png',
-            bgColor: const Color(0xffCEEDC7),
+            description: "Vérifiez chaque jour les nouvelles de l'école Elite",
+            imageUrl:
+                'https://i.ibb.co/DbS1Y3g/toppng-com-download-megaphone-flat-icon-448x448.png',
+            bgColor: const Color(0xff6B728E),
           ),
-          
         ]),
       ),
     );
@@ -47,11 +50,10 @@ class OnBoarding extends StatelessWidget {
 class OnboardingPagePresenter extends StatefulWidget {
   final List<OnboardingPageModel> pages;
 
- 
-
-  const OnboardingPagePresenter(
-      {Key? key, required this.pages, })
-      : super(key: key);
+  const OnboardingPagePresenter({
+    Key? key,
+    required this.pages,
+  }) : super(key: key);
 
   @override
   State<OnboardingPagePresenter> createState() => _OnboardingPageState();
@@ -143,7 +145,7 @@ class _OnboardingPageState extends State<OnboardingPagePresenter> {
                           height: 8,
                           margin: const EdgeInsets.all(2.0),
                           decoration: BoxDecoration(
-                              color: Color.fromARGB(255, 0, 0, 0),
+                              color: const Color.fromARGB(255, 0, 0, 0),
                               borderRadius: BorderRadius.circular(10.0)),
                         ))
                     .toList(),
@@ -158,26 +160,68 @@ class _OnboardingPageState extends State<OnboardingPagePresenter> {
                     TextButton(
                         style: TextButton.styleFrom(
                             visualDensity: VisualDensity.comfortable,
-                            foregroundColor: Color.fromARGB(255, 0, 0, 0),
+                            foregroundColor: const Color.fromARGB(255, 0, 0, 0),
                             textStyle: const TextStyle(
                                 fontSize: 16, fontWeight: FontWeight.bold)),
                         onPressed: () {
-                          Navigator.pushReplacement(context,
-                                  MaterialPageRoute(
-                                      builder: (context) => Login()));
+                          Navigator.pushAndRemoveUntil(
+                            context,
+                            PageRouteBuilder(
+                              transitionDuration: const Duration(milliseconds: 500),
+                              pageBuilder:
+                                  (context, animation, secondaryAnimation) {
+                                return const Login();
+                              },
+                              transitionsBuilder: (context, animation,
+                                  secondaryAnimation, child) {
+                                return SlideTransition(
+                                  position: Tween<Offset>(
+                                    begin: const Offset(-1, 0),
+                                    end: Offset.zero,
+                                  ).animate(CurvedAnimation(
+                                    parent: animation,
+                                    curve: Curves.ease,
+                                  )),
+                                  child: child,
+                                );
+                              },
+                            ),
+                            (route) => false,
+                          );
                         },
                         child: const Text("S'authentifier")),
                     TextButton(
                       style: TextButton.styleFrom(
                           visualDensity: VisualDensity.comfortable,
-                          foregroundColor: Color.fromARGB(255, 0, 0, 0),
+                          foregroundColor: const Color.fromARGB(255, 0, 0, 0),
                           textStyle: const TextStyle(
                               fontSize: 16, fontWeight: FontWeight.bold)),
                       onPressed: () {
                         if (_currentPage == widget.pages.length - 1) {
-                          Navigator.pushReplacement(context,
-                                  MaterialPageRoute(
-                                      builder: (context) => Login()));
+                          Navigator.pushAndRemoveUntil(
+                            context,
+                            PageRouteBuilder(
+                              transitionDuration: const Duration(milliseconds: 500),
+                              pageBuilder:
+                                  (context, animation, secondaryAnimation) {
+                                return const Login();
+                              },
+                              transitionsBuilder: (context, animation,
+                                  secondaryAnimation, child) {
+                                return SlideTransition(
+                                  position: Tween<Offset>(
+                                    begin: const Offset(-1, 0),
+                                    end: Offset.zero,
+                                  ).animate(CurvedAnimation(
+                                    parent: animation,
+                                    curve: Curves.ease,
+                                  )),
+                                  child: child,
+                                );
+                              },
+                            ),
+                            (route) => false,
+                          );
                         } else {
                           _pageController.animateToPage(_currentPage + 1,
                               curve: Curves.easeInOutCubic,

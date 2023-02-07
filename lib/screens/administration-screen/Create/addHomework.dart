@@ -80,6 +80,7 @@ class __FormContentState extends State<_FormContent> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   List<Classe> classes = List.empty();
   final descriptionController = TextEditingController();
+  final titreController=TextEditingController();
   Classe? _selectedClasse;
   @override
   void initState() {
@@ -113,6 +114,16 @@ class __FormContentState extends State<_FormContent> {
                 child: _dropDownClasse(underline: Container())),
             _gap(),
             TextFormField(
+              controller: titreController,
+              decoration: const InputDecoration(
+                labelText: 'titre',
+                hintText: 'titre',
+                prefixIcon: Icon(Icons.description),
+                border: OutlineInputBorder(),
+              ),
+            ),
+            _gap(),
+            TextFormField(
               controller: descriptionController,
               decoration: const InputDecoration(
                 labelText: 'Description',
@@ -140,7 +151,7 @@ class __FormContentState extends State<_FormContent> {
                 onPressed: () {
                   if (descriptionController.text!=null) {
                    TravailSource().createTravail(
-                        descriptionController.text, _selectedClasse!.id);
+                        descriptionController.text,titreController.text, _selectedClasse!.id);
                     Fluttertoast.showToast(
                         msg: "la matiere a été ajouté avec succès!",
                         toastLength: Toast.LENGTH_SHORT,

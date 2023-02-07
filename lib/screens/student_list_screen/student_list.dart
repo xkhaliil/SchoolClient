@@ -21,9 +21,7 @@ class _StudentListState extends State<StudentList> {
   void initState() {
     super.initState();
     StudentSource().getStudentList().then((studentList) {
-      for (var student in studentList) {
-        print(student.toString());
-      }
+      
       setState(() {
         this.studentList = studentList;
       });
@@ -34,26 +32,27 @@ class _StudentListState extends State<StudentList> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: const Color(0xFFEAE0DA),
+        backgroundColor: const Color(0xFF222831),
         body: NestedScrollView(
             headerSliverBuilder:
                 (BuildContext context, bool innerBoxIsScrolled) {
               return <Widget>[
                 SliverAppBar(
                   automaticallyImplyLeading: false,
-                  expandedHeight: 500.0,
-                  backgroundColor: const Color(0xFFEAC7C7),
+                  expandedHeight: 600.0,
+                  backgroundColor: const Color(0xFF393E46),
                   floating: false,
                   pinned: true,
                   stretch: true,
                   flexibleSpace: FlexibleSpaceBar(
                     centerTitle: true,
                     collapseMode: CollapseMode.parallax,
-                    title: const Text("Liste des enfants",
+                    title: const Text("Sélectionner un élève",
                         style: TextStyle(
                           height: 0.01,
                           color: Color.fromARGB(255, 0, 0, 0),
-                          fontSize: 19.0,
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.bold,
                         )),
                     background: Lottie.asset(
                       "video/sghar.json",

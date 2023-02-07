@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:schoolclient/screens/administration-screen/CreateScreen.dart';
@@ -86,6 +87,7 @@ class AdminPage extends StatelessWidget {
                 color: Color(0xFFEEEEEE),
               ),
               onTap: () {
+                signOut();
                Navigator.pushNamedAndRemoveUntil(
                     context, Login.routeName, (route) => false);
               },
@@ -97,4 +99,14 @@ class AdminPage extends StatelessWidget {
       ),
     );
   }
+  Future<void> signOut() async {
+  await FirebaseAuth.instance.signOut();
+  FirebaseAuth.instance.userChanges().listen((User? user) {
+    if (user == null) {
+      print('User is currently signed out!');
+    } else {
+      print('User is signed in!');
+    }
+  });
+}
 }

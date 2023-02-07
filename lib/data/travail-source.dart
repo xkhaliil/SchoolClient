@@ -2,13 +2,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:schoolclient/model/travail.dart';
 
-
 class TravailSource {
   FirebaseFirestore db = FirebaseFirestore.instance;
   static const travailCollection = "travail";
 
-  Future<void> createTravail(String description, String classeID) async {
+  Future<void> createTravail(String description,String titre, String classeID) async {
     db.collection(travailCollection).doc().set({
+      "titre":titre,
       "description": description,
       "classeID": classeID,
     }).then((value) {
@@ -23,6 +23,7 @@ class TravailSource {
             (travails) => travails.docs
                 .map((element) => Travail(
                     id: element.id,
+                    titre:element.data()["titre"],
                     description: element.data()["description"],
                     ClasseID: element.data()["classeID"]))
                 .toList(),
@@ -38,6 +39,7 @@ class TravailSource {
             (travails) => travails.docs
                 .map((element) => Travail(
                     id: element.id,
+                     titre:element.data()["titre"],
                     description: element.data()["description"],
                     ClasseID: element.data()["classeID"]))
                 .toList(),

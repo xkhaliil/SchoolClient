@@ -19,8 +19,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData.light().copyWith(
-        scaffoldBackgroundColor: Color(0xFFF7F5EB),
-        primaryColor: Color(0xFFF7F5EB),
+        scaffoldBackgroundColor: const Color(0xFFEEEEEE),
+        primaryColor: const Color(0xFFEEEEEE),
       ),
       initialRoute: SplashScreen.routeName,
       routes: routes,

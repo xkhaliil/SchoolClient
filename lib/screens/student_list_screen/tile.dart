@@ -1,5 +1,5 @@
-
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:schoolclient/data/shared_preferences.dart';
 import 'package:schoolclient/model/student.dart';
 import '../student_screen/student_screen.dart';
@@ -11,24 +11,37 @@ class StudentTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: const Icon(
-        Icons.person,
-        size: 55,
-      ),
-      
-      iconColor: const Color(0xFFEAC7C7),
-      tileColor: const Color(0xFFA0C3D2),
+      hoverColor: const Color(0xFF474E68),
+      selectedColor: const Color(0xFF474E68),
+      selectedTileColor: const Color(0xFF474E68),
+      leading: Lottie.asset("video/StudentIcon.json"),
       title: Text(
         "${student.nom} ${student.prenom}",
-        textScaleFactor: 1.5,
+        // ignore: prefer_const_constructors
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 19,
+        ),
       ),
-      subtitle: Text("   "),
+      subtitle: const Text(""),
+      trailing: const Icon(Icons.arrow_forward_ios),
       onTap: () {
         SharedPreferencesHelper.putSelectedStudentId(student.id);
-        Navigator.restorablePushNamed(context, StudentScreen.routeName);
-      }
+        Navigator.pushReplacement(
+          context,
+          PageRouteBuilder(
+            transitionDuration: Duration(milliseconds: 500),
+            pageBuilder: (_, animation, __) => StudentScreen(),
+            transitionsBuilder: (_, animation, __, child) => SlideTransition(
+              position: Tween<Offset>(
+                begin: Offset(1, 0),
+                end: Offset.zero,
+              ).animate(animation),
+              child: child,
+            ),
+          ),
+        );
+      },
     );
   }
-
 }
-

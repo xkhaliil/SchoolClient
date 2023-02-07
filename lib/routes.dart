@@ -8,7 +8,7 @@ import 'package:schoolclient/screens/administration-screen/Create/addNews.dart';
 import 'package:schoolclient/screens/administration-screen/Create/addStudent.dart';
 import 'package:schoolclient/screens/administration-screen/adminPage.dart';
 import 'package:schoolclient/screens/administration-screen/CreateScreen.dart';
-import 'package:schoolclient/screens/login_screen/login_admin.dart';
+
 import 'package:schoolclient/screens/student_list_screen/student_list.dart';
 import 'package:schoolclient/screens/student_screen/cours_et_travaux/matierePage.dart';
 import 'package:schoolclient/screens/student_screen/student_screen.dart';
@@ -23,7 +23,7 @@ Map<String, WidgetBuilder> routes = {
   StudentList.routeName: (context) => const StudentList(),
   OnBoarding.routeName: (context) => const OnBoarding(),
   CreateScreen.routeName: (context) => const CreateScreen(),
-  LoginAdmin.routeName: (context) => const LoginAdmin(),
+
   AddAccount.routeName: (context) => const AddAccount(),
   AddStudent.routeName: (context) => const AddStudent(),
   AddClass.routeName: (context) => const AddClass(),

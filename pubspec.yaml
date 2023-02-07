@@ -87,6 +87,10 @@ flutter:
     - video/bgadmin.json
     - video/logoutadmin.json
     - video/subject.json
+    - video/error.json
+    - video/StudentIcon.json
+    - video/profileIcon.json
+    - video/annonce.json
     
    
 

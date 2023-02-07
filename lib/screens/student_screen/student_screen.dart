@@ -4,13 +4,15 @@ import 'package:schoolclient/data/annonce-source.dart';
 import 'package:schoolclient/data/matiere-source.dart';
 import 'package:schoolclient/data/shared_preferences.dart';
 import 'package:schoolclient/data/student-source.dart';
+import 'package:schoolclient/data/travail-source.dart';
 import 'package:schoolclient/model/Classe.dart';
 import 'package:schoolclient/model/annonce.dart';
 import 'package:schoolclient/model/matiere.dart';
 import 'package:schoolclient/model/travail.dart';
-import 'package:schoolclient/screens/student_screen/cours_et_travaux/cours_et_travaux.dart';
+import 'package:schoolclient/screens/student_screen/cours_et_travaux/cours.dart';
 import 'package:schoolclient/screens/student_screen/annonces.dart';
 import 'package:schoolclient/screens/student_screen/profile.dart';
+import 'package:schoolclient/screens/student_screen/travaux.dart';
 
 class StudentScreen extends StatefulWidget {
   static String routeName = (StudentScreen).toString();
@@ -33,6 +35,7 @@ class _StudentScreenState extends State<StudentScreen> {
     super.initState();
     getAnnonces();
     getMatieres();
+    getTravaux();
   }
 
   void getAnnonces() {
@@ -46,7 +49,8 @@ class _StudentScreenState extends State<StudentScreen> {
   void getMatieres() {
     SharedPreferencesHelper.getSelectedStudentId()
         .then((studentId) => StudentSource().getStudentById(studentId))
-        .then((student) => MatiereSource().getMatiereListByClasse(student.classeID))
+        .then((student) =>
+            MatiereSource().getMatiereListByClasse(student.classeID))
         .then((matiereList) {
       setState(() {
         this.matiereList = matiereList;
@@ -54,18 +58,30 @@ class _StudentScreenState extends State<StudentScreen> {
     });
   }
 
+  void getTravaux() {
+    SharedPreferencesHelper.getSelectedStudentId()
+        .then((studentId) => StudentSource().getStudentById(studentId))
+        .then((student) =>
+            TravailSource().getTravailListByClasse(student.classeID))
+        .then((travailList) {
+      setState(() {
+        this.travailList = travailList;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) => SafeArea(
         child: DefaultTabController(
-          length: 3,
+          length: 4,
           child: Scaffold(
             body: NestedScrollView(
               headerSliverBuilder:
                   (BuildContext context, bool innerBoxIsScrolled) {
                 return <Widget>[
                   SliverAppBar(
-                    backgroundColor: Color(0xFFEAC7C7),
-                    expandedHeight: 300.0,
+                    backgroundColor: Color(0xFFEEEEEE),
+                    expandedHeight: 50.0,
                     centerTitle: true,
                     floating: false,
                     pinned: true,
@@ -76,21 +92,19 @@ class _StudentScreenState extends State<StudentScreen> {
                         title: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            Image.asset('images/logo-eliteee.png', height: 150)
-                          ],
                         ),
+                        
                         background: Lottie.asset(
                           "video/homebg.json",
-                          fit: BoxFit.cover,
+                          fit: BoxFit.fill
                         )),
                   ),
                   SliverPersistentHeader(
                     delegate: _SliverAppBarDelegate(
                       const TabBar(
                         indicatorSize: TabBarIndicatorSize.label,
-                        labelColor: Color(0xFFA0C3D2),
-                        unselectedLabelColor: Color.fromARGB(255, 0, 0, 0),
+                        labelColor: Color(0xFF00ADB5),
+                        unselectedLabelColor: Color(0xFFEEEEEE),
                         tabs: _tabs,
                       ),
                     ),
@@ -108,6 +122,11 @@ class _StudentScreenState extends State<StudentScreen> {
                         .toList(),
                   ),
                   Column(
+                    children: travailList
+                        .map((travail) => TravauxPage(travail: travail))
+                        .toList(),
+                  ),
+                  Column(
                     children: annonceList
                         .map((annonce) => NewsFeedPage(annonce: annonce))
                         .toList(),
@@ -121,8 +140,9 @@ class _StudentScreenState extends State<StudentScreen> {
 }
 
 const _tabs = [
-  Tab(icon: Icon(Icons.person), text: "Profile"),
-  Tab(icon: Icon(Icons.assignment_outlined), text: "Cours et travaux"),
+  Tab(icon: Icon(Icons.person), text: "Profile",),
+  Tab(icon: Icon(Icons.assignment_outlined), text: "Cours"),
+  Tab(icon: Icon(Icons.home), text: "Travail a faire"),
   Tab(icon: Icon(Icons.newspaper), text: "Annonces"),
 ];
 
@@ -140,7 +160,11 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
-    return _tabBar;
+        
+    return new Container(
+      color: Color(0xFF222831), // ADD THE COLOR YOU WANT AS BACKGROUND.
+      child: _tabBar,
+    );
   }
 
   @override

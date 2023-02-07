@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:schoolclient/screens/administration-screen/adminPage.dart';
-import 'package:schoolclient/screens/login_screen/login_admin.dart';
+
 import 'package:schoolclient/screens/student_list_screen/student_list.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -15,7 +15,8 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  final bool _loginAsAdmin = false;
+  // ignore: unused_field
+  bool _loginAsAdmin = false;
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -37,10 +38,12 @@ class _LoginState extends State<Login> {
 
     // try sign in
     try {
-      if (_loginAsAdmin) {
+      if (emailController.text == "1212" &&
+          passwordController.text == "adminadmin") {
+        _loginAsAdmin = true;
         await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: "admin@elite.tn",
-          password: "admin123",
+          email: "${emailController.text}$eliteEmail",
+          password: passwordController.text,
         );
         WidgetsBinding.instance.addPostFrameCallback((_) {
           Navigator.pop(context);
@@ -63,21 +66,27 @@ class _LoginState extends State<Login> {
       // pop the loading circle
       Navigator.pop(context);
       // show error message
-      showErrorMessage("Impossible de se connecter");
+      Lottie.asset("");
+      showErrorMessage();
     }
   }
 
   // error message to user
-  void showErrorMessage(String message) {
+  void showErrorMessage() {
     showDialog(
       context: context,
       builder: (context) {
+        // ignore: prefer_const_constructors
         return AlertDialog(
-          backgroundColor: const Color(0xFFA0C3D2),
-          title: Center(
-            child: Text(
-              message,
-              style: const TextStyle(color: Colors.white),
+          backgroundColor: const Color(0xFF393E46),
+          content: SizedBox(
+            height: 100,
+            child: Column(
+              children: [
+                Lottie.asset("video/error.json", height: 50),
+                const SizedBox(height: 16),
+                const Text("Impossible de se connecter"),
+              ],
             ),
           ),
         );
@@ -89,22 +98,12 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Navigator.pushNamed(context, LoginAdmin.routeName);
-          },
-          // ignore: sort_child_properties_last
-          child: const Icon(
-            Icons.admin_panel_settings,
-            color: Color.fromARGB(255, 137, 83, 79),
-          ),
-          backgroundColor: const Color(0xFFA0C3D2),
-        ),
+        backgroundColor: const Color(0xFF222831),
         body: Form(
           key: _formKey,
           child: Center(
             child: Card(
-              color: const Color(0xFFEAE0DA),
+              color: const Color(0xFF393E46),
               elevation: 8,
               child: Container(
                 padding: const EdgeInsets.all(32.0),
@@ -145,7 +144,7 @@ class _LoginState extends State<Login> {
                         decoration: const InputDecoration(
                           labelText: 'Téléphone',
                           labelStyle: TextStyle(
-                              color: Color(0xFFA0C3D2),
+                              color: Color(0xFF00ADB5),
                               fontWeight: FontWeight.w900),
                           filled: true,
                           //<-- SEE HERE
@@ -153,12 +152,12 @@ class _LoginState extends State<Login> {
                           hintText: 'Entrez votre numéro de téléphone',
                           prefixIcon: Icon(
                             Icons.phone,
-                            color: Color(0xFFA0C3D2),
+                            color: Color(0xFF00ADB5),
                           ),
                           border: OutlineInputBorder(),
                           focusedBorder: OutlineInputBorder(
                             borderSide: BorderSide(
-                                color: Color(0xFFA0C3D2), width: 2.0),
+                                color: Color(0xFF00ADB5), width: 2.0),
                           ),
                         ),
                       ),
@@ -175,7 +174,7 @@ class _LoginState extends State<Login> {
                         obscureText: !_isPasswordVisible,
                         decoration: InputDecoration(
                             labelStyle: const TextStyle(
-                                color: Color(0xFFA0C3D2),
+                                color: Color(0xFF00ADB5),
                                 fontWeight: FontWeight.w900),
                             filled: true,
                             //<-- SEE HERE
@@ -184,12 +183,12 @@ class _LoginState extends State<Login> {
                             hintText: 'Entrez votre mot de passe',
                             prefixIcon: const Icon(
                               Icons.lock_outline_rounded,
-                              color: Color(0xFFA0C3D2),
+                              color: Color(0xFF00ADB5),
                             ),
                             border: const OutlineInputBorder(),
                             focusedBorder: const OutlineInputBorder(
                               borderSide: BorderSide(
-                                  color: Color(0xFFA0C3D2), width: 2.0),
+                                  color: Color(0xFF00ADB5), width: 2.0),
                             ),
                             suffixIcon: IconButton(
                               icon: Icon(_isPasswordVisible
@@ -209,13 +208,13 @@ class _LoginState extends State<Login> {
                           style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(7)),
-                            backgroundColor: Color(0xFFA0C3D2),
+                            backgroundColor: const Color(0xFF00ADB5),
                           ),
                           onPressed: signUserIn,
                           child: const Padding(
                             padding: EdgeInsets.all(10.0),
                             child: Text(
-                              "s'authentifier",
+                              "S'authentifier",
                               style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,

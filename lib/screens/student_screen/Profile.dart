@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:schoolclient/data/classe-source.dart';
 import 'package:schoolclient/data/shared_preferences.dart';
 import 'package:schoolclient/data/student-source.dart';
@@ -36,6 +37,36 @@ class _ProfilePageState extends State<ProfilePage> {
     });
   }
 
+  void showAdmininfo() {
+  showDialog(
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        backgroundColor: const Color(0xFF393E46),
+        content: SizedBox(
+          height: 220,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset(
+                "images/logo-eliteee.png",
+                height: 100,
+              ),
+              const SizedBox(height: 16),
+              const Text("Email : elite.mahdia@gmail.com"),
+              const Text("Site web : ecole-elite.tn"),
+              const Text("Numéro de téléphone: 97 277 372"),
+              const Text("Adresse : Rue Kortoba cité Andalous"),
+               const Text("derrière carrefour Mahdia, Mahdia, Tunisia",),
+            ],
+          ),
+        ),
+      );
+    },
+  );
+}
+
+
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -53,32 +84,33 @@ class _ProfilePageState extends State<ProfilePage> {
                         gradient: LinearGradient(
                             begin: Alignment.bottomCenter,
                             end: Alignment.topCenter,
-                            colors: [Color(0xffA0C3D2), Color(0xffF7F5EB)]),
+                            colors: [Color(0xFFEEEEEE), Color(0xff222831)]),
                         borderRadius: BorderRadius.only(
-                          bottomLeft: Radius.circular(50),
-                          bottomRight: Radius.circular(50),
+                          bottomLeft: Radius.circular(10),
+                          bottomRight: Radius.circular(10),
                         )),
                   ),
                   Align(
                     alignment: Alignment.bottomCenter,
                     child: SizedBox(
-                      width: 150,
-                      height: 150,
+                      width: 900,
+                      height: 350,
                       child: Stack(
                         fit: StackFit.expand,
                         children: [
                           Container(
                             decoration: const BoxDecoration(
-                              color: Color.fromARGB(0, 160, 195, 210),
+                              color: Color.fromARGB(0, 0, 0, 0),
                               shape: BoxShape.circle,
-                              image: DecorationImage(
-                                  fit: BoxFit.cover,
-                                  image: AssetImage("images/login2.png")),
+                            ),
+                            child: ClipOval(
+                              child: Lottie.asset('video/profileIcon.json',
+                                  fit: BoxFit.cover, height: 10000),
                             ),
                           ),
                           Positioned(
                             bottom: 0,
-                            right: 0,
+                            right: 180,
                             child: CircleAvatar(
                               radius: 20,
                               backgroundColor:
@@ -111,26 +143,41 @@ class _ProfilePageState extends State<ProfilePage> {
                           .headline6
                           ?.copyWith(fontWeight: FontWeight.bold),
                     ),
-                    SizedBox(height: 16),
+                    const SizedBox(height: 16),
                     Text(studentClasse == null
                         ? ""
                         : "Classe : ${studentClasse?.nom}"),
                     Text(studentClasse == null
                         ? ""
                         : "Niveau : ${studentClasse?.niveau}"),
-                    SizedBox(height: 16),
+                    const SizedBox(height: 16),
                     const SizedBox(height: 16),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         FloatingActionButton.extended(
-                          backgroundColor: Color(0xFFA0C3D2),
+                          backgroundColor: const Color(0xFF00ADB5),
                           onPressed: () {
-                            Navigator.pop(context, StudentList.routeName);
+                            Navigator.pushReplacement(
+                              context,
+                              PageRouteBuilder(
+                                transitionDuration: const Duration(milliseconds: 500),
+                                pageBuilder: (_, animation, __) =>
+                                    const StudentList(),
+                                transitionsBuilder: (_, animation, __, child) =>
+                                    SlideTransition(
+                                  position: Tween<Offset>(
+                                    begin: const Offset(1, 0),
+                                    end: Offset.zero,
+                                  ).animate(animation),
+                                  child: child,
+                                ),
+                              ),
+                            );
                           },
-                          heroTag: 'Changer eleve ',
+                          heroTag: "Changer l'étudiant ",
                           elevation: 0,
-                          label: const Text("Changer eleve"),
+                          label: const Text("Changer l'étudiant"),
                           icon: const Icon(Icons.change_circle_rounded),
                         ),
                         const SizedBox(width: 16.0),
@@ -140,16 +187,29 @@ class _ProfilePageState extends State<ProfilePage> {
                             Navigator.pushNamedAndRemoveUntil(
                                 context, Login.routeName, (route) => false);
                           },
-                          heroTag: 'deconnexion',
+                          heroTag: 'Déconnexion',
                           elevation: 0,
-                          backgroundColor: Color(0xFFEAC7C7),
-                          label: const Text("deconnexion"),
+                          backgroundColor: Colors.red,
+                          label: const Text("Déconnexion"),
                           icon: const Icon(Icons.logout),
                         ),
                       ],
                     ),
-                    SizedBox(height: 16),
-                    // Text(studentClasse!.nom),
+                    const SizedBox(height: 30.0),
+                    FloatingActionButton.extended(
+                      onPressed: () {
+                        showAdmininfo();
+                      },
+                      heroTag: "Contacter l'administration",
+                      elevation: 0,
+                      backgroundColor: const Color(0xFF03C988),
+                      label: const Text("Contacter l'administration"),
+                      icon: const Icon(Icons.contact_page),
+                    ),
+                    const SizedBox(height: 16),
+                    Image.asset("images/logo-eliteee.png",height: 100,),
+                    const Text("ELITE école primaire & collège pilote privé Mahdia")
+                    
                   ],
                 ),
               ),
