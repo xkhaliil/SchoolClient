@@ -68,4 +68,10 @@ class MatiereSource {
         .doc(newMatiere.id)
         .set(newMatiere.toMap());
   }
+
+  Future<void> deleteMatiere(Matiere newMatiere) async {
+    return await db.collection(matiereCollection)
+        .doc(newMatiere.id)
+        .delete();
+  }
 }
