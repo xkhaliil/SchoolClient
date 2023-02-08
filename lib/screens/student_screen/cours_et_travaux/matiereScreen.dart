@@ -130,9 +130,8 @@ class _MatierePageState extends State<MatierePage> {
 }
 
 Future<void> _launchUrl(String url) async {
-  if (await canLaunchUrl(Uri.parse(url))) {
-    await launchUrl(Uri.parse(url));
-  } else {
-    throw Exception('Could not launch $url');
+  if (!await launchUrl(Uri.parse(url))) {
+    throw 'Could not launch $url';
   }
+    
 }
