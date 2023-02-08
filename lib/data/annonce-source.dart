@@ -13,6 +13,7 @@ class AnnonceSource {
       "contenu": contenu,
       "date": DateTime.now(),
     }).then((value) {
+      //firebase messaging ; notify all users
       return value;
     }, onError: (e) {
       return Future.error(Exception("Impossible to create a News"));

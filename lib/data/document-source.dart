@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -15,7 +17,8 @@ class DocumentSource {
 
     try {
       print("uploading file = ${selectedFile.name}");
-      await documentRef.putData(selectedFile.bytes!);
+      await uploadFile(documentRef, selectedFile);
+
       print("uploading file done");
       db.collection(documentCollection).doc().set({
         "description": description,
@@ -29,6 +32,14 @@ class DocumentSource {
       });
     } on FirebaseException catch (e) {
       print("error=$e");
+    }
+  }
+
+  Future<void> uploadFile(Reference documentRef, PlatformFile selectedFile) async {
+    if (Platform.isAndroid || Platform.isIOS) {
+      await documentRef.putFile(File(selectedFile.path.toString()));
+    } else {
+      await documentRef.putData(selectedFile.bytes!);
     }
   }
 
@@ -55,29 +66,26 @@ class DocumentSource {
           .where("matiereID", isEqualTo: matiereID)
           .get()
           .then(
-            (documents) {
-              return documents.docs
-                .map(
-                  (element) {
-                    print("document : ${element.data()}");
-                    print("document ID : ${element.id}");
-                    return Document(
-                      id: element.id,
-                      description: element.data()["description"],
-                      uri: element.data()["uri"],
-                      classeID: element.data()["classeID"],
-                      matiereID: element.data()["matiereID"]);
-                  },
-                )
-                .toList();
+        (documents) {
+          return documents.docs.map(
+            (element) {
+              print("document : ${element.data()}");
+              print("document ID : ${element.id}");
+              return Document(
+                  id: element.id,
+                  description: element.data()["description"],
+                  uri: element.data()["uri"],
+                  classeID: element.data()["classeID"],
+                  matiereID: element.data()["matiereID"]);
             },
-            onError: (e) => print("Error completing: $e"),
-          );
+          ).toList();
+        },
+        onError: (e) => print("Error completing: $e"),
+      );
 
   Future<String> getDocumentDownloadPublicURL(String uri) async {
     final storageRef = FirebaseStorage.instance.ref();
     final documentRef = storageRef.child(uri);
     return documentRef.getDownloadURL();
   }
-
 }
