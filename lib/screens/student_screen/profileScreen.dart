@@ -93,8 +93,8 @@ class _ProfilePageState extends State<ProfilePage> {
                   Align(
                     alignment: Alignment.bottomCenter,
                     child: SizedBox(
-                      width: 900,
-                      height: 350,
+                      width: 500,
+                      height: 500,
                       child: Stack(
                         fit: StackFit.expand,
                         children: [
@@ -105,12 +105,14 @@ class _ProfilePageState extends State<ProfilePage> {
                             ),
                             child: ClipOval(
                               child: Lottie.asset('video/profileIcon.json',
-                                  fit: BoxFit.cover, height: 10000),
+                              width: double.infinity,
+            height: double.infinity,
+                                  ),
                             ),
                           ),
                           Positioned(
                             bottom: 0,
-                            right: 180,
+                            right: 0,
                             child: CircleAvatar(
                               radius: 20,
                               backgroundColor:
@@ -118,7 +120,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               child: Container(
                                 margin: const EdgeInsets.all(8.0),
                                 decoration: const BoxDecoration(
-                                    color: Colors.green,
+                                    color: Color.fromARGB(0, 76, 175, 79),
                                     shape: BoxShape.circle),
                               ),
                             ),
@@ -137,7 +139,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 child: Column(
                   children: [
                     Text(
-                      "${student?.nom} ${student?.prenom} ",
+                      "  ${student?.nom} ${student?.prenom} ",
                       style: Theme.of(context)
                           .textTheme
                           .headline6

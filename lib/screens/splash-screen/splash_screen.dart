@@ -20,67 +20,68 @@ class SplashScreen extends StatelessWidget {
       var currentUser = FirebaseAuth.instance.currentUser;
 
       // if (currentUser != null) {
-        
+
       //     Navigator.pushNamedAndRemoveUntil(
       //         context, StudentList.routeName, (route) => false);
-        
+
       // } else {
       //   Navigator.pushNamedAndRemoveUntil(
       //       context, OnBoarding.routeName, (route) => false);
       // }
 
-
       if (currentUser != null) {
-  Navigator.pushAndRemoveUntil(
-    context,
-    PageRouteBuilder(
-      transitionDuration: const Duration(milliseconds: 100),
-      pageBuilder: (context, animation, secondaryAnimation) {
-        return const StudentList();
-      },
-      transitionsBuilder: (context, animation, secondaryAnimation, child) {
-        return FadeTransition(
-          opacity: animation,
-          child: child,
+        Navigator.pushAndRemoveUntil(
+          context,
+          PageRouteBuilder(
+            transitionDuration: const Duration(milliseconds: 100),
+            pageBuilder: (context, animation, secondaryAnimation) {
+              return const StudentList();
+            },
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
+              return FadeTransition(
+                opacity: animation,
+                child: child,
+              );
+            },
+          ),
+          (route) => false,
         );
-      },
-    ),
-    (route) => false,
-  );
-} else {
-  Navigator.pushAndRemoveUntil(
-    context,
-    PageRouteBuilder(
-      transitionDuration: const Duration(milliseconds: 100),
-      pageBuilder: (context, animation, secondaryAnimation) {
-        return const OnBoarding();
-      },
-      transitionsBuilder: (context, animation, secondaryAnimation, child) {
-        return FadeTransition(
-          opacity: animation,
-          child: child,
+      } else {
+        Navigator.pushAndRemoveUntil(
+          context,
+          PageRouteBuilder(
+            transitionDuration: const Duration(milliseconds: 100),
+            pageBuilder: (context, animation, secondaryAnimation) {
+              return const OnBoarding();
+            },
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
+              return FadeTransition(
+                opacity: animation,
+                child: child,
+              );
+            },
+          ),
+          (route) => false,
         );
-      },
-    ),
-    (route) => false,
-  );
-}
+      }
     });
     return SafeArea(
       child: Scaffold(
         body: Center(
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Stack(
                 children: <Widget>[
                   Align(
                     alignment: Alignment.center,
                     child: SizedBox(
-                      width: 500.0,
-                      height: 850,
-                      child: 
-                      Lottie.asset(
-                  "video/133784-back-to-school.json"),
+                      child: Lottie.asset(
+                        "video/133784-back-to-school.json",
+                      ),
                     ),
                   ),
                 ],
