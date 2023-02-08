@@ -4,7 +4,7 @@ import 'package:schoolclient/data/shared_preferences.dart';
 import 'package:schoolclient/model/Classe.dart';
 import 'package:schoolclient/model/matiere.dart';
 
-import 'matierePage.dart';
+import 'matiereScreen.dart';
 
 class CoursePage extends StatelessWidget {
   final Matiere matiere;

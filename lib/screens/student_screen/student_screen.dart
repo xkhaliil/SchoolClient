@@ -9,10 +9,10 @@ import 'package:schoolclient/model/Classe.dart';
 import 'package:schoolclient/model/annonce.dart';
 import 'package:schoolclient/model/matiere.dart';
 import 'package:schoolclient/model/travail.dart';
-import 'package:schoolclient/screens/student_screen/cours_et_travaux/cours.dart';
-import 'package:schoolclient/screens/student_screen/annonces.dart';
-import 'package:schoolclient/screens/student_screen/profile.dart';
-import 'package:schoolclient/screens/student_screen/travaux.dart';
+import 'package:schoolclient/screens/student_screen/cours_et_travaux/coursScreen.dart';
+import 'package:schoolclient/screens/student_screen/annoncesScreen.dart';
+import 'package:schoolclient/screens/student_screen/profileScreen.dart';
+import 'package:schoolclient/screens/student_screen/travauxScreen.dart';
 
 class StudentScreen extends StatefulWidget {
   static String routeName = (StudentScreen).toString();
@@ -93,11 +93,8 @@ class _StudentScreenState extends State<StudentScreen> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
                         ),
-                        
-                        background: Lottie.asset(
-                          "video/homebg.json",
-                          fit: BoxFit.fill
-                        )),
+                        background: Lottie.asset("video/homebg.json",
+                            fit: BoxFit.fill)),
                   ),
                   SliverPersistentHeader(
                     delegate: _SliverAppBarDelegate(
@@ -140,7 +137,10 @@ class _StudentScreenState extends State<StudentScreen> {
 }
 
 const _tabs = [
-  Tab(icon: Icon(Icons.person), text: "Profile",),
+  Tab(
+    icon: Icon(Icons.person),
+    text: "Profile",
+  ),
   Tab(icon: Icon(Icons.assignment_outlined), text: "Cours"),
   Tab(icon: Icon(Icons.home), text: "Travail a faire"),
   Tab(icon: Icon(Icons.newspaper), text: "Annonces"),
@@ -160,7 +160,6 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
-        
     return new Container(
       color: Color(0xFF222831), // ADD THE COLOR YOU WANT AS BACKGROUND.
       child: _tabBar,

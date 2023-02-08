@@ -1,7 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import 'package:schoolclient/screens/administration-screen/CreateScreen.dart';
+import 'package:schoolclient/screens/administration-screen/createScreen.dart';
+import 'package:schoolclient/screens/administration-screen/deleteScreen.dart';
+import 'package:schoolclient/screens/administration-screen/updateScreen.dart';
 import 'package:schoolclient/screens/login_screen/login.dart';
 
 class AdminPage extends StatelessWidget {
@@ -61,7 +63,7 @@ class AdminPage extends StatelessWidget {
                 color: Color(0xFFEEEEEE),
               ),
               onTap: () {
-                // Perform action when the list tile is tapped
+                Navigator.pushNamed(context, DeleteScreen.routeName);
               },
             ),
             const SizedBox(height: 10),
@@ -74,7 +76,7 @@ class AdminPage extends StatelessWidget {
                 color: Color(0xFFEEEEEE),
               ),
               onTap: () {
-                // Perform action when the list tile is tapped
+                Navigator.pushNamed(context, UpdateScreen.routeName);
               },
             ),
              const SizedBox(height: 100),
