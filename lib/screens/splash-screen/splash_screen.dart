@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:schoolclient/screens/administration-screen/adminPage.dart';
 import 'package:schoolclient/screens/student_list_screen/student_list.dart';
 import 'package:schoolclient/screens/login_screen/onBoarding.dart';
 
@@ -8,7 +9,7 @@ class SplashScreen extends StatelessWidget {
   static String routeName = '/';
 
   // ignore: non_constant_identifier_names
-  final String AdminUID = "GH3IlKXyYWZcDVB4qETtRB4L3Df2";
+  
 
   const SplashScreen({super.key});
 
@@ -30,7 +31,25 @@ class SplashScreen extends StatelessWidget {
       // }
 
       if (currentUser != null) {
-        Navigator.pushAndRemoveUntil(
+        if(currentUser.uid=="bgMYoVWZ8vawOw6epUUkKws9dq13"){
+          Navigator.pushAndRemoveUntil(
+          context,
+          PageRouteBuilder(
+            transitionDuration: const Duration(milliseconds: 100),
+            pageBuilder: (context, animation, secondaryAnimation) {
+              return const AdminPage();
+            },
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
+              return FadeTransition(
+                opacity: animation,
+                child: child,
+              );
+            },
+          ),
+          (route) => false,
+        );
+        }else {Navigator.pushAndRemoveUntil(
           context,
           PageRouteBuilder(
             transitionDuration: const Duration(milliseconds: 100),
@@ -46,7 +65,8 @@ class SplashScreen extends StatelessWidget {
             },
           ),
           (route) => false,
-        );
+        );}
+        
       } else {
         Navigator.pushAndRemoveUntil(
           context,

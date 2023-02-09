@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
-
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:schoolclient/data/annonce-source.dart';
+
+
+
+import 'package:schoolclient/model/annonce.dart';
+
+
 
 class DeleteNews extends StatelessWidget {
   const DeleteNews({Key? key}) : super(key: key);
@@ -53,7 +58,7 @@ class _Logo extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(16.0),
           child: Text(
-            "Supprimer une annonce",
+            "Supprimer une annonce!",
             textAlign: TextAlign.center,
             style: isSmallScreen
                 ? Theme.of(context).textTheme.headline5
@@ -76,12 +81,20 @@ class _FormContent extends StatefulWidget {
 }
 
 class __FormContentState extends State<_FormContent> {
-  bool _isPasswordVisible = false;
-  bool _rememberMe = false;
-  final titleController = TextEditingController();
-  final descriptionController = TextEditingController();
+  List<Annonce> annonceList = List.empty();
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  Annonce? _selectedAnnonce;
+  @override
+  void initState() {
+    super.initState();
+    AnnonceSource().getAnnonceList().then((result) {
+      setState(() {
+        annonceList = result;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -93,25 +106,14 @@ class __FormContentState extends State<_FormContent> {
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            TextFormField(
-              controller: titleController,
-              decoration: const InputDecoration(
-                labelText: 'Titre',
-                hintText: 'Titre',
-                prefixIcon: Icon(Icons.title),
-                border: OutlineInputBorder(),
-              ),
-            ),
-            _gap(),
-            TextFormField(
-              controller: descriptionController,
-              decoration: const InputDecoration(
-                labelText: 'Desscription',
-                hintText: 'Desscription',
-                prefixIcon: Icon(Icons.description),
-                border: OutlineInputBorder(),
-              ),
-            ),
+            Container(
+                width: 500,
+                height: 50,
+                padding: const EdgeInsets.all(8.0),
+                decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey),
+                    borderRadius: BorderRadius.circular(8.0)),
+                child: _dropDownAnnonce(underline: Container())),
             _gap(),
             SizedBox(
               width: double.infinity,
@@ -123,29 +125,15 @@ class __FormContentState extends State<_FormContent> {
                 child: const Padding(
                   padding: EdgeInsets.all(10.0),
                   child: Text(
-                    'Créer',
+                    'Supprimer',
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                 ),
                 onPressed: () {
-                  if ((titleController.text.isNotEmpty) &&
-                      (descriptionController.text.isNotEmpty)) {
-                    AnnonceSource()
-                        .createAnnonce(
-                            titleController.text, descriptionController.text)
-                        .then((value) {
+                  if (_selectedAnnonce != null) {
+                    AnnonceSource().deleteAnnonce(_selectedAnnonce!).then((value) {
                       Fluttertoast.showToast(
-                          msg: "l'annonce a été créé avec succès!",
-                          toastLength: Toast.LENGTH_SHORT,
-                          gravity: ToastGravity.BOTTOM,
-                          timeInSecForIosWeb: 1,
-                          backgroundColor: Colors.grey,
-                          textColor: Colors.white,
-                          fontSize: 16.0);
-                      cleartext();
-                    }, onError: (e) {
-                      Fluttertoast.showToast(
-                          msg: "erreur!",
+                          msg: "l'annonce a été supprimer avec succès!",
                           toastLength: Toast.LENGTH_SHORT,
                           gravity: ToastGravity.BOTTOM,
                           timeInSecForIosWeb: 1,
@@ -153,6 +141,15 @@ class __FormContentState extends State<_FormContent> {
                           textColor: Colors.white,
                           fontSize: 16.0);
                     });
+                  } else {
+                    Fluttertoast.showToast(
+                        msg: "erreur!",
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.BOTTOM,
+                        timeInSecForIosWeb: 1,
+                        backgroundColor: Colors.grey,
+                        textColor: Colors.white,
+                        fontSize: 16.0);
                   }
                 },
               ),
@@ -165,8 +162,31 @@ class __FormContentState extends State<_FormContent> {
 
   Widget _gap() => const SizedBox(height: 16);
 
-  void cleartext() {
-    titleController.clear();
-    descriptionController.clear();
-  }
+  Widget _dropDownAnnonce({
+    Widget? underline,
+    Widget? icon,
+    TextStyle? style,
+    TextStyle? hintStyle,
+    Color? dropdownColor,
+    Color? iconEnabledColor,
+  }) =>
+      DropdownButton<Annonce>(
+          value: _selectedAnnonce,
+          underline: underline,
+          icon: icon,
+          dropdownColor: dropdownColor,
+          style: style,
+          iconEnabledColor: iconEnabledColor,
+          onChanged: (Annonce? newValue) {
+            setState(() {
+              _selectedAnnonce = newValue;
+            });
+          },
+          hint: Text("Annonces", style: hintStyle),
+          items: annonceList
+              .map((annonce) => DropdownMenuItem<Annonce>(
+                  value: annonce,
+                  child: Text("${annonce.titre} - ${annonce.contenu}")))
+              .toList());
 }
+

@@ -26,6 +26,16 @@ class ClasseSource {
                 .toList(),
             onError: (e) => print("Error completing: $e"),
           );
+  Future<List<Classe>> getClasses() async =>
+      await db.collection(classeCollection).get().then(
+            (response) => response.docs.map((element) {
+              return Classe(
+                  id: element.id,
+                    nom: element.data()["nom"],
+                    niveau: element.data()["niveau"]);
+            }).toList(),
+            onError: (e) => print("Error completing: $e"),
+          );
 
   Future<Classe> getClasseByStudent(String classeID) async => await db
           .collection(classeCollection)
@@ -37,4 +47,7 @@ class ClasseSource {
       }, onError: (e) {
         print("getClasseByStudent error");
       });
+      Future<void> deleteClass(Classe classe) async {
+    return await db.collection(classeCollection).doc(classe.id).delete();
+  }
 }

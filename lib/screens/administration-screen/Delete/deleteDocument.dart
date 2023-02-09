@@ -85,25 +85,15 @@ class _FormContent extends StatefulWidget {
 class __FormContentState extends State<_FormContent> {
   List<Classe> classes = List.empty();
   List<Matiere> matieres = List.empty();
-  PlatformFile? _selectedFile;
-  String? _selectedFileName;
-
-  Future<void> _pickPDF() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles();
-    if (result != null) {
-      _selectedFile = result.files.single;
-      setState(() {
-        _selectedFileName = _selectedFile?.name;
-      });
-    }
-  }
+  List<Document> documents = List.empty();
 
   final descriptionController = TextEditingController();
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   Classe? _selectedClasse;
-
   Matiere? _selectedMatiere;
+  Document? _selectedDocument;
+  static Classe? classeDoc;
 
   @override
   void initState() {
@@ -144,34 +134,14 @@ class __FormContentState extends State<_FormContent> {
                     borderRadius: BorderRadius.circular(8.0)),
                 child: _dropDownMatiere(underline: Container())),
             _gap(),
-            TextFormField(
-              controller: descriptionController,
-              decoration: const InputDecoration(
-                labelText: 'Description',
-                hintText: 'Description',
-                prefixIcon: Icon(Icons.description),
-                border: OutlineInputBorder(),
-              ),
-            ),
-            _gap(),
-            InkWell(
-              onTap: _pickPDF,
-              child: Container(
+            Container(
+                width: 500,
                 height: 50,
-                width: double.infinity,
+                padding: const EdgeInsets.all(8.0),
                 decoration: BoxDecoration(
-                  border: Border.all(
-                    color: Colors.grey,
-                    width: 1.0,
-                  ),
-                ),
-                child: _selectedFileName == null
-                    ? Center(child: Text("Selectioner un fichier PDF"))
-                    : Center(
-                        child:
-                            Text(_selectedFileName ?? "Fichier sélectionné")),
-              ),
-            ),
+                    border: Border.all(color: Colors.grey),
+                    borderRadius: BorderRadius.circular(8.0)),
+                child: _dropDownDocument(underline: Container())),
             _gap(),
             SizedBox(
               width: double.infinity,
@@ -183,37 +153,31 @@ class __FormContentState extends State<_FormContent> {
                 child: const Padding(
                   padding: EdgeInsets.all(10.0),
                   child: Text(
-                    'Ajouter',
+                    'Supprimer',
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                 ),
-                onPressed: () {
-                  if (descriptionController.text.isNotEmpty &&
-                      _selectedClasse != null &&
-                      _selectedMatiere != null &&
-                      _selectedFile != null) {
-                    print("ajouter pressed");
-                    DocumentSource()
-                        .createDocument(
-                            descriptionController.text,
-                            _selectedClasse!.id,
-                            _selectedMatiere!.id,
-                            _selectedFile!)
-                        .then((value) {
+                onPressed: () { if (_selectedDocument!.id != null) {
+                    DocumentSource().DeleteDocument(_selectedDocument!).then((value) {
                       Fluttertoast.showToast(
-                          msg: "le cours a été ajouté avec succès!",
+                          msg: "le documment a été supprimer avec succès!",
                           toastLength: Toast.LENGTH_SHORT,
                           gravity: ToastGravity.BOTTOM,
                           timeInSecForIosWeb: 1,
                           backgroundColor: Colors.grey,
                           textColor: Colors.white,
                           fontSize: 16.0);
-                      cleartext();
-                    }, onError: (e) {
-                      print("error=$e");
                     });
-                  }
-                },
+                  } else {
+                    Fluttertoast.showToast(
+                        msg: "erreur!",
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.BOTTOM,
+                        timeInSecForIosWeb: 1,
+                        backgroundColor: Colors.grey,
+                        textColor: Colors.white,
+                        fontSize: 16.0);
+                  }},
               ),
             ),
           ],
@@ -242,6 +206,7 @@ class __FormContentState extends State<_FormContent> {
           onChanged: (Classe? newValue) {
             setState(() {
               _selectedClasse = newValue;
+              classeDoc=newValue;
             });
             notifySelectedClassChanged();
           },
@@ -271,11 +236,40 @@ class __FormContentState extends State<_FormContent> {
             setState(() {
               _selectedMatiere = newValue;
             });
+            notifySelectedMatiereChanged();
           },
           hint: Text("Selectioner une matiere", style: hintStyle),
           items: matieres
               .map((matiere) => DropdownMenuItem<Matiere>(
                   value: matiere, child: Text(" ${matiere.nom}")))
+              .toList());
+
+
+              Widget _dropDownDocument({
+    Widget? underline,
+    Widget? icon,
+    TextStyle? style,
+    TextStyle? hintStyle,
+    Color? dropdownColor,
+    Color? iconEnabledColor,
+  }) =>
+      DropdownButton<Document>(
+          value: _selectedDocument,
+          underline: underline,
+          icon: icon,
+          dropdownColor: dropdownColor,
+          style: style,
+          iconEnabledColor: iconEnabledColor,
+          onChanged: (Document? newValue) {
+            setState(() {
+              _selectedDocument = newValue;
+            });
+            notifySelectedMatiereChanged();
+          },
+          hint: Text("Selectioner une documment", style: hintStyle),
+          items: documents
+              .map((document) => DropdownMenuItem<Document>(
+                  value: document, child: Text(" ${document.description}")))
               .toList());
 
   void notifySelectedClassChanged() {
@@ -285,8 +279,13 @@ class __FormContentState extends State<_FormContent> {
       });
     });
   }
+  void notifySelectedMatiereChanged() {
+  DocumentSource().getDocumentListByClasseAndMatiere(classeDoc!.id, _selectedMatiere!.id).then((result) {
+      setState(() {
+        documents = result;
+      });
+    });
+}
 
-  void cleartext() {
-    descriptionController.clear();
-  }
+
 }

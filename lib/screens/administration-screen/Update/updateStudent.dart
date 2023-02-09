@@ -5,6 +5,7 @@ import 'package:schoolclient/data/student-source.dart';
 import 'package:schoolclient/data/parent-source.dart';
 import 'package:schoolclient/model/Classe.dart';
 import 'package:schoolclient/model/parent.dart';
+import 'package:schoolclient/model/student.dart';
 
 class UpdateStudent extends StatelessWidget {
   const UpdateStudent({Key? key}) : super(key: key);
@@ -81,12 +82,13 @@ class _FormContent extends StatefulWidget {
 class __FormContentState extends State<_FormContent> {
   List<Classe> classes = List.empty();
   List<Parent> userdetailsList = List.empty();
+  List<Student> studentList = List.empty();
   final prenomController = TextEditingController();
   final nomController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   Classe? _selectedClasse;
-
+  Student? _selectedStudent;
   Parent? _selectedUserDetails;
 
   @override
@@ -102,6 +104,11 @@ class __FormContentState extends State<_FormContent> {
         classes = result;
       });
     });
+    StudentSource().getStudents().then((result) {
+      setState(() {
+        studentList = result;
+      });
+    });
   }
 
   @override
@@ -114,6 +121,15 @@ class __FormContentState extends State<_FormContent> {
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Container(
+                width: 500,
+                height: 50,
+                padding: const EdgeInsets.all(8.0),
+                decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey),
+                    borderRadius: BorderRadius.circular(8.0)),
+                child: _dropDownStudent(underline: Container())),
+            _gap(),
             TextFormField(
               controller: nomController,
               decoration: const InputDecoration(
@@ -155,46 +171,55 @@ class __FormContentState extends State<_FormContent> {
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(4)),
-                ),
-                child: const Padding(
-                  padding: EdgeInsets.all(10.0),
-                  child: Text(
-                    'Ajouter',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(4)),
                   ),
-                ),
-                onPressed: () {
-                  if ((_selectedUserDetails?.id != null) &&
-                      (_selectedClasse?.id != null)) {
-                    StudentSource().createStudent(
-                        nomController.text,
-                        prenomController.text,
-                        _selectedUserDetails!.id,
-                        _selectedClasse!.id);
-                    Fluttertoast.showToast(
-                        msg: "l'etudiant a été créé avec succès!",
-                        toastLength: Toast.LENGTH_SHORT,
-                        gravity: ToastGravity.BOTTOM,
-                        timeInSecForIosWeb: 1,
-                        backgroundColor: Colors.grey,
-                        textColor: Colors.white,
-                        fontSize: 16.0);
-                    cleartext();
-                  } else {
-                    Fluttertoast.showToast(
-                        msg: "erreur!",
-                        toastLength: Toast.LENGTH_SHORT,
-                        gravity: ToastGravity.BOTTOM,
-                        timeInSecForIosWeb: 1,
-                        backgroundColor: Colors.grey,
-                        textColor: Colors.white,
-                        fontSize: 16.0);
-                  }
-                },
-              ),
+                  child: const Padding(
+                    padding: EdgeInsets.all(10.0),
+                    child: Text(
+                      'Ajouter',
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  onPressed: () {
+                    if (_selectedUserDetails?.id != null &&
+                        _selectedClasse?.id != null &&
+                        _selectedStudent?.id != null &&
+                        // ignore: unnecessary_null_comparison
+                        nomController.text != null &&
+                        // ignore: unnecessary_null_comparison
+                        prenomController.text != null) {
+                      StudentSource()
+                          .UpdateStudent(
+                              _selectedStudent!.id,
+                              nomController.text,
+                              prenomController.text,
+                              _selectedClasse!.id,
+                              _selectedUserDetails!.id)
+                          .then((value) {
+                        Fluttertoast.showToast(
+                            msg: "l'etudiant a été créé avec succès!",
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.BOTTOM,
+                            timeInSecForIosWeb: 1,
+                            backgroundColor: Colors.grey,
+                            textColor: Colors.white,
+                            fontSize: 16.0);
+                        cleartext();
+                      }, onError: (e) {
+                        Fluttertoast.showToast(
+                            msg: "erreur!",
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.BOTTOM,
+                            timeInSecForIosWeb: 1,
+                            backgroundColor: Colors.grey,
+                            textColor: Colors.white,
+                            fontSize: 16.0);
+                      });
+                    }
+                  }),
             ),
           ],
         ),
@@ -257,7 +282,32 @@ class __FormContentState extends State<_FormContent> {
                   value: userdetails,
                   child: Text("${userdetails.phone} - ${userdetails.nom}")))
               .toList());
-
+  Widget _dropDownStudent({
+    Widget? underline,
+    Widget? icon,
+    TextStyle? style,
+    TextStyle? hintStyle,
+    Color? dropdownColor,
+    Color? iconEnabledColor,
+  }) =>
+      DropdownButton<Student>(
+          value: _selectedStudent,
+          underline: underline,
+          icon: icon,
+          dropdownColor: dropdownColor,
+          style: style,
+          iconEnabledColor: iconEnabledColor,
+          onChanged: (Student? newValue) {
+            setState(() {
+              _selectedStudent = newValue;
+            });
+          },
+          hint: Text("Select a class", style: hintStyle),
+          items: studentList
+              .map((student) => DropdownMenuItem<Student>(
+                  value: student,
+                  child: Text("${student.nom} - ${student.prenom}")))
+              .toList());
   void cleartext() {
     nomController.clear();
     prenomController.clear();

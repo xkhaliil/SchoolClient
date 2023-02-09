@@ -58,20 +58,20 @@ class MatiereSource {
   Future<void> updateMatiere(String matiereId, String newNom) async {
     // Update one field,
     final data = {"nom": newNom};
-    return await db.collection(matiereCollection)
+    return await db
+        .collection(matiereCollection)
         .doc(matiereId)
         .set(data, SetOptions(merge: true));
   }
 
   Future<void> updateWithNewMatiere(Matiere newMatiere) async {
-    return await db.collection(matiereCollection)
+    return await db
+        .collection(matiereCollection)
         .doc(newMatiere.id)
         .set(newMatiere.toMap());
   }
 
   Future<void> deleteMatiere(Matiere newMatiere) async {
-    return await db.collection(matiereCollection)
-        .doc(newMatiere.id)
-        .delete();
+    return await db.collection(matiereCollection).doc(newMatiere.id).delete();
   }
 }

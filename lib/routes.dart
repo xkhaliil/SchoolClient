@@ -14,12 +14,9 @@ import 'package:schoolclient/screens/administration-screen/Delete/deleteNews.dar
 import 'package:schoolclient/screens/administration-screen/Delete/deleteStudent.dart';
 import 'package:schoolclient/screens/administration-screen/Delete/deleteSubject.dart';
 import 'package:schoolclient/screens/administration-screen/Update/updateAccount.dart';
-import 'package:schoolclient/screens/administration-screen/Update/updateClass.dart';
-import 'package:schoolclient/screens/administration-screen/Update/updateDocument.dart';
-import 'package:schoolclient/screens/administration-screen/Update/updateHomework.dart';
-import 'package:schoolclient/screens/administration-screen/Update/updateNews.dart';
+
 import 'package:schoolclient/screens/administration-screen/Update/updateStudent.dart';
-import 'package:schoolclient/screens/administration-screen/Update/updateSubject.dart';
+
 import 'package:schoolclient/screens/administration-screen/adminPage.dart';
 import 'package:schoolclient/screens/administration-screen/createScreen.dart';
 import 'package:schoolclient/screens/administration-screen/deleteScreen.dart';
@@ -64,9 +61,5 @@ Map<String, WidgetBuilder> routes = {
   UpdateScreen.routeName: (context) => const UpdateScreen(),
   UpdateAccount.routeName: (context) => const UpdateAccount(),
   UpdateStudent.routeName: (context) => const UpdateStudent(),
-  UpdateClass.routeName: (context) => const UpdateClass(),
-  UpdateSubject.routeName: (context) => const UpdateSubject(),
-  UpdateDocument.routeName: (context) => const UpdateDocument(),
-  UpdateHomeWork.routeName: (context) => const UpdateHomeWork(),
-  UpdateNews.routeName: (context) => const UpdateNews(),
+  
 };

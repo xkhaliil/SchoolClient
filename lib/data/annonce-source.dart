@@ -29,4 +29,7 @@ class AnnonceSource {
           onError: (e) => print("Error completing: $e"),
         );
   }
+  Future<void> deleteAnnonce(Annonce annonce) async {
+    return await db.collection(annonceCollection).doc(annonce.id).delete();
+  }
 }

@@ -3,6 +3,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:schoolclient/data/classe-source.dart';
 import 'package:schoolclient/data/matiere-source.dart';
 import 'package:schoolclient/model/Classe.dart';
+import 'package:schoolclient/model/matiere.dart';
 
 class DeleteSubject extends StatelessWidget {
   const DeleteSubject({Key? key}) : super(key: key);
@@ -77,18 +78,18 @@ class _FormContent extends StatefulWidget {
 }
 
 class __FormContentState extends State<_FormContent> {
-  List<Classe> classes = List.empty();
-  final matiereController = TextEditingController();
+  List<Matiere> matieres = List.empty();
+  
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  Classe? _selectedClasse;
+  Matiere? _selectedMatiere;
   @override
   void initState() {
     super.initState();
-    ClasseSource().getClasseList().then((result) {
+    MatiereSource().getMatiereList().then((result) {
       setState(() {
-        classes = result;
+        matieres = result;
       });
     });
   }
@@ -103,16 +104,6 @@ class __FormContentState extends State<_FormContent> {
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            TextFormField(
-              controller: matiereController,
-              decoration: const InputDecoration(
-                labelText: 'Matiere',
-                hintText: 'Matiere',
-                prefixIcon: Icon(Icons.subject),
-                border: OutlineInputBorder(),
-              ),
-            ),
-            _gap(),
             Container(
                 width: 500,
                 height: 50,
@@ -120,7 +111,7 @@ class __FormContentState extends State<_FormContent> {
                 decoration: BoxDecoration(
                     border: Border.all(color: Colors.grey),
                     borderRadius: BorderRadius.circular(8.0)),
-                child: _dropDownClasse(underline: Container())),
+                child: _dropDownMatiere(underline: Container())),
             _gap(),
             SizedBox(
               width: double.infinity,
@@ -132,24 +123,23 @@ class __FormContentState extends State<_FormContent> {
                 child: const Padding(
                   padding: EdgeInsets.all(10.0),
                   child: Text(
-                    'Ajouter',
+                    'Supprimer',
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                 ),
                 onPressed: () {
-                  if ((matiereController.text != null) &&
-                      (_selectedClasse?.id != null)) {
-                    MatiereSource().createMatiere(
-                        matiereController.text, _selectedClasse!.id);
-                    Fluttertoast.showToast(
-                        msg: "la matiere a été ajouté avec succès!",
+                  if 
+                      (_selectedMatiere != null) {
+                    MatiereSource().deleteMatiere(_selectedMatiere!).then((value) {Fluttertoast.showToast(
+                        msg: "la matiere a été supprimer avec succès!",
                         toastLength: Toast.LENGTH_SHORT,
                         gravity: ToastGravity.BOTTOM,
                         timeInSecForIosWeb: 1,
                         backgroundColor: Colors.grey,
                         textColor: Colors.white,
-                        fontSize: 16.0);
-                    cleartext();
+                        fontSize: 16.0);});
+                    
+                   
                   } else {
                     Fluttertoast.showToast(
                         msg: "erruer!",
@@ -171,7 +161,7 @@ class __FormContentState extends State<_FormContent> {
 
   Widget _gap() => const SizedBox(height: 16);
 
-  Widget _dropDownClasse({
+  Widget _dropDownMatiere({
     Widget? underline,
     Widget? icon,
     TextStyle? style,
@@ -179,26 +169,24 @@ class __FormContentState extends State<_FormContent> {
     Color? dropdownColor,
     Color? iconEnabledColor,
   }) =>
-      DropdownButton<Classe>(
-          value: _selectedClasse,
+      DropdownButton<Matiere>(
+          value: _selectedMatiere,
           underline: underline,
           icon: icon,
           dropdownColor: dropdownColor,
           style: style,
           iconEnabledColor: iconEnabledColor,
-          onChanged: (Classe? newValue) {
+          onChanged: (Matiere? newValue) {
             setState(() {
-              _selectedClasse = newValue;
+              _selectedMatiere = newValue;
             });
           },
-          hint: Text("Select a class", style: hintStyle),
-          items: classes
-              .map((classe) => DropdownMenuItem<Classe>(
-                  value: classe,
-                  child: Text("${classe.niveau} - ${classe.nom}")))
+          hint: Text("matieres", style: hintStyle),
+          items: matieres
+              .map((matiere) => DropdownMenuItem<Matiere>(
+                  value: matiere,
+                  child: Text("${matiere.nom} - ${matiere.classeID}")))
               .toList());
 
-  void cleartext() {
-    matiereController.clear();
-  }
+ 
 }

@@ -15,11 +15,11 @@ class ParentSource {
         .then((value) {
       var uid = value.user?.uid;
       if (uid != null) {
-        db.collection(collection).doc(uid).set({
-          "phone": phone,
-          "nom": nom,
-          "password": password
-        }).then((value) {
+        db
+            .collection(collection)
+            .doc(uid)
+            .set({"phone": phone, "nom": nom, "password": password}).then(
+                (value) {
           return value;
         }, onError: (e) {
           return Future.error(Exception("Impossible to create a parent"));
@@ -32,15 +32,25 @@ class ParentSource {
 
   Future<List<Parent>> getParents() async =>
       await db.collection(collection).get().then(
-            (response) => response.docs
-                .map((element) {
-                  return Parent(
-                    id: element.id,
-                    phone: element.data()["phone"],
-                    nom: element.data()["nom"],
-                    password: element.data()["password"]);
-                })
-                .toList(),
+            (response) => response.docs.map((element) {
+              return Parent(
+                  id: element.id,
+                  phone: element.data()["phone"],
+                  nom: element.data()["nom"],
+                  password: element.data()["password"]);
+            }).toList(),
             onError: (e) => print("Error completing: $e"),
           );
+
+  Future<void> deleteParent(Parent parent) async {
+    return await db.collection(collection).doc(parent.id).delete();
+  }
+  Future<void> updateParent(String parentId, String newNom) async {
+    // Update one field,
+    final data = {"nom": newNom};
+    return await db
+        .collection(collection)
+        .doc(parentId)
+        .set(data, SetOptions(merge: true));
+  }
 }

@@ -3,11 +3,19 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:schoolclient/data/parent-source.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:schoolclient/data/student-source.dart';
+import 'package:schoolclient/model/parent.dart';
+import 'package:schoolclient/model/student.dart';
 
-class DeleteAccount extends StatelessWidget {
+class DeleteAccount extends StatefulWidget {
   const DeleteAccount({Key? key}) : super(key: key);
   static String routeName = "DeleteAccount";
 
+  @override
+  State<DeleteAccount> createState() => _DeleteAccountState();
+}
+
+class _DeleteAccountState extends State<DeleteAccount> {
   @override
   Widget build(BuildContext context) {
     final bool isSmallScreen = MediaQuery.of(context).size.width < 600;
@@ -77,11 +85,17 @@ class _FormContent extends StatefulWidget {
 }
 
 class __FormContentState extends State<_FormContent> {
-  bool _isPasswordVisible = false;
-  bool _rememberMe = false;
-  final phoneController = TextEditingController();
-  final passwordController = TextEditingController();
-  final nameController = TextEditingController();
+  List<Parent> userdetailsList = List.empty();
+  Parent? _selectedUserDetails;
+  @override
+  void initState() {
+    super.initState();
+    ParentSource().getParents().then((result) {
+      setState(() {
+        userdetailsList = result;
+      });
+    });
+  }
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -95,45 +109,14 @@ class __FormContentState extends State<_FormContent> {
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            TextFormField(
-              controller: nameController,
-              decoration: const InputDecoration(
-                labelText: 'Nom',
-                hintText: 'entrer le nom',
-                prefixIcon: Icon(Icons.perm_identity),
-                border: OutlineInputBorder(),
-              ),
-            ),
-            _gap(),
-            TextFormField(
-              controller: phoneController,
-              decoration: const InputDecoration(
-                labelText: 'Numero de telephone',
-                hintText: 'entrer le numero',
-                prefixIcon: Icon(Icons.phone),
-                border: OutlineInputBorder(),
-              ),
-            ),
-            _gap(),
-            TextFormField(
-              controller: passwordController,
-              obscureText: !_isPasswordVisible,
-              decoration: InputDecoration(
-                  labelText: 'Mot de passe',
-                  hintText: 'Entrer la mot de passe',
-                  prefixIcon: const Icon(Icons.lock_outline_rounded),
-                  border: const OutlineInputBorder(),
-                  suffixIcon: IconButton(
-                    icon: Icon(_isPasswordVisible
-                        ? Icons.visibility_off
-                        : Icons.visibility),
-                    onPressed: () {
-                      setState(() {
-                        _isPasswordVisible = !_isPasswordVisible;
-                      });
-                    },
-                  )),
-            ),
+            Container(
+                width: 500,
+                height: 50,
+                padding: const EdgeInsets.all(8.0),
+                decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey),
+                    borderRadius: BorderRadius.circular(8.0)),
+                child: _dropDownAccount(underline: Container())),
             _gap(),
             SizedBox(
               width: double.infinity,
@@ -145,28 +128,24 @@ class __FormContentState extends State<_FormContent> {
                 child: const Padding(
                   padding: EdgeInsets.all(10.0),
                   child: Text(
-                    'Créer',
+                    'Supprimer',
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                 ),
                 onPressed: () async {
-                  if (_formKey.currentState?.validate() ?? false) {
-                   
-
+                  if (_selectedUserDetails!=null) {
                     await ParentSource()
-                        .createParent(phoneController.text,
-                            passwordController.text, nameController.text)
+                        .deleteParent(_selectedUserDetails!)
                         .then((value) {
                       Fluttertoast.showToast(
-                          msg: "le compte a été créé avec succès!",
+                          msg: "le compte a été supprimer avec succès!",
                           toastLength: Toast.LENGTH_SHORT,
                           gravity: ToastGravity.BOTTOM,
                           timeInSecForIosWeb: 1,
                           backgroundColor: Colors.grey,
                           textColor: Colors.white,
                           fontSize: 16.0);
-                          cleartext();
-                          
+                     
                     }, onError: (e) {
                       Fluttertoast.showToast(
                           msg: "erreur!",
@@ -176,10 +155,7 @@ class __FormContentState extends State<_FormContent> {
                           backgroundColor: Colors.grey,
                           textColor: Colors.white,
                           fontSize: 16.0);
-                          
                     });
-
-                    
                   }
                 },
               ),
@@ -191,9 +167,32 @@ class __FormContentState extends State<_FormContent> {
   }
 
   Widget _gap() => const SizedBox(height: 16);
-  
-  void cleartext() {
-    nameController.clear();
-    phoneController.clear();
-    passwordController.clear();  }
+  Widget _dropDownAccount({
+    Widget? underline,
+    Widget? icon,
+    TextStyle? style,
+    TextStyle? hintStyle,
+    Color? dropdownColor,
+    Color? iconEnabledColor,
+  }) =>
+      DropdownButton<Parent>(
+          value: _selectedUserDetails,
+          underline: underline,
+          icon: icon,
+          dropdownColor: dropdownColor,
+          style: style,
+          iconEnabledColor: iconEnabledColor,
+          onChanged: (Parent? newValue) {
+            setState(() {
+              _selectedUserDetails = newValue;
+            });
+          },
+          hint: Text("Select an account", style: hintStyle),
+          items: userdetailsList
+              .map((userdetails) => DropdownMenuItem<Parent>(
+                  value: userdetails,
+                  child: Text("${userdetails.phone} - ${userdetails.nom}")))
+              .toList());
+
+ 
 }

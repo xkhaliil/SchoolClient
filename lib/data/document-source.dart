@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:schoolclient/model/document.dart';
+import 'package:schoolclient/screens/administration-screen/Delete/deleteDocument.dart';
 
 class DocumentSource {
   FirebaseFirestore db = FirebaseFirestore.instance;
@@ -35,7 +36,8 @@ class DocumentSource {
     }
   }
 
-  Future<void> uploadFile(Reference documentRef, PlatformFile selectedFile) async {
+  Future<void> uploadFile(
+      Reference documentRef, PlatformFile selectedFile) async {
     if (Platform.isAndroid || Platform.isIOS) {
       await documentRef.putFile(File(selectedFile.path.toString()));
     } else {
@@ -87,5 +89,8 @@ class DocumentSource {
     final storageRef = FirebaseStorage.instance.ref();
     final documentRef = storageRef.child(uri);
     return documentRef.getDownloadURL();
+  }
+  Future<void> DeleteDocument(Document document) async {
+    return await db.collection(documentCollection).doc(document.id).delete();
   }
 }

@@ -20,7 +20,7 @@ class _StudentListState extends State<StudentList> {
   @mustCallSuper
   void initState() {
     super.initState();
-    StudentSource().getStudentList().then((studentList) {
+    StudentSource().getStudentListByUserUID().then((studentList) {
       
       setState(() {
         this.studentList = studentList;
@@ -39,7 +39,7 @@ class _StudentListState extends State<StudentList> {
               return <Widget>[
                 SliverAppBar(
                   automaticallyImplyLeading: false,
-                  expandedHeight: 600.0,
+                  expandedHeight: 500.0,
                   backgroundColor: const Color(0xFF393E46),
                   floating: false,
                   pinned: true,

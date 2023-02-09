@@ -45,4 +45,7 @@ class TravailSource {
                 .toList(),
             onError: (e) => print("Error completing: $e"),
           );
+          Future<void> deleteTravail(Travail travail) async {
+    return await db.collection(travailCollection).doc(travail.id).delete();
+  }
 }

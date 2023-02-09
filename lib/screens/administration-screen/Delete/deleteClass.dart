@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:schoolclient/data/classe-source.dart';
-import 'package:schoolclient/data/parent-source.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:schoolclient/data/classe-source.dart';
+import 'package:schoolclient/data/matiere-source.dart';
+import 'package:schoolclient/model/Classe.dart';
 
 class DeleteClass extends StatelessWidget {
   const DeleteClass({Key? key}) : super(key: key);
@@ -53,7 +54,7 @@ class _Logo extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(16.0),
           child: Text(
-            "Supprimer une classe",
+            "Supprimer une classe!",
             textAlign: TextAlign.center,
             style: isSmallScreen
                 ? Theme.of(context).textTheme.headline5
@@ -76,12 +77,21 @@ class _FormContent extends StatefulWidget {
 }
 
 class __FormContentState extends State<_FormContent> {
-  bool _isPasswordVisible = false;
-  bool _rememberMe = false;
-  final nomController = TextEditingController();
-  final niveauController = TextEditingController();
+  List<Classe> classes = List.empty();
+  final matiereController = TextEditingController();
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  Classe? _selectedClasse;
+  @override
+  void initState() {
+    super.initState();
+    ClasseSource().getClasseList().then((result) {
+      setState(() {
+        classes = result;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -93,25 +103,14 @@ class __FormContentState extends State<_FormContent> {
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            TextFormField(
-              controller: niveauController,
-              decoration: const InputDecoration(
-                labelText: 'Niveau',
-                hintText: 'entrer le niveau de la classe',
-                prefixIcon: Icon(Icons.numbers),
-                border: OutlineInputBorder(),
-              ),
-            ),
-            _gap(),
-            TextFormField(
-              controller: nomController,
-              decoration: const InputDecoration(
-                labelText: 'Classe',
-                hintText: 'entrer le nom de classe',
-                prefixIcon: Icon(Icons.class_),
-                border: OutlineInputBorder(),
-              ),
-            ),
+            Container(
+                width: 500,
+                height: 50,
+                padding: const EdgeInsets.all(8.0),
+                decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey),
+                    borderRadius: BorderRadius.circular(8.0)),
+                child: _dropDownClasse(underline: Container())),
             _gap(),
             SizedBox(
               width: double.infinity,
@@ -123,27 +122,15 @@ class __FormContentState extends State<_FormContent> {
                 child: const Padding(
                   padding: EdgeInsets.all(10.0),
                   child: Text(
-                    'Créer',
+                    'Supprimer',
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                 ),
                 onPressed: () {
-                  if (_formKey.currentState?.validate() ?? false) {
-                    ClasseSource.createClasse(
-                            nomController.text, niveauController.text)
-                        .then((value) {
+                  if (_selectedClasse?.id != null) {
+                    ClasseSource().deleteClass(_selectedClasse!).then((value) {
                       Fluttertoast.showToast(
-                          msg: "la classe a été créé avec succès!",
-                          toastLength: Toast.LENGTH_SHORT,
-                          gravity: ToastGravity.BOTTOM,
-                          timeInSecForIosWeb: 1,
-                          backgroundColor: Colors.grey,
-                          textColor: Colors.white,
-                          fontSize: 16.0);
-                      cleartext();
-                    }, onError: (e) {
-                      Fluttertoast.showToast(
-                          msg: "erreur!",
+                          msg: "la classe a été supprimer avec succès!",
                           toastLength: Toast.LENGTH_SHORT,
                           gravity: ToastGravity.BOTTOM,
                           timeInSecForIosWeb: 1,
@@ -151,6 +138,15 @@ class __FormContentState extends State<_FormContent> {
                           textColor: Colors.white,
                           fontSize: 16.0);
                     });
+                  } else {
+                    Fluttertoast.showToast(
+                        msg: "erreur!",
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.BOTTOM,
+                        timeInSecForIosWeb: 1,
+                        backgroundColor: Colors.grey,
+                        textColor: Colors.white,
+                        fontSize: 16.0);
                   }
                 },
               ),
@@ -163,8 +159,30 @@ class __FormContentState extends State<_FormContent> {
 
   Widget _gap() => const SizedBox(height: 16);
 
-  void cleartext() {
-    nomController.clear();
-    niveauController.clear();
-  }
+  Widget _dropDownClasse({
+    Widget? underline,
+    Widget? icon,
+    TextStyle? style,
+    TextStyle? hintStyle,
+    Color? dropdownColor,
+    Color? iconEnabledColor,
+  }) =>
+      DropdownButton<Classe>(
+          value: _selectedClasse,
+          underline: underline,
+          icon: icon,
+          dropdownColor: dropdownColor,
+          style: style,
+          iconEnabledColor: iconEnabledColor,
+          onChanged: (Classe? newValue) {
+            setState(() {
+              _selectedClasse = newValue;
+            });
+          },
+          hint: Text("Select a class", style: hintStyle),
+          items: classes
+              .map((classe) => DropdownMenuItem<Classe>(
+                  value: classe,
+                  child: Text("${classe.niveau} - ${classe.nom}")))
+              .toList());
 }

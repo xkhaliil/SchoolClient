@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:schoolclient/data/classe-source.dart';
-import 'package:schoolclient/data/matiere-source.dart';
+
+
 import 'package:schoolclient/data/travail-source.dart';
-import 'package:schoolclient/model/Classe.dart';
+
+import 'package:schoolclient/model/travail.dart';
 
 class DeleteHomeWork extends StatelessWidget {
   const DeleteHomeWork({Key? key}) : super(key: key);
-  static String routeName = (DeleteHomeWork).toString();
+  static String routeName = "DeleteHomeWork";
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +56,7 @@ class _Logo extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(16.0),
           child: Text(
-            "Supprimer un travail !",
+            "Supprimer un travail!",
             textAlign: TextAlign.center,
             style: isSmallScreen
                 ? Theme.of(context).textTheme.headline5
@@ -78,17 +79,17 @@ class _FormContent extends StatefulWidget {
 }
 
 class __FormContentState extends State<_FormContent> {
+  List<Travail> travailList = List.empty();
+
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  List<Classe> classes = List.empty();
-  final descriptionController = TextEditingController();
-  final titreController = TextEditingController();
-  Classe? _selectedClasse;
+
+  Travail? _selectedTravail;
   @override
   void initState() {
     super.initState();
-    ClasseSource().getClasseList().then((result) {
+    TravailSource().getTravailList().then((result) {
       setState(() {
-        classes = result;
+        travailList = result;
       });
     });
   }
@@ -110,27 +111,7 @@ class __FormContentState extends State<_FormContent> {
                 decoration: BoxDecoration(
                     border: Border.all(color: Colors.grey),
                     borderRadius: BorderRadius.circular(8.0)),
-                child: _dropDownClasse(underline: Container())),
-            _gap(),
-            TextFormField(
-              controller: titreController,
-              decoration: const InputDecoration(
-                labelText: 'titre',
-                hintText: 'titre',
-                prefixIcon: Icon(Icons.description),
-                border: OutlineInputBorder(),
-              ),
-            ),
-            _gap(),
-            TextFormField(
-              controller: descriptionController,
-              decoration: const InputDecoration(
-                labelText: 'Description',
-                hintText: 'Desc',
-                prefixIcon: Icon(Icons.description),
-                border: OutlineInputBorder(),
-              ),
-            ),
+                child: _dropDownTravail(underline: Container())),
             _gap(),
             SizedBox(
               width: double.infinity,
@@ -142,23 +123,22 @@ class __FormContentState extends State<_FormContent> {
                 child: const Padding(
                   padding: EdgeInsets.all(10.0),
                   child: Text(
-                    'Ajouter',
+                    'Supprimer',
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                 ),
                 onPressed: () {
-                  if (descriptionController.text != null) {
-                    TravailSource().createTravail(descriptionController.text,
-                        titreController.text, _selectedClasse!.id);
-                    Fluttertoast.showToast(
-                        msg: "la matiere a été ajouté avec succès!",
-                        toastLength: Toast.LENGTH_SHORT,
-                        gravity: ToastGravity.BOTTOM,
-                        timeInSecForIosWeb: 1,
-                        backgroundColor: Colors.grey,
-                        textColor: Colors.white,
-                        fontSize: 16.0);
-                    cleartext();
+                  if (_selectedTravail != null) {
+                    TravailSource().deleteTravail(_selectedTravail!).then((value) {
+                      Fluttertoast.showToast(
+                          msg: "le travail a été supprimer avec succès!",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.BOTTOM,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Colors.grey,
+                          textColor: Colors.white,
+                          fontSize: 16.0);
+                    });
                   } else {
                     Fluttertoast.showToast(
                         msg: "erruer!",
@@ -180,7 +160,7 @@ class __FormContentState extends State<_FormContent> {
 
   Widget _gap() => const SizedBox(height: 16);
 
-  Widget _dropDownClasse({
+  Widget _dropDownTravail({
     Widget? underline,
     Widget? icon,
     TextStyle? style,
@@ -188,26 +168,22 @@ class __FormContentState extends State<_FormContent> {
     Color? dropdownColor,
     Color? iconEnabledColor,
   }) =>
-      DropdownButton<Classe>(
-          value: _selectedClasse,
+      DropdownButton<Travail>(
+          value: _selectedTravail,
           underline: underline,
           icon: icon,
           dropdownColor: dropdownColor,
           style: style,
           iconEnabledColor: iconEnabledColor,
-          onChanged: (Classe? newValue) {
+          onChanged: (Travail? newValue) {
             setState(() {
-              _selectedClasse = newValue;
+              _selectedTravail = newValue;
             });
           },
-          hint: Text("Select a class", style: hintStyle),
-          items: classes
-              .map((classe) => DropdownMenuItem<Classe>(
-                  value: classe,
-                  child: Text("${classe.niveau} - ${classe.nom}")))
+          hint: Text("travail", style: hintStyle),
+          items: travailList
+              .map((travail) => DropdownMenuItem<Travail>(
+                  value: travail,
+                  child: Text("${travail.titre} - ${travail.description}")))
               .toList());
-
-  void cleartext() {
-    descriptionController.clear();
-  }
 }
