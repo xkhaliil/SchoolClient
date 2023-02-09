@@ -12,7 +12,7 @@ app.use(bodyparser.json())
 
 app.get('/', (res) => {
     res.status(200).send("Hello")
-}
+})
 
 app.post('/firebase/notification', (req, res) => {
     //const message = req.body.message
