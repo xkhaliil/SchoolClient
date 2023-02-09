@@ -38,9 +38,11 @@ class DocumentSource {
 
   Future<void> uploadFile(
       Reference documentRef, PlatformFile selectedFile) async {
-    if (Platform.isAndroid || Platform.isIOS) {
-      await documentRef.putFile(File(selectedFile.path.toString()));
-    } else {
+    try{
+      if (Platform.isAndroid || Platform.isIOS) {
+        await documentRef.putFile(File(selectedFile.path.toString()));
+      }
+    } catch(e){
       await documentRef.putData(selectedFile.bytes!);
     }
   }
