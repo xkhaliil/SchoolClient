@@ -131,12 +131,13 @@ class _MatierePageState extends State<MatierePage> {
       );
 
   Future<void> _launchUrl(String url) async {
-    if (Platform.isAndroid || Platform.isIOS) {
-      // use downloader
-      print("load file for android");
-      downloadFileForMobile(url);
-    } else {
-      // this is web, then use launchURL
+    try {
+      if (Platform.isAndroid || Platform.isIOS) {
+        // use downloader
+        print("load file for mobile");
+        downloadFileForMobile(url);
+      }
+    } catch(e){
       if (await canLaunchUrl(Uri.parse(url))) {
         await launchUrl(Uri.parse(url));
       } else {

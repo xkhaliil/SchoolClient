@@ -149,7 +149,7 @@ class __FormContentState extends State<_FormContent> {
                   ),
                 ),
                 onPressed: () {
-                  if (descriptionController.text!=null) {
+                  if (descriptionController.text.isNotEmpty) {
                    TravailSource().createTravail(
                         descriptionController.text,titreController.text, _selectedClasse!.id);
                     Fluttertoast.showToast(
