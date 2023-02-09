@@ -17,6 +17,28 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+  final GlobalKey<ScaffoldMessengerState> messengerKey =
+      GlobalKey<ScaffoldMessengerState>();
+
+  @override
+  void initState() {
+    super.initState();
+    listenToMessages();
+  }
+
+  void listenToMessages() {
+    NotificationSource.controller.stream.listen((message) {
+      print("new message");
+      messengerKey.currentState?.showSnackBar(SnackBar(
+        content: Text(message),
+        elevation: 6.0,
+        duration: const Duration(seconds: 5),
+        margin: const EdgeInsets.all(20),
+        behavior: SnackBarBehavior.floating,
+      ));
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,8 +47,15 @@ class _MyAppState extends State<MyApp> {
         scaffoldBackgroundColor: const Color(0xFFEEEEEE),
         primaryColor: const Color(0xFFEEEEEE),
       ),
+      scaffoldMessengerKey: messengerKey,
       initialRoute: SplashScreen.routeName,
       routes: routes,
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    NotificationSource.closeStreams();
   }
 }

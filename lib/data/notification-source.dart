@@ -7,24 +7,28 @@ import 'package:schoolclient/firebase_options.dart';
 
 class NotificationSource {
   static FirebaseMessaging messaging = FirebaseMessaging.instance;
-  static String? token;
+  static var controller= StreamController<String>.broadcast();
 
   // Cuando la app esta en segundo plano
   static Future _onBackgroundHandler(RemoteMessage message) async {
     print('onBackground Handler: ${message.messageId}');
-    print(message.data);
+    print(message.toString());
   }
 
   // Cuando la app ya esta abierta
   static Future _onMessageHandler(RemoteMessage message) async {
     print('onMessage Handler: ${message.messageId}');
-    print(message.data);
+    print(message.toString());
+    controller.sink.add(
+        "Nouvel travail : ${message.data['title']} - ${message.data['body']}");
   }
 
   // Cuando abres la app desde la notificacion
   static Future _onMessageOpenApp(RemoteMessage message) async {
     print('onMessageOpenApp Handler: ${message.messageId}');
     print(message.data);
+    controller.sink.add(
+        "Nouvel travail : ${message.data['title']}\n${message.data['body']}");
   }
 
   static Future initializeApp() async {
@@ -35,13 +39,11 @@ class NotificationSource {
     try {
       if (Platform.isAndroid || Platform.isIOS) {
         await requestPermision();
-        token = await FirebaseMessaging.instance.getToken();
-        print('Token: $token');
-
-        // Handlers
-        FirebaseMessaging.onBackgroundMessage(_onBackgroundHandler);
-        FirebaseMessaging.onMessage.listen(_onMessageHandler);
-        FirebaseMessaging.onMessageOpenedApp.listen(_onMessageOpenApp);
+        FirebaseMessaging.instance.subscribeToTopic("annonce").then((value) {
+          FirebaseMessaging.onBackgroundMessage(_onBackgroundHandler);
+          FirebaseMessaging.onMessage.listen(_onMessageHandler);
+          FirebaseMessaging.onMessageOpenedApp.listen(_onMessageOpenApp);
+        });
       }
     } catch (e) {}
     // Local notifications
@@ -60,5 +62,9 @@ class NotificationSource {
     );
 
     print('User push notification status ${settings.authorizationStatus}');
+  }
+
+  static closeStreams() {
+    controller.close();
   }
 }
