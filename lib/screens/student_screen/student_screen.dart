@@ -113,20 +113,25 @@ class _StudentScreenState extends State<StudentScreen> {
               body: TabBarView(
                 children: [
                   const ProfilePage(),
-                  Column(
-                    children: matiereList
-                        .map((matiere) => CoursePage(matiere: matiere))
-                        .toList(),
+                  SingleChildScrollView(
+                    child: Column(
+                      children: matiereList
+                          .map((matiere) => CoursePage(matiere: matiere))
+                          .toList(),
+                    ),
                   ),
-                  Column(
-                    children: travailList
-                        .map((travail) => TravauxPage(travail: travail))
-                        .toList(),
-                  ),
-                  Column(
-                    children: annonceList
-                        .map((annonce) => NewsFeedPage(annonce: annonce))
-                        .toList(),
+                  SingleChildScrollView(
+                    child: Column(
+                      children: travailList
+                          .map((travail) => TravauxPage(travail: travail))
+                          .toList(),
+                  )),
+                  SingleChildScrollView(
+                    child: Column(
+                      children: annonceList
+                          .map((annonce) => NewsFeedPage(annonce: annonce))
+                          .toList(),
+                    ),
                   )
                 ],
               ),
