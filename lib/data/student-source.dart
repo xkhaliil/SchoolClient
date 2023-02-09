@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:schoolclient/model/student.dart';
-import 'package:schoolclient/screens/administration-screen/Update/updateStudent.dart';
 
 class StudentSource {
   FirebaseFirestore db = FirebaseFirestore.instance;
@@ -55,20 +54,26 @@ class StudentSource {
 
   Future<List<Student>> getStudents() async =>
       await db.collection(studentCollection).get().then(
-            (students) => students.docs
-                .map((element){return  Student(
-                    element.id,
-                    element.data()["nom"],
-                    element.data()["prenom"],
-                    element.data()["userUID"],
-                    element.data()["classeID"]);
-                    })
-                .toList(),
+            (students) => students.docs.map((element) {
+              return Student(
+                  element.id,
+                  element.data()["nom"],
+                  element.data()["prenom"],
+                  element.data()["userUID"],
+                  element.data()["classeID"]);
+            }).toList(),
             onError: (e) => print("Error completing: $e"),
           );
-           Future<void> UpdateStudent(String studentId, String newNom, String newPrenom, String newClassId, String newUserid) async {
+
+  Future<void> updateStudent(String studentId, String newNom, String newPrenom,
+      String newClassId) async {
     // Update one field,
-    final data = {"nom": newNom,"prenom":newPrenom,"userUID":newClassId,"classeID":newClassId};
+    final data = {
+      "nom": newNom,
+      "prenom": newPrenom,
+      "userUID": newClassId,
+      "classeID": newClassId
+    };
     return await db
         .collection(studentCollection)
         .doc(studentId)
