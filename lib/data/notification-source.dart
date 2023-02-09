@@ -27,8 +27,6 @@ class NotificationSource {
   static Future _onMessageOpenApp(RemoteMessage message) async {
     print('onMessageOpenApp Handler: ${message.messageId}');
     print(message.data);
-    controller.sink.add(
-        "Nouvel travail : ${message.data['title']}\n${message.data['body']}");
   }
 
   static Future initializeApp() async {
@@ -39,11 +37,10 @@ class NotificationSource {
     try {
       if (Platform.isAndroid || Platform.isIOS) {
         await requestPermision();
-        FirebaseMessaging.instance.subscribeToTopic("annonce").then((value) {
-          FirebaseMessaging.onBackgroundMessage(_onBackgroundHandler);
-          FirebaseMessaging.onMessage.listen(_onMessageHandler);
-          FirebaseMessaging.onMessageOpenedApp.listen(_onMessageOpenApp);
-        });
+        FirebaseMessaging.onBackgroundMessage(_onBackgroundHandler);
+        FirebaseMessaging.onMessage.listen(_onMessageHandler);
+        FirebaseMessaging.onMessageOpenedApp.listen(_onMessageOpenApp);
+        FirebaseMessaging.instance.subscribeToTopic("annonce");
       }
     } catch (e) {}
     // Local notifications

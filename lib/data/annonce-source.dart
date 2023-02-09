@@ -43,11 +43,8 @@ class AnnonceSource {
 
   void notifyUsers(String titre, String contenu) async {
     var body = {};
-    body["topic"] = "contenu";
-    var data = {};
-    data["title"] = titre;
-    data["body"] = contenu;
-    body["data"] = data;
+    body["title"] = titre;
+    body["contenu"] = contenu;
 
     var response = await http.post(Uri.https("tired-jay-gilet.cyclic.app", "firebase/notification"),
         headers: <String, String>{

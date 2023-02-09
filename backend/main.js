@@ -11,12 +11,14 @@ const app = express()
 app.use(bodyparser.json())
 
 app.post('/firebase/notification', (req, res) => {
-    //const message = req.body.message
-
     const message = {
         data: {
-            title: req.data.title,
-            body: req.data.body
+            title: req.body["title"],
+            body: req.body["contenu"]
+        },
+        notification: {
+            title: req.body["title"],
+            body: req.body["contenu"]
         },
         topic: "annonce"
     };
