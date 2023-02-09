@@ -10,10 +10,6 @@ admin.initializeApp({
 const app = express()
 app.use(bodyparser.json())
 
-app.get('/', (res) => {
-    res.status(200).send("Hello")
-})
-
 app.post('/firebase/notification', (req, res) => {
     //const message = req.body.message
 
@@ -35,6 +31,6 @@ app.post('/firebase/notification', (req, res) => {
 
 })
 
-app.listen(80, () => {
-    console.log("listening to port 80")
+app.listen(3000, () => {
+    console.log("listening to port 3000")
 })
