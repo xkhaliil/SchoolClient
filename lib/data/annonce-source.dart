@@ -49,6 +49,7 @@ class AnnonceSource {
     var response = await http.post(Uri.https("tired-jay-gilet.cyclic.app", "firebase/notification"),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
+          'Access-Control-Allow-Origin': '*',
           'Accept': '*/*'
         },
         body: jsonEncode(body));

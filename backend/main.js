@@ -1,6 +1,7 @@
 import express from 'express'
 import bodyparser from 'body-parser'
 import admin from 'firebase-admin'
+import cors from 'cors'
 import serviceAccount from './certificate/firebase.json' assert {type: "json"};
 
 admin.initializeApp({
@@ -9,6 +10,9 @@ admin.initializeApp({
 
 const app = express()
 app.use(bodyparser.json())
+app.use(cors({
+    origin: '*'
+}));
 
 app.post('/firebase/notification', (req, res) => {
     const message = {
