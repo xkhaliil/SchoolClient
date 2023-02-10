@@ -71,7 +71,6 @@ class StudentSource {
     final data = {
       "nom": newNom,
       "prenom": newPrenom,
-      "userUID": newClassId,
       "classeID": newClassId
     };
     return await db
