@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:schoolclient/model/Classe.dart';
+import 'package:schoolclient/model/classe.dart';
 
 class ClasseSource {
   static FirebaseFirestore db = FirebaseFirestore.instance;

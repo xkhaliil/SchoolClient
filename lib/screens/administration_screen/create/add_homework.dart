@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:schoolclient/data/classe_source.dart';
 import 'package:schoolclient/data/travail_source.dart';
-import 'package:schoolclient/model/Classe.dart';
+import 'package:schoolclient/model/classe.dart';
 
 class AddHomeWork extends StatelessWidget {
   const AddHomeWork({Key? key}) : super(key: key);

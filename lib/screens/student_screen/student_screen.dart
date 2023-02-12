@@ -5,7 +5,7 @@ import 'package:schoolclient/data/matiere_source.dart';
 import 'package:schoolclient/data/shared_preferences.dart';
 import 'package:schoolclient/data/student_source.dart';
 import 'package:schoolclient/data/travail_source.dart';
-import 'package:schoolclient/model/Classe.dart';
+import 'package:schoolclient/model/classe.dart';
 import 'package:schoolclient/model/annonce.dart';
 import 'package:schoolclient/model/matiere.dart';
 import 'package:schoolclient/model/travail.dart';

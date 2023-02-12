@@ -4,7 +4,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:schoolclient/data/classe_source.dart';
 import 'package:schoolclient/data/document_source.dart';
 import 'package:schoolclient/data/matiere_source.dart';
-import 'package:schoolclient/model/Classe.dart';
+import 'package:schoolclient/model/classe.dart';
 import 'package:schoolclient/model/matiere.dart';
 
 class AddDocument extends StatelessWidget {

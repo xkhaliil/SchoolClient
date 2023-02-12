@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:schoolclient/data/classe_source.dart';
 import 'package:schoolclient/data/matiere_source.dart';
-import 'package:schoolclient/model/Classe.dart';
+import 'package:schoolclient/model/classe.dart';
 
 class AddSubject extends StatelessWidget {
   const AddSubject({Key? key}) : super(key: key);

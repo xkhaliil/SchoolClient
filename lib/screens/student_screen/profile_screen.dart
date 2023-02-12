@@ -4,7 +4,7 @@ import 'package:lottie/lottie.dart';
 import 'package:schoolclient/data/classe_source.dart';
 import 'package:schoolclient/data/shared_preferences.dart';
 import 'package:schoolclient/data/student_source.dart';
-import 'package:schoolclient/model/Classe.dart';
+import 'package:schoolclient/model/classe.dart';
 import 'package:schoolclient/model/student.dart';
 import 'package:schoolclient/screens/login_screen/login.dart';
 import 'package:schoolclient/screens/student_list_screen/student_list.dart';

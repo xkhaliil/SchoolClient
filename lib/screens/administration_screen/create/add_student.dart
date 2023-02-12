@@ -3,7 +3,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:schoolclient/data/classe_source.dart';
 import 'package:schoolclient/data/student_source.dart';
 import 'package:schoolclient/data/parent_source.dart';
-import 'package:schoolclient/model/Classe.dart';
+import 'package:schoolclient/model/classe.dart';
 import 'package:schoolclient/model/parent.dart';
 
 class AddStudent extends StatelessWidget {

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
 import 'package:schoolclient/data/shared_preferences.dart';
-import 'package:schoolclient/model/Classe.dart';
 import 'package:schoolclient/model/matiere.dart';
 
 import 'matiere_screen.dart';
