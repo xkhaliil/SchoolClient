@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:schoolclient/screens/administration_screen/delete/delete_account.dart';
 import 'package:schoolclient/screens/administration_screen/delete/delete_class.dart';
+import 'package:schoolclient/screens/administration_screen/delete/delete_document.dart';
 import 'package:schoolclient/screens/administration_screen/delete/delete_homework.dart';
 import 'package:schoolclient/screens/administration_screen/delete/delete_news.dart';
 import 'package:schoolclient/screens/administration_screen/delete/delete_student.dart';
@@ -117,7 +118,7 @@ class DeleteScreen extends StatelessWidget {
                 textScaleFactor: 1.5,
               ),
               onTap: () {
-                Navigator.pushNamed(context, deleteDocument.routeName);
+                Navigator.pushNamed(context, DeleteDocument.routeName);
               },
             ),
             const SizedBox(height: 10),

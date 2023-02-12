@@ -1,33 +1,33 @@
 import 'package:flutter/cupertino.dart';
-import 'package:schoolclient/screens/administration-screen/Create/add_document.dart';
-import 'package:schoolclient/screens/administration-screen/Create/add_subject.dart';
-import 'package:schoolclient/screens/administration-screen/Create/add_account.dart';
-import 'package:schoolclient/screens/administration-screen/Create/add_class.dart';
-import 'package:schoolclient/screens/administration-screen/Create/add_homework.dart';
-import 'package:schoolclient/screens/administration-screen/Create/add_news.dart';
-import 'package:schoolclient/screens/administration-screen/Create/add_student.dart';
-import 'package:schoolclient/screens/administration-screen/Delete/delete_account.dart';
-import 'package:schoolclient/screens/administration-screen/Delete/delete_class.dart';
-import 'package:schoolclient/screens/administration-screen/Delete/delete_document.dart';
-import 'package:schoolclient/screens/administration-screen/Delete/delete_homework.dart';
-import 'package:schoolclient/screens/administration-screen/Delete/delete_news.dart';
-import 'package:schoolclient/screens/administration-screen/Delete/delete_student.dart';
-import 'package:schoolclient/screens/administration-screen/Delete/delete_subject.dart';
-import 'package:schoolclient/screens/administration-screen/Update/update_account.dart';
+import 'package:schoolclient/screens/administration_screen/Create/add_document.dart';
+import 'package:schoolclient/screens/administration_screen/Create/add_subject.dart';
+import 'package:schoolclient/screens/administration_screen/Create/add_account.dart';
+import 'package:schoolclient/screens/administration_screen/Create/add_class.dart';
+import 'package:schoolclient/screens/administration_screen/Create/add_homework.dart';
+import 'package:schoolclient/screens/administration_screen/Create/add_news.dart';
+import 'package:schoolclient/screens/administration_screen/Create/add_student.dart';
+import 'package:schoolclient/screens/administration_screen/Delete/delete_account.dart';
+import 'package:schoolclient/screens/administration_screen/Delete/delete_class.dart';
+import 'package:schoolclient/screens/administration_screen/Delete/delete_document.dart';
+import 'package:schoolclient/screens/administration_screen/Delete/delete_homework.dart';
+import 'package:schoolclient/screens/administration_screen/Delete/delete_news.dart';
+import 'package:schoolclient/screens/administration_screen/Delete/delete_student.dart';
+import 'package:schoolclient/screens/administration_screen/Delete/delete_subject.dart';
+import 'package:schoolclient/screens/administration_screen/Update/update_account.dart';
 
-import 'package:schoolclient/screens/administration-screen/Update/update_student.dart';
+import 'package:schoolclient/screens/administration_screen/Update/update_student.dart';
 
-import 'package:schoolclient/screens/administration-screen/admin_page.dart';
-import 'package:schoolclient/screens/administration-screen/createScreen.dart';
-import 'package:schoolclient/screens/administration-screen/delete_screen.dart';
-import 'package:schoolclient/screens/administration-screen/update_screen.dart';
+import 'package:schoolclient/screens/administration_screen/admin_page.dart';
+import 'package:schoolclient/screens/administration_screen/create_screen.dart';
+import 'package:schoolclient/screens/administration_screen/delete_screen.dart';
+import 'package:schoolclient/screens/administration_screen/update_screen.dart';
 
 import 'package:schoolclient/screens/student_list_screen/student_list.dart';
 import 'package:schoolclient/screens/student_screen/cours_et_travaux/matiere_screen.dart';
 import 'package:schoolclient/screens/student_screen/student_screen.dart';
 import 'package:schoolclient/screens/login_screen/on_boarding.dart';
 import 'package:schoolclient/screens/login_screen/login.dart';
-import 'package:schoolclient/screens/splash-screen/splash_screen.dart';
+import 'package:schoolclient/screens/splash_screen/splash_screen.dart';
 
 Map<String, WidgetBuilder> routes = {
   SplashScreen.routeName: (context) => const SplashScreen(),
@@ -53,7 +53,7 @@ Map<String, WidgetBuilder> routes = {
   DeleteStudent.routeName: (context) => const DeleteStudent(),
   DeleteClass.routeName: (context) => const DeleteClass(),
   DeleteSubject.routeName: (context) => const DeleteSubject(),
-  deleteDocument.routeName: (context) => const deleteDocument(),
+  DeleteDocument.routeName: (context) => const DeleteDocument(),
   DeleteHomeWork.routeName: (context) => const DeleteHomeWork(),
   DeleteNews.routeName: (context) => const DeleteNews(),
 
@@ -61,5 +61,4 @@ Map<String, WidgetBuilder> routes = {
   UpdateScreen.routeName: (context) => const UpdateScreen(),
   UpdateAccount.routeName: (context) => const UpdateAccount(),
   UpdateStudent.routeName: (context) => const UpdateStudent(),
-  
 };

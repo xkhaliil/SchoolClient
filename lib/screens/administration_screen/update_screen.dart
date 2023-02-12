@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'package:schoolclient/screens/administration-screen/Update/update_account.dart';
-
-import 'package:schoolclient/screens/administration-screen/Update/update_student.dart';
+import 'package:schoolclient/screens/administration_screen/Update/update_account.dart';
+import 'package:schoolclient/screens/administration_screen/Update/update_student.dart';
 
 class UpdateScreen extends StatelessWidget {
   const UpdateScreen({Key? key}) : super(key: key);

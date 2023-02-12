@@ -2,10 +2,13 @@ import express from 'express'
 import bodyparser from 'body-parser'
 import admin from 'firebase-admin'
 import cors from 'cors'
-import serviceAccount from './certificate/firebase.json' assert {type: "json"};
 
 admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount)
+    credential: admin.credential.cert({
+        projectId: process.env.FIREBASE_PROJECT_ID,
+        clientEmail: process.env.SERVER_FIREBASE_CLIENT_EMAIL,
+        privateKey: process.env.SERVER_FIREBASE_PRIVATE_KEY
+    })
 });
 
 const app = express()

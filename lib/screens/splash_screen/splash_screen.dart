@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import 'package:schoolclient/screens/administration-screen/admin_page.dart';
+import 'package:schoolclient/screens/administration_screen/admin_page.dart';
 import 'package:schoolclient/screens/student_list_screen/student_list.dart';
 import 'package:schoolclient/screens/login_screen/on_boarding.dart';
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:schoolclient/data/notification_source.dart';
 import 'package:schoolclient/routes.dart';
-import 'package:schoolclient/screens/splash-screen/splash_screen.dart';
+import 'package:schoolclient/screens/splash_screen/splash_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
