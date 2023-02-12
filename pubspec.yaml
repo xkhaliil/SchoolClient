@@ -76,26 +76,8 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - images/logo-eliteee.png
-    - images/login.png
-    - images/login2.png
-    - images/student.png
-    - video/133784-back-to-school.json
-    - video/rasyethareklogin.json
-    - video/sghar.json
-    - video/homebg.json
-    - images/logostudent.png
-    - video/adminlogin.json
-    - video/create.json
-    - video/delete.json
-    - video/update.json
-    - video/bgadmin.json
-    - video/logoutadmin.json
-    - video/subject.json
-    - video/error.json
-    - video/StudentIcon.json
-    - video/profileIcon.json
-    - video/annonce.json
+    - images/
+    - video/
     
    
 
