@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import 'package:schoolclient/data/annonce-source.dart';
-import 'package:schoolclient/data/matiere-source.dart';
+import 'package:schoolclient/data/annonce_source.dart';
+import 'package:schoolclient/data/matiere_source.dart';
 import 'package:schoolclient/data/shared_preferences.dart';
-import 'package:schoolclient/data/student-source.dart';
-import 'package:schoolclient/data/travail-source.dart';
+import 'package:schoolclient/data/student_source.dart';
+import 'package:schoolclient/data/travail_source.dart';
 import 'package:schoolclient/model/Classe.dart';
 import 'package:schoolclient/model/annonce.dart';
 import 'package:schoolclient/model/matiere.dart';
 import 'package:schoolclient/model/travail.dart';
-import 'package:schoolclient/screens/student_screen/cours_et_travaux/coursScreen.dart';
-import 'package:schoolclient/screens/student_screen/annoncesScreen.dart';
-import 'package:schoolclient/screens/student_screen/profileScreen.dart';
-import 'package:schoolclient/screens/student_screen/travauxScreen.dart';
+import 'package:schoolclient/screens/student_screen/cours_et_travaux/cours_screen.dart';
+import 'package:schoolclient/screens/student_screen/annonces_screen.dart';
+import 'package:schoolclient/screens/student_screen/profile_screen.dart';
+import 'package:schoolclient/screens/student_screen/travaux_screen.dart';
 
 class StudentScreen extends StatefulWidget {
   static String routeName = (StudentScreen).toString();

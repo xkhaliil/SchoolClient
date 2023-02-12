@@ -1,31 +1,31 @@
 import 'package:flutter/cupertino.dart';
-import 'package:schoolclient/screens/administration-screen/Create/addDocument.dart';
-import 'package:schoolclient/screens/administration-screen/Create/addSubject.dart';
-import 'package:schoolclient/screens/administration-screen/Create/addAccount.dart';
-import 'package:schoolclient/screens/administration-screen/Create/addClass.dart';
-import 'package:schoolclient/screens/administration-screen/Create/addHomework.dart';
-import 'package:schoolclient/screens/administration-screen/Create/addNews.dart';
-import 'package:schoolclient/screens/administration-screen/Create/addStudent.dart';
-import 'package:schoolclient/screens/administration-screen/Delete/deleteAccount.dart';
-import 'package:schoolclient/screens/administration-screen/Delete/deleteClass.dart';
-import 'package:schoolclient/screens/administration-screen/Delete/deleteDocument.dart';
-import 'package:schoolclient/screens/administration-screen/Delete/deleteHomework.dart';
-import 'package:schoolclient/screens/administration-screen/Delete/deleteNews.dart';
-import 'package:schoolclient/screens/administration-screen/Delete/deleteStudent.dart';
-import 'package:schoolclient/screens/administration-screen/Delete/deleteSubject.dart';
-import 'package:schoolclient/screens/administration-screen/Update/updateAccount.dart';
+import 'package:schoolclient/screens/administration-screen/Create/add_document.dart';
+import 'package:schoolclient/screens/administration-screen/Create/add_subject.dart';
+import 'package:schoolclient/screens/administration-screen/Create/add_account.dart';
+import 'package:schoolclient/screens/administration-screen/Create/add_class.dart';
+import 'package:schoolclient/screens/administration-screen/Create/add_homework.dart';
+import 'package:schoolclient/screens/administration-screen/Create/add_news.dart';
+import 'package:schoolclient/screens/administration-screen/Create/add_student.dart';
+import 'package:schoolclient/screens/administration-screen/Delete/delete_account.dart';
+import 'package:schoolclient/screens/administration-screen/Delete/delete_class.dart';
+import 'package:schoolclient/screens/administration-screen/Delete/delete_document.dart';
+import 'package:schoolclient/screens/administration-screen/Delete/delete_homework.dart';
+import 'package:schoolclient/screens/administration-screen/Delete/delete_news.dart';
+import 'package:schoolclient/screens/administration-screen/Delete/delete_student.dart';
+import 'package:schoolclient/screens/administration-screen/Delete/delete_subject.dart';
+import 'package:schoolclient/screens/administration-screen/Update/update_account.dart';
 
-import 'package:schoolclient/screens/administration-screen/Update/updateStudent.dart';
+import 'package:schoolclient/screens/administration-screen/Update/update_student.dart';
 
-import 'package:schoolclient/screens/administration-screen/adminPage.dart';
+import 'package:schoolclient/screens/administration-screen/admin_page.dart';
 import 'package:schoolclient/screens/administration-screen/createScreen.dart';
-import 'package:schoolclient/screens/administration-screen/deleteScreen.dart';
-import 'package:schoolclient/screens/administration-screen/updateScreen.dart';
+import 'package:schoolclient/screens/administration-screen/delete_screen.dart';
+import 'package:schoolclient/screens/administration-screen/update_screen.dart';
 
 import 'package:schoolclient/screens/student_list_screen/student_list.dart';
-import 'package:schoolclient/screens/student_screen/cours_et_travaux/matiereScreen.dart';
+import 'package:schoolclient/screens/student_screen/cours_et_travaux/matiere_screen.dart';
 import 'package:schoolclient/screens/student_screen/student_screen.dart';
-import 'package:schoolclient/screens/login_screen/onBoarding.dart';
+import 'package:schoolclient/screens/login_screen/on_boarding.dart';
 import 'package:schoolclient/screens/login_screen/login.dart';
 import 'package:schoolclient/screens/splash-screen/splash_screen.dart';
 
@@ -53,7 +53,7 @@ Map<String, WidgetBuilder> routes = {
   DeleteStudent.routeName: (context) => const DeleteStudent(),
   DeleteClass.routeName: (context) => const DeleteClass(),
   DeleteSubject.routeName: (context) => const DeleteSubject(),
-  DeleteDocument.routeName: (context) => const DeleteDocument(),
+  deleteDocument.routeName: (context) => const deleteDocument(),
   DeleteHomeWork.routeName: (context) => const DeleteHomeWork(),
   DeleteNews.routeName: (context) => const DeleteNews(),
 

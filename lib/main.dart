@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:schoolclient/data/notification-source.dart';
+import 'package:schoolclient/data/notification_source.dart';
 import 'package:schoolclient/routes.dart';
 import 'package:schoolclient/screens/splash-screen/splash_screen.dart';
 
