@@ -1,21 +1,21 @@
 import 'package:flutter/cupertino.dart';
-import 'package:schoolclient/screens/administration_screen/Create/add_document.dart';
-import 'package:schoolclient/screens/administration_screen/Create/add_subject.dart';
-import 'package:schoolclient/screens/administration_screen/Create/add_account.dart';
-import 'package:schoolclient/screens/administration_screen/Create/add_class.dart';
-import 'package:schoolclient/screens/administration_screen/Create/add_homework.dart';
-import 'package:schoolclient/screens/administration_screen/Create/add_news.dart';
-import 'package:schoolclient/screens/administration_screen/Create/add_student.dart';
-import 'package:schoolclient/screens/administration_screen/Delete/delete_account.dart';
-import 'package:schoolclient/screens/administration_screen/Delete/delete_class.dart';
-import 'package:schoolclient/screens/administration_screen/Delete/delete_document.dart';
-import 'package:schoolclient/screens/administration_screen/Delete/delete_homework.dart';
-import 'package:schoolclient/screens/administration_screen/Delete/delete_news.dart';
-import 'package:schoolclient/screens/administration_screen/Delete/delete_student.dart';
-import 'package:schoolclient/screens/administration_screen/Delete/delete_subject.dart';
-import 'package:schoolclient/screens/administration_screen/Update/update_account.dart';
+import 'package:schoolclient/screens/administration_screen/create/add_document.dart';
+import 'package:schoolclient/screens/administration_screen/create/add_subject.dart';
+import 'package:schoolclient/screens/administration_screen/create/add_account.dart';
+import 'package:schoolclient/screens/administration_screen/create/add_class.dart';
+import 'package:schoolclient/screens/administration_screen/create/add_homework.dart';
+import 'package:schoolclient/screens/administration_screen/create/add_news.dart';
+import 'package:schoolclient/screens/administration_screen/create/add_student.dart';
+import 'package:schoolclient/screens/administration_screen/delete/delete_account.dart';
+import 'package:schoolclient/screens/administration_screen/delete/delete_class.dart';
+import 'package:schoolclient/screens/administration_screen/delete/delete_document.dart';
+import 'package:schoolclient/screens/administration_screen/delete/delete_homework.dart';
+import 'package:schoolclient/screens/administration_screen/delete/delete_news.dart';
+import 'package:schoolclient/screens/administration_screen/delete/delete_student.dart';
+import 'package:schoolclient/screens/administration_screen/delete/delete_subject.dart';
+import 'package:schoolclient/screens/administration_screen/update/update_account.dart';
 
-import 'package:schoolclient/screens/administration_screen/Update/update_student.dart';
+import 'package:schoolclient/screens/administration_screen/update/update_student.dart';
 
 import 'package:schoolclient/screens/administration_screen/admin_page.dart';
 import 'package:schoolclient/screens/administration_screen/create_screen.dart';
