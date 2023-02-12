@@ -7,7 +7,7 @@ admin.initializeApp({
     credential: admin.credential.cert({
         projectId: process.env.FIREBASE_PROJECT_ID,
         clientEmail: process.env.SERVER_FIREBASE_CLIENT_EMAIL,
-        privateKey: process.env.SERVER_FIREBASE_PRIVATE_KEY
+        privateKey: process.env.SERVER_FIREBASE_PRIVATE_KEY ? process.env.SERVER_FIREBASE_PRIVATE_KEY.replace(/\\n/gm, "\n") : undefined
     })
 });
 
