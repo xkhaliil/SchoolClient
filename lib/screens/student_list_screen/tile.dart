@@ -14,7 +14,7 @@ class StudentTile extends StatelessWidget {
       hoverColor: const Color(0xFF474E68),
       selectedColor: const Color(0xFF474E68),
       selectedTileColor: const Color(0xFF474E68),
-      leading: Lottie.asset("video/StudentIcon.json"),
+      leading: Lottie.asset("video/student_icon.json"),
       title: Text(
         "${student.nom} ${student.prenom}",
         // ignore: prefer_const_constructors

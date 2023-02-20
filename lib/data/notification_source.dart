@@ -20,7 +20,7 @@ class NotificationSource {
     print('onMessage Handler: ${message.messageId}');
     print(message.toString());
     controller.sink.add(
-        "Nouvel travail : ${message.data['title']} - ${message.data['body']}");
+        "Nouvelle annonce : ${message.data['title']} - ${message.data['body']}");
   }
 
   // Cuando abres la app desde la notificacion

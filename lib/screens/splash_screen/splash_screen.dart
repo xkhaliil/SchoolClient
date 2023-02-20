@@ -31,7 +31,7 @@ class SplashScreen extends StatelessWidget {
       // }
 
       if (currentUser != null) {
-        if(currentUser.uid=="bgMYoVWZ8vawOw6epUUkKws9dq13"){
+        if(currentUser.email?.startsWith("1212") ?? false){
           Navigator.pushAndRemoveUntil(
           context,
           PageRouteBuilder(
@@ -100,7 +100,7 @@ class SplashScreen extends StatelessWidget {
                     alignment: Alignment.center,
                     child: SizedBox(
                       child: Lottie.asset(
-                        "video/133784-back-to-school.json",
+                        "video/133784_back_to_school.json",
                       ),
                     ),
                   ),
